@@ -13,6 +13,8 @@ const config = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
+    'prettier/react',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -23,6 +25,7 @@ const config = {
     project: './tsconfig.eslint.json',
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
+  ignorePatterns: ['.eslintrc.js', 'index.d.ts'],
   rules: {
     'no-console': [NODE_ENV === 'dev' ? 'off' : 'error'],
     'import/newline-after-import': 'error',
@@ -49,6 +52,7 @@ const config = {
     '@typescript-eslint/no-var-requires': ['off'],
     'import/order': 'error',
     'import/first': 'error',
+    'import/prefer-default-export': 'off',
   },
 }
 
