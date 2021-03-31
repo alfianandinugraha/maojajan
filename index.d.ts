@@ -7,6 +7,7 @@ interface ThemeProps {
     danger: string
     success: string
     dark: string
+    gray: string
   }
 }
 

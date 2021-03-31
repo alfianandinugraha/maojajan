@@ -7,6 +7,7 @@ const theme: ThemeProps = {
     success: '#529847',
     danger: '#E71D36',
     dark: '#32322C',
+    gray: '#ACACAC',
   },
 }
 
