@@ -53,6 +53,8 @@ const config = {
     'import/order': 'error',
     'import/first': 'error',
     'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/destructuring-assignment': 'off',
   },
 }
 
