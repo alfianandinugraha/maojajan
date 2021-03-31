@@ -17,9 +17,24 @@ export default function index(): ReactElement {
       <AuthHeading style={{ marginTop: '81px' }}>Register App</AuthHeading>
       <AuthInputGroup>
         <Input icon="/user--gray.svg" fullWidth placeholder="Nama Lengkap" />
-        <Input icon="/email--gray.svg" fullWidth placeholder="Email" />
-        <Input icon="/lock--gray.svg" fullWidth placeholder="Password" />
-        <Input icon="/lock--gray.svg" fullWidth placeholder="Ulangi Password" />
+        <Input
+          icon="/email--gray.svg"
+          fullWidth
+          placeholder="Email"
+          type="email"
+        />
+        <Input
+          icon="/lock--gray.svg"
+          fullWidth
+          placeholder="Password"
+          type="password"
+        />
+        <Input
+          icon="/lock--gray.svg"
+          fullWidth
+          placeholder="Ulangi Password"
+          type="password"
+        />
       </AuthInputGroup>
       <Button variant="auth" style={{ marginTop: '86px' }}>
         Register
