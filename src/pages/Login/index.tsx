@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
+import AuthLayout from '@/layout/AuthLayout'
 
 export default function index(): ReactElement {
   return (
-    <>
+    <AuthLayout>
       <Input
         placeholder="hello"
         icon="https://res.cloudinary.com/alfianandidev/image/upload/web/javascript.svg"
@@ -24,6 +25,6 @@ export default function index(): ReactElement {
       <Button variant="auth" fullWidth style={{ textAlign: 'center' }}>
         Hello
       </Button>
-    </>
+    </AuthLayout>
   )
 }

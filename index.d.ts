@@ -1,3 +1,4 @@
+import React from 'react'
 import {} from 'styled-components'
 
 interface ThemeProps {
