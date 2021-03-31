@@ -55,6 +55,7 @@ const config = {
     'import/prefer-default-export': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/destructuring-assignment': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
   },
 }
 
