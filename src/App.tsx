@@ -12,6 +12,7 @@ const RootStyles = styled.div`
     color: ${(props) => props.theme.color.dark};
     font-family: 'Hind Siliguri', sans-serif;
     font-size: 14px;
+    box-sizing: border-box;
   }
 `
 
