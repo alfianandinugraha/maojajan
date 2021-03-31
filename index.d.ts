@@ -12,10 +12,15 @@ interface ThemeProps {
   }
 }
 
+interface InputState<T> {
+  value: T
+  errorMessage: string
+}
+
 declare module 'styled-components' {
   export interface DefaultTheme extends ThemeProps {}
 }
 
 declare module 'Types' {
-  export type { ThemeProps }
+  export type { ThemeProps, InputState }
 }
