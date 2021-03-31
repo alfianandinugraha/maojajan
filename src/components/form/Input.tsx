@@ -3,19 +3,25 @@ import styled from 'styled-components'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: string
+  fullWidth?: boolean
+}
+
+interface InputProps {
+  fullWidth?: boolean
 }
 
 const Root = styled.div`
   position: relative;
 `
 
-const Input = styled.input<{ variant: 'icon' }>`
+const Input = styled.input<InputProps>`
   padding: 1rem;
   border-radius: 5px;
   background: #ffffff;
   font-size: 14px;
   border: 1px solid ${(props) => props.theme.color.gray};
   position: relative;
+  ${(props) => props.fullWidth && 'width: 100%;'};
 
   &::placeholder {
     color: ${(props) => props.theme.color.gray};
@@ -38,7 +44,6 @@ export default function index(props: Props): ReactElement {
       {props.icon && <ImageIcon alt="icon" src={props.icon} />}
       <Input
         {...props}
-        variant="icon"
         style={{
           paddingLeft: props.icon ? '48px' : '16px',
         }}
