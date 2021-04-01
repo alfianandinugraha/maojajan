@@ -6,6 +6,10 @@ interface NavigationPusher extends History {
   toRegisterPage: () => void
   toResetPage: () => void
   toStartPage: () => void
+  toAboutPage: () => void
+  toDashboardPage: () => void
+  toProfilePage: () => void
+  toProductsPage: () => void
 }
 
 const useHistory = (): NavigationPusher => {
@@ -14,6 +18,10 @@ const useHistory = (): NavigationPusher => {
   const toRegisterPage = () => pusher.push('/register')
   const toResetPage = () => pusher.push('/reset')
   const toStartPage = () => pusher.push('/')
+  const toAboutPage = () => pusher.push('/about')
+  const toDashboardPage = () => pusher.push('/dashboard')
+  const toProfilePage = () => pusher.push('/profile')
+  const toProductsPage = () => pusher.push('/products')
 
   return {
     ...pusher,
@@ -21,6 +29,10 @@ const useHistory = (): NavigationPusher => {
     toRegisterPage,
     toResetPage,
     toStartPage,
+    toProductsPage,
+    toAboutPage,
+    toDashboardPage,
+    toProfilePage,
   }
 }
 

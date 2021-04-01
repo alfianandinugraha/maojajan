@@ -1,4 +1,5 @@
 import Container from '@/components/Container'
+import MenuBar from '@/components/MenuBar'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 
@@ -9,6 +10,7 @@ const DashboardContainer = styled(Container)`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 `
 
 const Logo = styled.img`
@@ -23,6 +25,7 @@ export default function DashboardLayout(props: Props): ReactElement {
     <DashboardContainer>
       <Logo src="/MaoJajan-logo--white.svg" alt="MaoJajan logo" />
       {props.children}
+      <MenuBar />
     </DashboardContainer>
   )
 }
