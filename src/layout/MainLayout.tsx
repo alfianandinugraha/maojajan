@@ -1,6 +1,7 @@
 import Container from '@/components/Container'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
+import MenuBar from '@/components/MenuBar'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
 
@@ -28,6 +29,7 @@ export default function MainLayout(props: Props): ReactElement {
     <MainContainer>
       <Logo src="MaoJajan-logo--primary.svg" alt="" />
       {props.children}
+      <MenuBar />
     </MainContainer>
   )
 }
