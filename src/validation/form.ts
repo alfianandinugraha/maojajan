@@ -3,6 +3,7 @@ import { ValidationResult } from 'Types'
 const MAX_FULLNAME = 100
 const MIN_PASSWORD = 6
 const MAX_PASSWORD = 16
+const EMPTY_VALUE_MESSAGE = 'Data tidak boleh kosong'
 
 const isContainASCII = (text: string, start: number, end: number): boolean => {
   for (let i = 0; i < text.length; i += 1) {
@@ -15,6 +16,12 @@ const isContainASCII = (text: string, start: number, end: number): boolean => {
 }
 
 const isValidFullName = (fullName: string): ValidationResult => {
+  if (!fullName) {
+    return {
+      errorMessage: EMPTY_VALUE_MESSAGE,
+    }
+  }
+
   if (fullName.length >= MAX_FULLNAME) {
     return {
       errorMessage: `Maksimal ${MAX_FULLNAME} karakter`,
@@ -27,6 +34,12 @@ const isValidFullName = (fullName: string): ValidationResult => {
 }
 
 const isValidEmail = (email: string): ValidationResult => {
+  if (!email) {
+    return {
+      errorMessage: EMPTY_VALUE_MESSAGE,
+    }
+  }
+
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
     email
   )
@@ -43,6 +56,11 @@ const isValidEmail = (email: string): ValidationResult => {
 }
 
 const isValidPassword = (password: string): ValidationResult => {
+  if (!password) {
+    return {
+      errorMessage: EMPTY_VALUE_MESSAGE,
+    }
+  }
   const hasNumber = isContainASCII(password, 48, 57)
   const hasLower = isContainASCII(password, 97, 122)
 
@@ -69,4 +87,4 @@ const isValidPassword = (password: string): ValidationResult => {
   }
 }
 
-export { isValidFullName, isValidEmail, isValidPassword }
+export { isValidFullName, isValidEmail, isValidPassword, EMPTY_VALUE_MESSAGE }

@@ -13,6 +13,7 @@ import {
   isValidEmail,
   isValidFullName,
   isValidPassword,
+  EMPTY_VALUE_MESSAGE,
 } from '@/validation/form'
 
 export default function index(): ReactElement {
@@ -38,6 +39,43 @@ export default function index(): ReactElement {
       email: inputEmail.value,
       password: inputPassword.value,
       rePassword: inputRePassword.value,
+    }
+
+    if (!inputFullName.value) {
+      setInputFullName({
+        ...inputFullName,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (!inputEmail.value) {
+      setInputEmail({
+        ...inputEmail,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (!inputPassword.value) {
+      setInputPassword({
+        ...inputPassword,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (!inputRePassword.value) {
+      setInputRePassword({
+        ...inputRePassword,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (
+      !inputFullName.value ||
+      !inputEmail.value ||
+      !inputPassword.value ||
+      !inputRePassword.value
+    ) {
+      return
     }
     alert(JSON.stringify(payload, null, 2))
   }

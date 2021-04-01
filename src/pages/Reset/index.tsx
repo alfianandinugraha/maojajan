@@ -9,7 +9,7 @@ import AuthLayout, {
 } from '@/layout/AuthLayout'
 import initialInputState from '@/initials/initialInputState'
 import useHistory from '@/hooks/useHistory'
-import { isValidEmail } from '@/validation/form'
+import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 
 export default function index(): ReactElement {
   const history = useHistory()
@@ -32,6 +32,15 @@ export default function index(): ReactElement {
     const payload = {
       email: inputEmail.value,
     }
+
+    if (!inputEmail.value) {
+      setInputEmail({
+        ...inputEmail,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (!inputEmail.value) return
     alert(JSON.stringify(payload, null, 2))
   }
 

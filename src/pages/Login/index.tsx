@@ -9,7 +9,7 @@ import AuthLayout, {
   AuthInputGroup,
 } from '@/layout/AuthLayout'
 import initialInputState from '@/initials/initialInputState'
-import { isValidEmail } from '@/validation/form'
+import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 
 export default function index(): ReactElement {
   const history = useHistory()
@@ -44,6 +44,24 @@ export default function index(): ReactElement {
       email: inputEmail.value,
       password: inputPassword.value,
     }
+
+    if (!inputEmail.value) {
+      setInputEmail({
+        ...inputEmail,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (!inputPassword.value) {
+      setInputPassword({
+        ...inputPassword,
+        errorMessage: EMPTY_VALUE_MESSAGE,
+      })
+    }
+
+    if (!inputEmail.value || !inputPassword.value) {
+      return
+    }
     alert(JSON.stringify(payload, null, 2))
   }
 
@@ -65,6 +83,7 @@ export default function index(): ReactElement {
           placeholder="Password"
           type="password"
           onChange={inputPasswordHandler}
+          errorMessage={inputPassword.errorMessage}
         />
       </AuthInputGroup>
       <AuthFooterLabel
