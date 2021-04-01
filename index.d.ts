@@ -1,5 +1,34 @@
 import React from 'react'
+import Firebase from 'firebase'
 import {} from 'styled-components'
+
+interface FirebaseTimestamp {
+  createdAt: Firebase.firestore.Timestamp
+  updatedAt: Firebase.firestore.Timestamp
+}
+
+interface ProductCart {
+  id: string
+  name: string
+  isPurchased: boolean
+}
+
+interface CartFirebase extends FirebaseTimestamp {
+  date: Firebase.firestore.Timestamp
+  products: ProductCart[]
+}
+
+interface Cart extends CartFirebase {
+  id: string
+}
+
+interface ProductFirebase extends FirebaseTimestamp {
+  name: string
+}
+
+interface Product extends ProductFirebase {
+  id: string
+}
 
 interface ThemeProps {
   color: {
@@ -26,5 +55,13 @@ declare module 'styled-components' {
 }
 
 declare module 'Types' {
-  export type { ThemeProps, InputState, ValidationResult }
+  export type {
+    ThemeProps,
+    InputState,
+    ValidationResult,
+    CartFirebase,
+    Cart,
+    ProductFirebase,
+    Product,
+  }
 }
