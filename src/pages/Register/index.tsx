@@ -78,6 +78,7 @@ export default function index(): ReactElement {
       return
     }
     alert(JSON.stringify(payload, null, 2))
+    history.push('/dashboard')
   }
 
   const inputFullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
