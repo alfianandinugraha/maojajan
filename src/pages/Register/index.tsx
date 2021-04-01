@@ -6,7 +6,7 @@ import AuthLayout, {
 } from '@/layout/AuthLayout'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
-import { useHistory } from 'react-router-dom'
+import useHistory from '@/hooks/useHistory'
 import { InputState } from 'Types'
 import initialInputState from '@/initials/initialInputState'
 
@@ -25,7 +25,7 @@ export default function index(): ReactElement {
     initialInputState
   )
 
-  const toLoginPage = () => history.push('/login')
+  const toLoginPage = () => history.toLoginPage()
 
   const submitHandler = () => {
     const payload = {

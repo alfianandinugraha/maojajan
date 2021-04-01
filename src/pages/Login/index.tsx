@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
-import { useHistory } from 'react-router-dom'
+import useHistory from '@/hooks/useHistory'
 import { InputState } from 'Types'
 import AuthLayout, {
   AuthFooterLabel,
@@ -13,8 +13,8 @@ import initialInputState from '@/initials/initialInputState'
 export default function index(): ReactElement {
   const history = useHistory()
 
-  const toRegisterPage = () => history.push('/register')
-  const toResetPage = () => history.push('/reset')
+  const toRegisterPage = () => history.toRegisterPage()
+  const toResetPage = () => history.toResetPage()
 
   const [inputEmail, setInputEmail] = useState<InputState<string>>(
     initialInputState
