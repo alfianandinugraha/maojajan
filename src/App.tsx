@@ -4,6 +4,7 @@ import StartPage from '@/pages/Start'
 import LoginPage from '@/pages/Login'
 import RegisterPage from '@/pages/Register'
 import ResetPage from '@/pages/Reset'
+import DashboardPage from '@/pages/Dashboard'
 import styled from 'styled-components'
 import './theme/reset.css'
 
@@ -31,6 +32,9 @@ const App = (): ReactElement => (
         </Route>
         <Route path="/reset" exact>
           <ResetPage />
+        </Route>
+        <Route path="/dashboard" exact>
+          <DashboardPage />
         </Route>
       </Switch>
     </BrowserRouter>
