@@ -1,7 +1,10 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
+import { Cart } from 'Types'
 
-interface Props extends React.HTMLAttributes<HTMLElement> {}
+interface Props extends React.HTMLAttributes<HTMLElement> {
+  item: Cart
+}
 
 const CartItemContainer = styled.section`
   height: 64px;
@@ -52,6 +55,7 @@ const CartTrash = styled.div`
 `
 
 export default function CartItem(props: Props): ReactElement {
+  console.log(props)
   return (
     <CartItemContainer {...props}>
       <CheckCart>

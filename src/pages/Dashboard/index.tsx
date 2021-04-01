@@ -1,4 +1,5 @@
 import CartItem from '@/components/CartItem'
+import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
@@ -27,7 +28,7 @@ const Header = styled.header`
   }
 `
 
-const Cart = styled(CartItem)`
+const CartElement = styled(CartItem)`
   &:not(:last-child) {
     margin-bottom: 16px;
   }
@@ -41,8 +42,8 @@ export default function index(): ReactElement {
         <h1>Alfian Andi</h1>
       </Header>
       <div>
-        {[1, 2, 3, 4, 5].map((item) => (
-          <Cart key={item} />
+        {initialCarts.map((item) => (
+          <CartElement key={item.id} item={item} />
         ))}
       </div>
     </DashboardLayout>
