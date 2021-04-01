@@ -17,10 +17,14 @@ interface InputState<T> {
   errorMessage: string
 }
 
+interface ValidationResult {
+  errorMessage: string
+}
+
 declare module 'styled-components' {
   export interface DefaultTheme extends ThemeProps {}
 }
 
 declare module 'Types' {
-  export type { ThemeProps, InputState }
+  export type { ThemeProps, InputState, ValidationResult }
 }
