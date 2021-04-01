@@ -7,13 +7,6 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   item: Cart
 }
 
-const CartItemContainer = styled.section`
-  height: 64px;
-  display: flex;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
-  position: relative;
-`
-
 const CheckCart = styled.div`
   background-color: ${(props) => props.theme.color.secondary};
   display: flex;
@@ -55,11 +48,32 @@ const CartTrash = styled.div`
   transform: translateY(-50%);
 `
 
+const CartItemContainer = styled.section<{ isPurchased: boolean }>`
+  height: 64px;
+  display: flex;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  ${CartContent} {
+    background-color: ${(props) => (props.isPurchased ? '#D7D7D7' : 'white')};
+  }
+
+  ${CheckCart} {
+    background-color: ${(props) =>
+      props.isPurchased ? props.theme.color.gray : props.theme.color.secondary};
+  }
+`
+
 export default function CartItem(props: Props): ReactElement {
+  const isPurchased = props.item.products.every((item) => item.isPurchased)
+
   return (
-    <CartItemContainer {...props}>
+    <CartItemContainer {...props} isPurchased={isPurchased}>
       <CheckCart>
-        <img src="check--white.svg" alt="" />
+        <img
+          src={isPurchased ? 'check--dark.svg' : 'check--white.svg'}
+          alt=""
+        />
       </CheckCart>
       <CartContent>
         <h2>{DateFormat(props.item.date)}</h2>
