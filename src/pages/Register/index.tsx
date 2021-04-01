@@ -9,6 +9,11 @@ import Button from '@/components/form/Button'
 import useHistory from '@/hooks/useHistory'
 import { InputState } from 'Types'
 import initialInputState from '@/initials/initialInputState'
+import {
+  isValidEmail,
+  isValidFullName,
+  isValidPassword,
+} from '@/validation/form'
 
 export default function index(): ReactElement {
   const history = useHistory()
@@ -38,29 +43,40 @@ export default function index(): ReactElement {
   }
 
   const inputFullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = isValidFullName(e.target.value)
     setInputFullName({
-      ...inputFullName,
+      errorMessage: isValid.errorMessage,
       value: e.target.value,
     })
   }
 
   const inputEmailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = isValidEmail(e.target.value)
     setInputEmail({
-      ...inputEmail,
+      errorMessage: isValid.errorMessage,
       value: e.target.value,
     })
   }
 
   const inputPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = isValidPassword(e.target.value)
     setInputPassword({
-      ...inputPassword,
+      errorMessage: isValid.errorMessage,
       value: e.target.value,
     })
   }
 
   const inputRePasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (inputPassword.value !== e.target.value) {
+      setInputRePassword({
+        value: e.target.value,
+        errorMessage: 'Password tidak sama',
+      })
+      return
+    }
+
     setInputRePassword({
-      ...inputRePassword,
+      errorMessage: '',
       value: e.target.value,
     })
   }
@@ -74,6 +90,7 @@ export default function index(): ReactElement {
           fullWidth
           placeholder="Nama Lengkap"
           onChange={inputFullNameHandler}
+          errorMessage={inputFullName.errorMessage}
         />
         <Input
           icon="/email--gray.svg"
@@ -81,6 +98,7 @@ export default function index(): ReactElement {
           placeholder="Email"
           type="email"
           onChange={inputEmailHandler}
+          errorMessage={inputEmail.errorMessage}
         />
         <Input
           icon="/lock--gray.svg"
@@ -88,6 +106,7 @@ export default function index(): ReactElement {
           placeholder="Password"
           type="password"
           onChange={inputPasswordHandler}
+          errorMessage={inputPassword.errorMessage}
         />
         <Input
           icon="/lock--gray.svg"
@@ -95,6 +114,7 @@ export default function index(): ReactElement {
           placeholder="Ulangi Password"
           type="password"
           onChange={inputRePasswordHandler}
+          errorMessage={inputRePassword.errorMessage}
         />
       </AuthInputGroup>
       <Button

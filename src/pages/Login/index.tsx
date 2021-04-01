@@ -9,6 +9,7 @@ import AuthLayout, {
   AuthInputGroup,
 } from '@/layout/AuthLayout'
 import initialInputState from '@/initials/initialInputState'
+import { isValidEmail } from '@/validation/form'
 
 export default function index(): ReactElement {
   const history = useHistory()
@@ -24,8 +25,9 @@ export default function index(): ReactElement {
   )
 
   const inputEmailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = isValidEmail(e.target.value)
     setInputEmail({
-      ...inputEmail,
+      errorMessage: isValid.errorMessage,
       value: e.target.value,
     })
   }
@@ -55,6 +57,7 @@ export default function index(): ReactElement {
           placeholder="Email"
           type="email"
           onChange={inputEmailHandler}
+          errorMessage={inputEmail.errorMessage}
         />
         <Input
           icon="/lock--gray.svg"
