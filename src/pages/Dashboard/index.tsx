@@ -3,6 +3,7 @@ import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
+import { Cart } from 'Types'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -35,6 +36,26 @@ const CartElement = styled(CartItem)`
 `
 
 export default function index(): ReactElement {
+  const checkCartHandler = (cartId: Cart) => {
+    console.log(cartId)
+  }
+
+  const deleteCartHandler = (cartId: Cart) => {
+    console.log(cartId)
+  }
+
+  const receiveActionHandler = (action: 'CHECK' | 'DELETE', cartId: Cart) => {
+    switch (action) {
+      case 'CHECK':
+        checkCartHandler(cartId)
+        break
+      case 'DELETE':
+        deleteCartHandler(cartId)
+        break
+      default:
+    }
+  }
+
   return (
     <DashboardLayout>
       <Header>
@@ -43,7 +64,11 @@ export default function index(): ReactElement {
       </Header>
       <div>
         {initialCarts.map((item) => (
-          <CartElement key={item.id} item={item} />
+          <CartElement
+            key={item.id}
+            item={item}
+            actionHandler={receiveActionHandler}
+          />
         ))}
       </div>
     </DashboardLayout>

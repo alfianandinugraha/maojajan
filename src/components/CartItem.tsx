@@ -5,6 +5,7 @@ import { Cart } from 'Types'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   item: Cart
+  actionHandler: (type: 'CHECK' | 'DELETE', cartId: Cart) => void
 }
 
 const CheckCart = styled.div`
@@ -67,9 +68,17 @@ const CartItemContainer = styled.section<{ isPurchased: boolean }>`
 export default function CartItem(props: Props): ReactElement {
   const isPurchased = props.item.products.every((item) => item.isPurchased)
 
+  const passingCheckedCart = () => {
+    props.actionHandler('CHECK', props.item)
+  }
+
+  const passingDeletCart = () => {
+    props.actionHandler('DELETE', props.item)
+  }
+
   return (
     <CartItemContainer {...props} isPurchased={isPurchased}>
-      <CheckCart>
+      <CheckCart onClick={passingCheckedCart}>
         <img
           src={isPurchased ? 'check--dark.svg' : 'check--white.svg'}
           alt=""
@@ -79,7 +88,7 @@ export default function CartItem(props: Props): ReactElement {
         <h2>{DateFormat(props.item.date)}</h2>
         <p>{props.item.products.length} barang</p>
       </CartContent>
-      <CartTrash>
+      <CartTrash onClick={passingDeletCart}>
         <img src="trash--danger.svg" alt="" />
       </CartTrash>
     </CartItemContainer>
