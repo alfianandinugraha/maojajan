@@ -14,7 +14,7 @@ const MenuBarContainer = styled(Container)`
 
 const MenuBarWrapper = styled.section`
   width: 100%;
-  background-color: ${(props) => props.theme.color.secondary};
+  background-color: ${(props) => props.theme.color.primary};
   border-radius: 5px 5px 0 0;
   height: 62px;
   display: flex;

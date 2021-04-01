@@ -6,7 +6,6 @@ import styled from 'styled-components'
 interface Props extends React.HTMLAttributes<HTMLElement> {}
 
 const DashboardContainer = styled(Container)`
-  background-color: ${(props) => props.theme.color.primary};
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,9 +19,25 @@ const Logo = styled.img`
   cursor: pointer;
 `
 
+const Background = styled.section`
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  left: 0;
+  width: 100vw;
+  height: 233px;
+  img {
+    height: 100%;
+    width: 100%;
+  }
+`
+
 export default function DashboardLayout(props: Props): ReactElement {
   return (
     <DashboardContainer>
+      <Background>
+        <img src="bg-dashboard.png" alt="" />
+      </Background>
       <Logo src="/MaoJajan-logo--white.svg" alt="MaoJajan logo" />
       {props.children}
       <MenuBar />
