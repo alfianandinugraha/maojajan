@@ -1,8 +1,35 @@
 import Container from '@/components/Container'
 import React, { ReactElement } from 'react'
+import styled from 'styled-components'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
 
+const Logo = styled.img`
+  height: 16px;
+  margin-top: 28px;
+  cursor: pointer;
+  margin-bottom: 34px;
+`
+
+const HeadingLayout = styled.h1`
+  font-size: 24px !important;
+  color: ${(props) => props.theme.color.dark};
+  font-weight: bold;
+  line-height: normal;
+`
+
+const MainContainer = styled(Container)`
+  display: flex;
+  flex-direction: column;
+`
+
 export default function MainLayout(props: Props): ReactElement {
-  return <Container>{props.children}</Container>
+  return (
+    <MainContainer>
+      <Logo src="MaoJajan-logo--primary.svg" alt="" />
+      {props.children}
+    </MainContainer>
+  )
 }
+
+export { HeadingLayout }
