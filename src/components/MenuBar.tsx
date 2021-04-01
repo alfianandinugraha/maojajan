@@ -1,6 +1,7 @@
 import useHistory from '@/hooks/useHistory'
 import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components'
+import Button from '@/components/form/Button'
 import Container from './Container'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
@@ -79,6 +80,30 @@ const CenterAdd = styled.section<{ isClose: boolean }>`
 
 const PopUpAddItem = styled.section`
   position: absolute;
+  bottom: 110px;
+  width: 222px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+`
+
+const PopUpContent = styled.main`
+  padding: 12px 18px;
+  background-color: white;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+
+  button {
+    justify-content: center;
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+`
+
+const ArrowPopUp = styled.img`
+  margin: auto;
 `
 
 export default function MenuBar(props: Props): ReactElement {
@@ -89,6 +114,8 @@ export default function MenuBar(props: Props): ReactElement {
   const toProfile = () => history.toProfilePage()
   const toAbout = () => history.toAboutPage()
   const toProducts = () => history.toProductsPage()
+  const toAddProductPage = () => history.toAddProductPage()
+  const toAddCartPage = () => history.toAddCartPage()
 
   const togglePopUp = () => {
     setIsPopUpShow(!isPopUpShow)
@@ -120,7 +147,29 @@ export default function MenuBar(props: Props): ReactElement {
         <CenterAdd onClick={togglePopUp} isClose={isPopUpShow}>
           <img src="plus--white.svg" alt="user icon" />
         </CenterAdd>
-        {isPopUpShow && <PopUpAddItem />}
+        {isPopUpShow && (
+          <PopUpAddItem>
+            <PopUpContent>
+              <Button
+                variant="secondary"
+                fullWidth
+                icon="cart--white.svg"
+                onClick={toAddCartPage}
+              >
+                Tambah keranjang
+              </Button>
+              <Button
+                variant="secondary"
+                fullWidth
+                icon="product--white.svg"
+                onClick={toAddProductPage}
+              >
+                Tambah Produk
+              </Button>
+            </PopUpContent>
+            <ArrowPopUp src="arrow-popup--white.svg" />
+          </PopUpAddItem>
+        )}
       </MenuBarWrapper>
     </MenuBarContainer>
   )

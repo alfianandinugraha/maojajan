@@ -10,6 +10,8 @@ interface NavigationPusher extends History {
   toDashboardPage: () => void
   toProfilePage: () => void
   toProductsPage: () => void
+  toAddCartPage: () => void
+  toAddProductPage: () => void
 }
 
 const useHistory = (): NavigationPusher => {
@@ -22,6 +24,8 @@ const useHistory = (): NavigationPusher => {
   const toDashboardPage = () => pusher.push('/dashboard')
   const toProfilePage = () => pusher.push('/profile')
   const toProductsPage = () => pusher.push('/products')
+  const toAddCartPage = () => pusher.push('/add-cart')
+  const toAddProductPage = () => pusher.push('/add-product')
 
   return {
     ...pusher,
@@ -33,6 +37,8 @@ const useHistory = (): NavigationPusher => {
     toAboutPage,
     toDashboardPage,
     toProfilePage,
+    toAddProductPage,
+    toAddCartPage,
   }
 }
 
