@@ -11,6 +11,16 @@ const InputDate = styled(Input)`
   max-width: 300px;
 `
 
+const ButtonGroup = styled.section`
+  margin-top: 16px;
+  display: flex;
+  justify-content: left;
+
+  & > *:first-child {
+    margin-right: 16px;
+  }
+`
+
 export default function index(): ReactElement {
   return (
     <MainLayout>
@@ -23,6 +33,22 @@ export default function index(): ReactElement {
       <Button variant="primary" icon="cart--white.svg" align="center">
         Simpan
       </Button>
+      <ButtonGroup>
+        <Button
+          variant="outline-dashed"
+          icon="plus--primary.svg"
+          align="center"
+        >
+          Tambah Produk
+        </Button>
+        <Button
+          variant="outline-dashed"
+          icon="search--primary.svg"
+          align="center"
+        >
+          Pilih Produk
+        </Button>
+      </ButtonGroup>
     </MainLayout>
   )
 }
