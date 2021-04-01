@@ -1,5 +1,5 @@
 import useHistory from '@/hooks/useHistory'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components'
 import Container from './Container'
 
@@ -55,9 +55,10 @@ const RightMenu = styled(LeftMenu)`
   }
 `
 
-const CenterAdd = styled.section`
+const CenterAdd = styled.section<{ isClose: boolean }>`
   border: solid 5px #ffffff;
-  background-color: ${(props) => props.theme.color.secondary};
+  background-color: ${(props) =>
+    props.isClose ? props.theme.color.danger : props.theme.color.secondary};
   border-radius: 50%;
   height: 84px;
   width: 84px;
@@ -67,19 +68,31 @@ const CenterAdd = styled.section`
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  transition: 0.5s;
 
   img {
     margin: auto;
+    transition: 0.5s;
+    ${(props) => props.isClose && 'transform: rotate(315deg);'};
   }
+`
+
+const PopUpAddItem = styled.section`
+  position: absolute;
 `
 
 export default function MenuBar(props: Props): ReactElement {
   const history = useHistory()
+  const [isPopUpShow, setIsPopUpShow] = useState<boolean>(false)
 
   const toDashboard = () => history.toDashboardPage()
   const toProfile = () => history.toProfilePage()
   const toAbout = () => history.toAboutPage()
   const toProducts = () => history.toProductsPage()
+
+  const togglePopUp = () => {
+    setIsPopUpShow(!isPopUpShow)
+  }
 
   return (
     <MenuBarContainer {...props}>
@@ -104,9 +117,10 @@ export default function MenuBar(props: Props): ReactElement {
             <p>About</p>
           </MenuItem>
         </RightMenu>
-        <CenterAdd>
+        <CenterAdd onClick={togglePopUp} isClose={isPopUpShow}>
           <img src="plus--white.svg" alt="user icon" />
         </CenterAdd>
+        {isPopUpShow && <PopUpAddItem />}
       </MenuBarWrapper>
     </MenuBarContainer>
   )
