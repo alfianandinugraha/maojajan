@@ -120,7 +120,7 @@ export default function index(): ReactElement {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout style={{ paddingBottom: '42px' }}>
       <AuthHeading style={{ marginTop: '81px' }}>Register App</AuthHeading>
       <AuthInputGroup>
         <Input
