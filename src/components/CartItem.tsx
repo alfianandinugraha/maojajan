@@ -1,3 +1,4 @@
+import DateFormat from '@/utils/DateFormat'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import { Cart } from 'Types'
@@ -55,15 +56,14 @@ const CartTrash = styled.div`
 `
 
 export default function CartItem(props: Props): ReactElement {
-  console.log(props)
   return (
     <CartItemContainer {...props}>
       <CheckCart>
         <img src="check--white.svg" alt="" />
       </CheckCart>
       <CartContent>
-        <h2>23 April 2020</h2>
-        <p>5 barang</p>
+        <h2>{DateFormat(props.item.date)}</h2>
+        <p>{props.item.products.length} barang</p>
       </CartContent>
       <CartTrash>
         <img src="trash--danger.svg" alt="" />
