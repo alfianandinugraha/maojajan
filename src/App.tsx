@@ -8,6 +8,7 @@ import DashboardPage from '@/pages/Dashboard'
 import AddCartPage from '@/pages/AddCart'
 import ProductsPage from '@/pages/Products'
 import CartPage from '@/pages/Cart'
+import AboutPage from '@/pages/About'
 import styled from 'styled-components'
 import './theme/reset.css'
 
@@ -47,6 +48,9 @@ const App = (): ReactElement => (
         </Route>
         <Route path="/carts/:id" exact>
           <CartPage />
+        </Route>
+        <Route path="/about" exact>
+          <AboutPage />
         </Route>
       </Switch>
     </BrowserRouter>
