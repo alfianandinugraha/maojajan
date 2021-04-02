@@ -5,6 +5,8 @@ import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import { initialProducts } from '@/initials/initialProduct'
+import { initialProductCart } from '@/initials/initialProductCart'
+import ProductCartCard from '@/components/card/ProductCartCard'
 
 const InputDate = styled(Input)`
   margin-top: 6px;
@@ -15,11 +17,18 @@ const InputDate = styled(Input)`
 
 const ButtonGroup = styled.section`
   margin-top: 16px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: left;
 
   & > *:first-child {
     margin-right: 16px;
+  }
+`
+
+const ListProductCart = styled.section`
+  & > * {
+    margin-bottom: 16px;
   }
 `
 
@@ -68,6 +77,11 @@ export default function index(): ReactElement {
           Pilih Produk
         </Button>
       </ButtonGroup>
+      <ListProductCart>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
+          <ProductCartCard key={item} product={initialProductCart} />
+        ))}
+      </ListProductCart>
       {isModalPickProductShow && (
         <Modal
           closeHandler={toggleModalPickProduct}
