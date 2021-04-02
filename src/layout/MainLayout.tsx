@@ -29,6 +29,10 @@ const Information = styled.p`
   font-size: 12px !important;
   margin-bottom: 12px;
 `
+const Background = styled.img`
+  position: absolute;
+  right: 0;
+`
 
 const CaptionEditProduct = (): ReactElement => (
   <Information>* Klik produk untuk mengedit</Information>
@@ -38,6 +42,7 @@ export default function MainLayout(props: Props): ReactElement {
   return (
     <MainContainer>
       <Logo src="/MaoJajan-logo--primary.svg" alt="" />
+      <Background src="/bg-MainLayout.svg" />
       {props.children}
       <div style={{ marginBottom: '154px' }} />
       <MenuBar />
