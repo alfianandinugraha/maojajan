@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import Button from '@/components/form/Button'
 import AuthLayout from '@/layout/AuthLayout'
 import styled from 'styled-components'
-import useHistory from '@/hooks/useHistory'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 
 const Logo = styled.img`
   padding-top: 276px;
@@ -16,7 +16,7 @@ const Container = styled(AuthLayout)`
 `
 
 export default function index(): ReactElement {
-  const history = useHistory()
+  const history = useHistoryPusher()
 
   const toLoginPage = () => history.toLoginPage()
   const toRegisterPage = () => history.toRegisterPage()

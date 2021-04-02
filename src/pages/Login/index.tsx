@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
-import useHistory from '@/hooks/useHistory'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { InputState } from 'Types'
 import AuthLayout, {
   AuthFooterLabel,
@@ -12,7 +12,7 @@ import initialInputState from '@/initials/initialInputState'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 
 export default function index(): ReactElement {
-  const history = useHistory()
+  const history = useHistoryPusher()
 
   const toRegisterPage = () => history.toRegisterPage()
   const toResetPage = () => history.toResetPage()
@@ -63,7 +63,7 @@ export default function index(): ReactElement {
       return
     }
     alert(JSON.stringify(payload, null, 2))
-    history.push('/dashboard')
+    history.toDashboardPage()
   }
 
   return (

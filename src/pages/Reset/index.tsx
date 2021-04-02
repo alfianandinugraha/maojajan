@@ -8,11 +8,11 @@ import AuthLayout, {
   AuthInputGroup,
 } from '@/layout/AuthLayout'
 import initialInputState from '@/initials/initialInputState'
-import useHistory from '@/hooks/useHistory'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 
 export default function index(): ReactElement {
-  const history = useHistory()
+  const history = useHistoryPusher()
   const [inputEmail, setInputEmail] = useState<InputState<string>>(
     initialInputState
   )

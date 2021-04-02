@@ -1,4 +1,4 @@
-import useHistory from '@/hooks/useHistory'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components'
 import Button from '@/components/form/Button'
@@ -107,7 +107,7 @@ const ArrowPopUp = styled.img`
 `
 
 export default function MenuBar(props: Props): ReactElement {
-  const history = useHistory()
+  const history = useHistoryPusher()
   const [isPopUpShow, setIsPopUpShow] = useState<boolean>(false)
 
   const toDashboard = () => history.toDashboardPage()

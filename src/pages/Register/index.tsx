@@ -6,7 +6,7 @@ import AuthLayout, {
 } from '@/layout/AuthLayout'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
-import useHistory from '@/hooks/useHistory'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { InputState } from 'Types'
 import initialInputState from '@/initials/initialInputState'
 import {
@@ -17,7 +17,7 @@ import {
 } from '@/validation/form'
 
 export default function index(): ReactElement {
-  const history = useHistory()
+  const history = useHistoryPusher()
   const [inputFullName, setInputFullName] = useState<InputState<string>>(
     initialInputState
   )
@@ -78,7 +78,7 @@ export default function index(): ReactElement {
       return
     }
     alert(JSON.stringify(payload, null, 2))
-    history.push('/dashboard')
+    history.toDashboardPage()
   }
 
   const inputFullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

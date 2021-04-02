@@ -2,6 +2,7 @@ import Container from '@/components/Container'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import MenuBar from '@/components/MenuBar'
+import { useHistory } from 'react-router-dom'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
 
@@ -17,6 +18,19 @@ const HeadingLayout = styled.h1`
   color: ${(props) => props.theme.color.dark};
   font-weight: bold;
   line-height: normal;
+`
+
+const BackButton = styled.div`
+  background-color: ${(props) => props.theme.color.primary};
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+  cursor: pointer;
 `
 
 const MainContainer = styled(Container)`
@@ -39,8 +53,17 @@ const CaptionEditProduct = (): ReactElement => (
 )
 
 export default function MainLayout(props: Props): ReactElement {
+  const history = useHistory()
+
+  const backButtonHandler = () => {
+    history.goBack()
+  }
+
   return (
     <MainContainer>
+      <BackButton onClick={backButtonHandler}>
+        <img src="/back-arrow--white.svg" alt="Back" />
+      </BackButton>
       <Logo src="/MaoJajan-logo--primary.svg" alt="" />
       <Background src="/bg-MainLayout.svg" />
       {props.children}

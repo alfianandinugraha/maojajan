@@ -3,7 +3,7 @@ import React, { ReactElement, useState } from 'react'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import { Cart, ProductBase, ProductCart } from 'Types'
 import styled from 'styled-components'
-import useHistory from '@/hooks/useHistory'
+import { useHistory } from 'react-router-dom'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 

@@ -1,7 +1,6 @@
-import { useHistory as history } from 'react-router-dom'
-import { History } from 'history'
+import { useHistory } from 'react-router-dom'
 
-interface NavigationPusher extends History {
+interface NavigationPusher {
   toLoginPage: () => void
   toRegisterPage: () => void
   toResetPage: () => void
@@ -14,8 +13,8 @@ interface NavigationPusher extends History {
   toAddProductPage: () => void
 }
 
-const useHistory = (): NavigationPusher => {
-  const pusher = history()
+const useHistoryPusher = (): NavigationPusher => {
+  const pusher = useHistory()
   const toLoginPage = () => pusher.push('/login')
   const toRegisterPage = () => pusher.push('/register')
   const toResetPage = () => pusher.push('/reset')
@@ -28,7 +27,6 @@ const useHistory = (): NavigationPusher => {
   const toAddProductPage = () => pusher.push('/add-product')
 
   return {
-    ...pusher,
     toLoginPage,
     toRegisterPage,
     toResetPage,
@@ -42,4 +40,4 @@ const useHistory = (): NavigationPusher => {
   }
 }
 
-export default useHistory
+export default useHistoryPusher

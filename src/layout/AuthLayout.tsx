@@ -1,8 +1,9 @@
 import Container from '@/components/Container'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 import Typography from '@/components/Typography'
+import { useHistory } from 'react-router-dom'
 
 type Props = React.HTMLAttributes<HTMLElement>
 
@@ -59,8 +60,9 @@ const AuthFooterLabel = (props: Props): ReactElement => (
 )
 
 export default function AuthLayout(props: Props): ReactElement {
+  const historyPusher = useHistoryPusher()
   const history = useHistory()
-  const toStartPage = () => history.push('/')
+  const toStartPage = () => historyPusher.toStartPage()
   return (
     <AuthContainer {...props}>
       {history.location.pathname !== '/' && (
