@@ -15,6 +15,7 @@ const ModalContainer = styled.section`
   left: 0px;
   z-index: 10;
   display: flex;
+  top: 0;
 `
 
 const Backdrop = styled.div`
