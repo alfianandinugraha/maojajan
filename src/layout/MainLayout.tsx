@@ -29,6 +29,7 @@ export default function MainLayout(props: Props): ReactElement {
     <MainContainer>
       <Logo src="MaoJajan-logo--primary.svg" alt="" />
       {props.children}
+      <div style={{ marginBottom: '154px' }} />
       <MenuBar />
     </MainContainer>
   )
