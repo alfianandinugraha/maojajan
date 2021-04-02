@@ -49,6 +49,22 @@ const Background = styled.img`
   right: 0;
 `
 
+const ProfileInputGroup = styled.section`
+  margin-bottom: 24px;
+
+  & > *:not(:last-child) {
+    margin-bottom: 16px;
+  }
+`
+
+const ProfileButtonGroup = styled.section`
+  margin-top: 94px;
+
+  & > *:not(:last-child) {
+    margin-bottom: 16px;
+  }
+`
+
 const CaptionEditProduct = (): ReactElement => (
   <Information>* Klik produk untuk mengedit</Information>
 )
@@ -74,4 +90,9 @@ export default function MainLayout(props: Props): ReactElement {
   )
 }
 
-export { HeadingLayout, CaptionEditProduct }
+export {
+  HeadingLayout,
+  CaptionEditProduct,
+  ProfileInputGroup,
+  ProfileButtonGroup,
+}

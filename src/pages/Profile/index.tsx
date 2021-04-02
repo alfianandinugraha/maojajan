@@ -1,22 +1,17 @@
-import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
+import MainLayout, {
+  HeadingLayout,
+  ProfileInputGroup,
+  ProfileButtonGroup,
+} from '@/layout/MainLayout'
 import React, { ReactElement } from 'react'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 
-const InputGroup = styled.section`
-  margin-bottom: 24px;
-
-  & > *:not(:last-child) {
-    margin-bottom: 16px;
-  }
-`
-
 const LinkGroup = styled.section`
   display: flex;
   flex-direction: column;
-  margin-bottom: 94px;
 
   & > *:not(:last-child) {
     margin-bottom: 16px;
@@ -39,7 +34,7 @@ export default function index(): ReactElement {
   return (
     <MainLayout>
       <HeadingLayout>Pengaturan</HeadingLayout>
-      <InputGroup>
+      <ProfileInputGroup>
         <Input fullWidth icon="user--gray.svg" value="Alfian Andi Nugraha" />
         <Input
           fullWidth
@@ -47,7 +42,7 @@ export default function index(): ReactElement {
           value="alfian@andi.com"
           disabled
         />
-      </InputGroup>
+      </ProfileInputGroup>
       <LinkGroup>
         <a href="/" onClick={toUpdateEmailPage}>
           Ubah Email
@@ -56,12 +51,19 @@ export default function index(): ReactElement {
           Ubah Password
         </a>
       </LinkGroup>
-      <Button variant="primary" align="center">
-        Simpan Perubahan
-      </Button>
-      <Button variant="danger" align="center" style={{ marginTop: '16px' }}>
-        Keluar Aplikasi
-      </Button>
+      <ProfileButtonGroup>
+        <Button variant="primary" align="center" fullWidth>
+          Simpan Perubahan
+        </Button>
+        <Button
+          variant="danger"
+          align="center"
+          style={{ marginTop: '16px' }}
+          fullWidth
+        >
+          Keluar Aplikasi
+        </Button>
+      </ProfileButtonGroup>
     </MainLayout>
   )
 }
