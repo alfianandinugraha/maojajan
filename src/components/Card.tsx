@@ -1,7 +1,7 @@
 import DateFormat from '@/utils/DateFormat'
 import React, { ReactElement, useState } from 'react'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
-import { Cart, ProductBase } from 'Types'
+import { Cart, ProductBase, ProductCart } from 'Types'
 import styled from 'styled-components'
 import useHistory from '@/hooks/useHistory'
 import Input from '@/components/form/Input'
@@ -122,6 +122,55 @@ const CartCard = (props: Props<Cart>): ReactElement => {
   )
 }
 
+const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
+  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
+  const toggleModalAddProduct = () => {
+    setIsModalAddProductShow(!isModalAddProductShow)
+  }
+
+  const finishProductHandler = () => {
+    console.log(`Finishing ${props.payload.id}`)
+  }
+
+  return (
+    <>
+      <Card<ProductCart> {...props} style={{ height: '48px' }}>
+        <LeftCart onClick={finishProductHandler}>
+          <img
+            src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
+            alt=""
+          />
+        </LeftCart>
+        <ProductCartCardContent onClick={toggleModalAddProduct}>
+          <p>{props.payload.name}</p>
+        </ProductCartCardContent>
+      </Card>
+      {isModalAddProductShow && (
+        <Modal
+          closeHandler={toggleModalAddProduct}
+          header={<ModalTitle>Edit Produk</ModalTitle>}
+          content={
+            <ModalContent>
+              <Input fullWidth placeholder="Nama produk" />
+            </ModalContent>
+          }
+          footer={
+            <Button
+              variant="primary"
+              icon="/product--white.svg"
+              align="center"
+              fullWidth
+              onClick={toggleModalAddProduct}
+            >
+              Edit Produk
+            </Button>
+          }
+        />
+      )}
+    </>
+  )
+}
+
 const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const toggleModalAddProduct = () => {
@@ -161,4 +210,4 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
   )
 }
 
-export { CartCard, ProductBaseCard }
+export { CartCard, ProductBaseCard, ProductCartCard }
