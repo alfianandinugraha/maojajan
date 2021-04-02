@@ -2,6 +2,7 @@ import useHistoryPusher from '@/hooks/useHistoryPusher'
 import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components'
 import Button from '@/components/form/Button'
+import { CSSTransition } from 'react-transition-group'
 import Container from './Container'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
@@ -147,7 +148,12 @@ export default function MenuBar(props: Props): ReactElement {
         <CenterAdd onClick={togglePopUp} isClose={isPopUpShow}>
           <img src="/plus--white.svg" alt="user icon" />
         </CenterAdd>
-        {isPopUpShow && (
+        <CSSTransition
+          in={isPopUpShow}
+          timeout={500}
+          classNames="pop-up-add-item"
+          unmountOnExit
+        >
           <PopUpAddItem>
             <PopUpContent>
               <Button
@@ -169,7 +175,7 @@ export default function MenuBar(props: Props): ReactElement {
             </PopUpContent>
             <ArrowPopUp src="/arrow-popup--white.svg" />
           </PopUpAddItem>
-        )}
+        </CSSTransition>
       </MenuBarWrapper>
     </MenuBarContainer>
   )

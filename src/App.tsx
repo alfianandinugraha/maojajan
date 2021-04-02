@@ -14,6 +14,7 @@ import UpdatePasswordPage from '@/pages/UpdatePassword'
 import UpdateEmailPage from '@/pages/UpdateEmail'
 import styled from 'styled-components'
 import './theme/reset.css'
+import './style/animation.css'
 
 const RootStyles = styled.div`
   * {

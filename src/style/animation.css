@@ -1,0 +1,19 @@
+.pop-up-add-item-enter {
+  position: absolute;
+  bottom: 210px !important;
+  opacity: 0;
+}
+.pop-up-add-item-enter-active {
+  opacity: 1;
+  bottom: 110px !important;
+  transition: opacity 500ms, bottom 500ms;
+}
+.pop-up-add-item-exit {
+  bottom: 110px !important;
+  opacity: 1;
+}
+.pop-up-add-item-exit-active {
+  bottom: 210px !important;
+  opacity: 0;
+  transition: opacity 500ms, bottom 500ms;
+}
