@@ -6,6 +6,7 @@ import RegisterPage from '@/pages/Register'
 import ResetPage from '@/pages/Reset'
 import DashboardPage from '@/pages/Dashboard'
 import AddCartPage from '@/pages/AddCart'
+import ProductsPage from '@/pages/Products'
 import styled from 'styled-components'
 import './theme/reset.css'
 
@@ -39,6 +40,9 @@ const App = (): ReactElement => (
         </Route>
         <Route path="/add-cart" exact>
           <AddCartPage />
+        </Route>
+        <Route path="/products" exact>
+          <ProductsPage />
         </Route>
       </Switch>
     </BrowserRouter>
