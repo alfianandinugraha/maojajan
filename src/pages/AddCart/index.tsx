@@ -24,9 +24,14 @@ const ButtonGroup = styled.section`
 
 export default function index(): ReactElement {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
+  const [isModalPickProductShow, setIsModalPickProductShow] = useState(false)
 
   const toggleModalAddProduct = () => {
     setIsModalAddProductShow(!isModalAddProductShow)
+  }
+
+  const toggleModalPickProduct = () => {
+    setIsModalPickProductShow(!isModalPickProductShow)
   }
 
   const inputAddProductHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,10 +62,38 @@ export default function index(): ReactElement {
           variant="outline-dashed"
           icon="search--primary.svg"
           align="center"
+          onClick={toggleModalPickProduct}
         >
           Pilih Produk
         </Button>
       </ButtonGroup>
+      {isModalPickProductShow && (
+        <Modal
+          closeHandler={toggleModalPickProduct}
+          header={<ModalTitle>Pilih Produk</ModalTitle>}
+          content={
+            <>
+              <ModalContent>
+                <Input fullWidth placeholder="Pilih produk" />
+              </ModalContent>
+              <ModalContent>
+                <Input fullWidth placeholder="Jumlah" />
+              </ModalContent>
+            </>
+          }
+          footer={
+            <Button
+              variant="primary"
+              icon="product--white.svg"
+              align="center"
+              fullWidth
+              onClick={toggleModalPickProduct}
+            >
+              Tambah Produk
+            </Button>
+          }
+        />
+      )}
       {isModalAddProductShow && (
         <Modal
           closeHandler={toggleModalAddProduct}
