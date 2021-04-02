@@ -1,8 +1,9 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
+import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 
 const InputDate = styled(Input)`
   margin-top: 6px;
@@ -22,6 +23,16 @@ const ButtonGroup = styled.section`
 `
 
 export default function index(): ReactElement {
+  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
+
+  const toggleModalAddProduct = () => {
+    setIsModalAddProductShow(!isModalAddProductShow)
+  }
+
+  const inputAddProductHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e)
+  }
+
   return (
     <MainLayout>
       <HeadingLayout>Tambah keranjang</HeadingLayout>
@@ -38,6 +49,7 @@ export default function index(): ReactElement {
           variant="outline-dashed"
           icon="plus--primary.svg"
           align="center"
+          onClick={toggleModalAddProduct}
         >
           Tambah Produk
         </Button>
@@ -49,6 +61,32 @@ export default function index(): ReactElement {
           Pilih Produk
         </Button>
       </ButtonGroup>
+      {isModalAddProductShow && (
+        <Modal
+          closeHandler={toggleModalAddProduct}
+          header={<ModalTitle>Tambah Produk</ModalTitle>}
+          content={
+            <ModalContent>
+              <Input
+                fullWidth
+                onChange={inputAddProductHandler}
+                placeholder="Nama produk"
+              />
+            </ModalContent>
+          }
+          footer={
+            <Button
+              variant="primary"
+              icon="product--white.svg"
+              align="center"
+              fullWidth
+              onClick={toggleModalAddProduct}
+            >
+              Tambah Produk
+            </Button>
+          }
+        />
+      )}
     </MainLayout>
   )
 }
