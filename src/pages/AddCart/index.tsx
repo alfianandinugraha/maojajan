@@ -1,29 +1,18 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
-import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import { initialProducts } from '@/initials/initialProduct'
 import { ProductBaseCard, CardAction } from '@/components/Card'
 import { ProductBase } from 'Types'
+import AddProductButton from '@/components/AddProductButton'
 
 const InputDate = styled(Input)`
   margin-top: 6px;
   margin-bottom: 16px;
   width: 69%;
   max-width: 300px;
-`
-
-const ButtonGroup = styled.section`
-  margin-top: 16px;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: left;
-
-  & > *:first-child {
-    margin-right: 16px;
-  }
 `
 
 const ListProductCart = styled.section`
@@ -33,23 +22,12 @@ const ListProductCart = styled.section`
 `
 
 export default function index(): ReactElement {
-  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
-  const [isModalPickProductShow, setIsModalPickProductShow] = useState(false)
-
-  const toggleModalAddProduct = () => {
-    setIsModalAddProductShow(!isModalAddProductShow)
-  }
-
-  const toggleModalPickProduct = () => {
-    setIsModalPickProductShow(!isModalPickProductShow)
-  }
-
-  const inputAddProductHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e)
-  }
-
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
+  }
+
+  const addProductHandler = (payload: string) => {
+    console.log(payload)
   }
 
   return (
@@ -60,27 +38,18 @@ export default function index(): ReactElement {
         icon="calendar--gray.svg"
         type="date"
       />
-      <Button variant="primary" icon="cart--white.svg" align="center">
+      <AddProductButton
+        payloadHandler={addProductHandler}
+        style={{ margin: '16px 0' }}
+      />
+      <Button
+        variant="primary"
+        icon="cart--white.svg"
+        align="center"
+        style={{ marginBottom: '16px' }}
+      >
         Simpan
       </Button>
-      <ButtonGroup>
-        <Button
-          variant="outline-dashed"
-          icon="plus--primary.svg"
-          align="center"
-          onClick={toggleModalAddProduct}
-        >
-          Tambah Produk
-        </Button>
-        <Button
-          variant="outline-dashed"
-          icon="search--primary.svg"
-          align="center"
-          onClick={toggleModalPickProduct}
-        >
-          Pilih Produk
-        </Button>
-      </ButtonGroup>
       <ListProductCart>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
           <ProductBaseCard
@@ -91,66 +60,6 @@ export default function index(): ReactElement {
           />
         ))}
       </ListProductCart>
-      {isModalPickProductShow && (
-        <Modal
-          closeHandler={toggleModalPickProduct}
-          header={<ModalTitle>Pilih Produk</ModalTitle>}
-          content={
-            <>
-              <ModalContent>
-                <Input list="products" placeholder="Pilih produk" fullWidth />
-                <datalist id="products">
-                  {initialProducts.map((product) => (
-                    <option key={product.id} value={product.name}>
-                      {product.name}
-                    </option>
-                  ))}
-                </datalist>
-              </ModalContent>
-              <ModalContent>
-                <Input fullWidth placeholder="Jumlah" />
-              </ModalContent>
-            </>
-          }
-          footer={
-            <Button
-              variant="primary"
-              icon="product--white.svg"
-              align="center"
-              fullWidth
-              onClick={toggleModalPickProduct}
-            >
-              Tambah Produk
-            </Button>
-          }
-        />
-      )}
-      {isModalAddProductShow && (
-        <Modal
-          closeHandler={toggleModalAddProduct}
-          header={<ModalTitle>Tambah Produk</ModalTitle>}
-          content={
-            <ModalContent>
-              <Input
-                fullWidth
-                onChange={inputAddProductHandler}
-                placeholder="Nama produk"
-              />
-            </ModalContent>
-          }
-          footer={
-            <Button
-              variant="primary"
-              icon="product--white.svg"
-              align="center"
-              fullWidth
-              onClick={toggleModalAddProduct}
-            >
-              Tambah Produk
-            </Button>
-          }
-        />
-      )}
     </MainLayout>
   )
 }

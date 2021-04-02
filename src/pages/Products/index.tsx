@@ -1,12 +1,10 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
-import Button from '@/components/form/Button'
-import Input from '@/components/form/Input'
-import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
 import { initialProduct } from '@/initials/initialProduct'
 import { ProductBase } from 'Types'
+import AddProductButton from '@/components/AddProductButton'
 
 const Information = styled.p`
   color: ${(props) => props.theme.color.gray} !important;
@@ -23,28 +21,22 @@ const ListProductCart = styled.section`
 `
 
 export default function index(): ReactElement {
-  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
-
-  const toggleModalAddProduct = () => {
-    setIsModalAddProductShow(!isModalAddProductShow)
-  }
-
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
+  }
+
+  const addProductHandler = (payload: string) => {
+    console.log(payload)
   }
 
   return (
     <MainLayout>
       <HeadingLayout>List Produk</HeadingLayout>
       <Information>* Klik produk untuk mengedit</Information>
-      <Button
-        variant="primary"
-        icon="product--white.svg"
-        align="center"
-        onClick={toggleModalAddProduct}
-      >
-        Tambah Produk
-      </Button>
+      <AddProductButton
+        style={{ marginBottom: '16px' }}
+        payloadHandler={addProductHandler}
+      />
       <ListProductCart>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
           <ProductBaseCard
@@ -55,28 +47,6 @@ export default function index(): ReactElement {
           />
         ))}
       </ListProductCart>
-      {isModalAddProductShow && (
-        <Modal
-          closeHandler={toggleModalAddProduct}
-          header={<ModalTitle>Tambah Produk</ModalTitle>}
-          content={
-            <ModalContent>
-              <Input fullWidth placeholder="Nama produk" />
-            </ModalContent>
-          }
-          footer={
-            <Button
-              variant="primary"
-              icon="product--white.svg"
-              align="center"
-              fullWidth
-              onClick={toggleModalAddProduct}
-            >
-              Tambah Produk
-            </Button>
-          }
-        />
-      )}
     </MainLayout>
   )
 }
