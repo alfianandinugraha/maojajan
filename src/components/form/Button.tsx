@@ -10,7 +10,7 @@ interface Props
 }
 
 interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'auth' | 'outline-dashed'
+  variant?: 'primary' | 'secondary' | 'auth' | 'outline-dashed' | 'danger'
   fullWidth?: boolean
   align?: 'center' | 'left' | 'right'
 }
@@ -39,6 +39,9 @@ const Button = styled.button<ButtonProps>`
   ${(props) =>
     props.variant === 'secondary' &&
     `background-color: ${props.theme.color.secondary};`}
+  ${(props) =>
+    props.variant === 'danger' &&
+    `background-color: ${props.theme.color.danger};`}
   ${(props) =>
     props.variant === 'auth' &&
     `
