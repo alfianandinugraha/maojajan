@@ -16,6 +16,7 @@ interface ProductCart {
 interface CartFirebase extends FirebaseTimestamp {
   date: Firebase.firestore.Timestamp
   products: ProductCart[]
+  uid: string
 }
 
 interface Cart extends CartFirebase {

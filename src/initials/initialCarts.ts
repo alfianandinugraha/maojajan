@@ -13,6 +13,7 @@ const initialCarts: Cart[] = [
       { id: Math.random().toString(), isPurchased: true, name: 'Pulsa 10000' },
       { id: Math.random().toString(), isPurchased: false, name: 'Pulsa 15000' },
     ],
+    uid: 'helloworlduser',
   },
   {
     id: Math.random().toString(),
@@ -23,6 +24,7 @@ const initialCarts: Cart[] = [
       { id: Math.random().toString(), isPurchased: false, name: 'Pulsa 10000' },
       { id: Math.random().toString(), isPurchased: false, name: 'Pulsa 15000' },
     ],
+    uid: 'helloworlduser',
   },
   {
     id: Math.random().toString(),
@@ -33,6 +35,7 @@ const initialCarts: Cart[] = [
       { id: Math.random().toString(), isPurchased: true, name: 'Pulsa 10000' },
       { id: Math.random().toString(), isPurchased: true, name: 'Pulsa 15000' },
     ],
+    uid: 'helloworlduser',
   },
 ]
 
