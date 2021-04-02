@@ -5,7 +5,6 @@ import styled from 'styled-components'
 const AboutImage = styled.img`
   height: 100px;
   width: 100px;
-  margin-top: 28px;
   margin-bottom: 16px;
 `
 

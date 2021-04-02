@@ -12,7 +12,6 @@ import { initialProductCart } from '@/initials/initialProductCart'
 import { ProductBase } from 'Types'
 
 const ButtonGroup = styled.section`
-  margin-top: 6px;
   margin-bottom: 16px;
   display: flex;
 

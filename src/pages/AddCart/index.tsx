@@ -12,7 +12,6 @@ import { ProductBase } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 
 const InputDate = styled(Input)`
-  margin-top: 6px;
   margin-bottom: 16px;
   width: 69%;
   max-width: 300px;

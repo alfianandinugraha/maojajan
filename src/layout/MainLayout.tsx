@@ -18,6 +18,7 @@ const HeadingLayout = styled.h1`
   color: ${(props) => props.theme.color.dark};
   font-weight: bold;
   line-height: normal;
+  margin-bottom: 16px;
 `
 
 const BackButton = styled.div`

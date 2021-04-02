@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 
 const InputGroup = styled.section`
-  margin-top: 16px;
   margin-bottom: 24px;
 
   & > *:not(:last-child) {

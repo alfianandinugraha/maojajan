@@ -30,7 +30,7 @@ export default function index(): ReactElement {
     <MainLayout>
       <HeadingLayout>List Produk</HeadingLayout>
       <AddProductButton
-        style={{ marginBottom: '16px', marginTop: '16px' }}
+        style={{ marginBottom: '16px' }}
         payloadHandler={addProductHandler}
       />
       <CaptionEditProduct />
