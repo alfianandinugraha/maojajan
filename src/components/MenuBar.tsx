@@ -114,7 +114,6 @@ export default function MenuBar(props: Props): ReactElement {
   const toProfile = () => history.toProfilePage()
   const toAbout = () => history.toAboutPage()
   const toProducts = () => history.toProductsPage()
-  const toAddProductPage = () => history.toAddProductPage()
   const toAddCartPage = () => history.toAddCartPage()
 
   const togglePopUp = () => {
@@ -162,7 +161,7 @@ export default function MenuBar(props: Props): ReactElement {
                 variant="secondary"
                 fullWidth
                 icon="product--white.svg"
-                onClick={toAddProductPage}
+                onClick={toProducts}
               >
                 Tambah Produk
               </Button>
