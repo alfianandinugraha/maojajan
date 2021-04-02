@@ -11,6 +11,7 @@ const MenuBarContainer = styled(Container)`
   bottom: 0;
   width: 100%;
   left: 0;
+  z-index: 5;
 `
 
 const MenuBarWrapper = styled.section`
