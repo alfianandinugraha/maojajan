@@ -10,6 +10,7 @@ import ProductsPage from '@/pages/Products'
 import CartPage from '@/pages/Cart'
 import AboutPage from '@/pages/About'
 import ProfilePage from '@/pages/Profile'
+import UpdatePasswordPage from '@/pages/UpdatePassword'
 import styled from 'styled-components'
 import './theme/reset.css'
 
@@ -60,6 +61,9 @@ const App = (): ReactElement => (
         </Route>
         <Route path="/profile" exact>
           <ProfilePage />
+        </Route>
+        <Route path="/update-password" exact>
+          <UpdatePasswordPage />
         </Route>
       </Switch>
     </BrowserRouter>
