@@ -7,9 +7,12 @@ interface FirebaseTimestamp {
   updatedAt: Firebase.firestore.Timestamp
 }
 
-interface ProductCart {
+interface ProductBase {
   id: string
   name: string
+}
+
+interface ProductCart extends ProductBase {
   isPurchased: boolean
 }
 
@@ -28,7 +31,7 @@ interface ProductFirebase extends FirebaseTimestamp {
   uid: string
 }
 
-interface Product extends ProductFirebase {
+interface Product extends ProductFirebase, ProductBase {
   id: string
 }
 
@@ -65,5 +68,6 @@ declare module 'Types' {
     Cart,
     ProductFirebase,
     Product,
+    ProductBase,
   }
 }
