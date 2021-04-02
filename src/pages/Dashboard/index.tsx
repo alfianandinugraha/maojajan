@@ -1,4 +1,4 @@
-import CartItem from '@/components/CartItem'
+import CartCard from '@/components/card/CartCard'
 import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement } from 'react'
@@ -29,7 +29,7 @@ const Header = styled.header`
   }
 `
 
-const CartElement = styled(CartItem)`
+const CartElement = styled(CartCard)`
   &:not(:last-child) {
     margin-bottom: 16px;
   }
