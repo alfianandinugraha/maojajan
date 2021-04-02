@@ -4,6 +4,7 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
+import { initialProducts } from '@/initials/initialProduct'
 
 const InputDate = styled(Input)`
   margin-top: 6px;
@@ -74,7 +75,14 @@ export default function index(): ReactElement {
           content={
             <>
               <ModalContent>
-                <Input fullWidth placeholder="Pilih produk" />
+                <Input list="products" placeholder="Pilih produk" fullWidth />
+                <datalist id="products">
+                  {initialProducts.map((product) => (
+                    <option key={product.id} value={product.name}>
+                      {product.name}
+                    </option>
+                  ))}
+                </datalist>
               </ModalContent>
               <ModalContent>
                 <Input fullWidth placeholder="Jumlah" />

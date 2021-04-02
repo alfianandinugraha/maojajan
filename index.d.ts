@@ -24,6 +24,7 @@ interface Cart extends CartFirebase {
 
 interface ProductFirebase extends FirebaseTimestamp {
   name: string
+  uid: string
 }
 
 interface Product extends ProductFirebase {
