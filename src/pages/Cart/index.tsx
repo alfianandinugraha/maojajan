@@ -1,5 +1,8 @@
 import React, { ReactElement } from 'react'
-import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
+import MainLayout, {
+  HeadingLayout,
+  CaptionEditProduct,
+} from '@/layout/MainLayout'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '@/components/form/Button'
@@ -45,6 +48,7 @@ export default function index(): ReactElement {
         style={{ marginBottom: '16px' }}
         payloadHandler={addProductHandler}
       />
+      <CaptionEditProduct />
       <ProductCartCard
         disabled={false}
         payload={initialProductCart}

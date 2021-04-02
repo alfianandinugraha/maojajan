@@ -24,6 +24,16 @@ const MainContainer = styled(Container)`
   flex-direction: column;
 `
 
+const Information = styled.p`
+  color: ${(props) => props.theme.color.gray} !important;
+  font-size: 12px !important;
+  margin-bottom: 12px;
+`
+
+const CaptionEditProduct = (): ReactElement => (
+  <Information>* Klik produk untuk mengedit</Information>
+)
+
 export default function MainLayout(props: Props): ReactElement {
   return (
     <MainContainer>
@@ -35,4 +45,4 @@ export default function MainLayout(props: Props): ReactElement {
   )
 }
 
-export { HeadingLayout }
+export { HeadingLayout, CaptionEditProduct }

@@ -1,5 +1,8 @@
 import React, { ReactElement } from 'react'
-import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
+import MainLayout, {
+  HeadingLayout,
+  CaptionEditProduct,
+} from '@/layout/MainLayout'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
@@ -50,6 +53,7 @@ export default function index(): ReactElement {
       >
         Simpan
       </Button>
+      <CaptionEditProduct />
       <ListProductCart>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
           <ProductBaseCard
