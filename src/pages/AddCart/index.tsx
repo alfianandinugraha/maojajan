@@ -5,8 +5,8 @@ import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import { initialProducts } from '@/initials/initialProduct'
-import { initialProductCart } from '@/initials/initialProductCart'
-import ProductCartCard from '@/components/card/ProductCartCard'
+import { ProductBaseCard, CardAction } from '@/components/Card'
+import { ProductBase } from 'Types'
 
 const InputDate = styled(Input)`
   margin-top: 6px;
@@ -48,6 +48,10 @@ export default function index(): ReactElement {
     console.log(e)
   }
 
+  const actionCardHandler = (type: CardAction, payload: ProductBase) => {
+    console.log(type, payload)
+  }
+
   return (
     <MainLayout>
       <HeadingLayout>Tambah keranjang</HeadingLayout>
@@ -79,7 +83,12 @@ export default function index(): ReactElement {
       </ButtonGroup>
       <ListProductCart>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
-          <ProductCartCard key={item} product={initialProductCart} />
+          <ProductBaseCard
+            key={item}
+            payload={initialProducts[0]}
+            disabled={false}
+            actionHandler={actionCardHandler}
+          />
         ))}
       </ListProductCart>
       {isModalPickProductShow && (

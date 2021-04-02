@@ -1,4 +1,4 @@
-import CartCard from '@/components/card/CartCard'
+import { CartCard } from '@/components/Card'
 import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement } from 'react'
@@ -65,8 +65,9 @@ export default function index(): ReactElement {
       <div>
         {initialCarts.map((item) => (
           <CartElement
+            disabled={item.products.every((product) => product.isPurchased)}
             key={item.id}
-            item={item}
+            payload={item}
             actionHandler={receiveActionHandler}
           />
         ))}
