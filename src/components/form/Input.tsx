@@ -25,7 +25,8 @@ const InputContainer = styled.div`
 const Input = styled.input<InputProps>`
   padding: 1rem;
   border-radius: 5px;
-  background: #ffffff;
+  background: ${(props) =>
+    props.disabled ? props.theme.color.gray : '#ffffff'};
   font-size: 14px;
   border: 1px solid ${(props) => props.theme.color.gray};
   position: relative;
