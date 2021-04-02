@@ -17,3 +17,37 @@
   opacity: 0;
   transition: opacity 500ms, bottom 500ms;
 }
+
+.backdrop-modal-enter {
+  opacity: 0 !important;
+}
+.backdrop-modal-enter-active {
+  opacity: 0.25 !important;
+  transition: opacity 500ms;
+}
+.backdrop-modal-exit {
+  opacity: 0.25 !important;
+}
+.backdrop-modal-exit-active {
+  opacity: 0 !important;
+  transition: opacity 500ms, bottom 500ms;
+}
+
+.modal-enter {
+  opacity: 0 !important;
+  top: 70% !important;
+}
+.modal-enter-active {
+  opacity: 1 !important;
+  top: 50% !important;
+  transition: opacity 500ms, top 500ms;
+}
+.modal-exit {
+  opacity: 1 !important;
+  top: 50% !important;
+}
+.modal-exit-active {
+  opacity: 0 !important;
+  top: 70% !important;
+  transition: opacity 500ms, top 500ms;
+}

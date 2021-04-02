@@ -60,50 +60,49 @@ export default function AddProductButtonGroup(props: Props): ReactElement {
       >
         Tambah Produk
       </Button>
-      {isModalAddProductShow && (
-        <Modal
-          closeHandler={toggleModalAddProduct}
-          header={<ModalTitle>Tambah Produk</ModalTitle>}
-          content={
-            <>
-              <ModalContent>
-                <Input
-                  list="products"
-                  placeholder="Pilih / input produk"
-                  fullWidth
-                  onChange={inputProductNameHandler}
-                  errorMessage={productName.errorMessage}
-                />
-                <datalist id="products">
-                  {initialProducts.map((product) => (
-                    <option key={product.id} value={product.name}>
-                      {product.name}
-                    </option>
-                  ))}
-                </datalist>
-              </ModalContent>
-              <ModalContent>
-                <Input
-                  fullWidth
-                  placeholder="Jumlah. Misal : 5 kg, 2 liter, atau 3"
-                  onChange={inputProductQuantityHandler}
-                />
-              </ModalContent>
-            </>
-          }
-          footer={
-            <Button
-              variant="primary"
-              icon="/plus--white.svg"
-              align="center"
-              fullWidth
-              onClick={sendPayload}
-            >
-              Tambah Produk
-            </Button>
-          }
-        />
-      )}
+      <Modal
+        closeHandler={toggleModalAddProduct}
+        isShow={isModalAddProductShow}
+        header={<ModalTitle>Tambah Produk</ModalTitle>}
+        content={
+          <>
+            <ModalContent>
+              <Input
+                list="products"
+                placeholder="Pilih / input produk"
+                fullWidth
+                onChange={inputProductNameHandler}
+                errorMessage={productName.errorMessage}
+              />
+              <datalist id="products">
+                {initialProducts.map((product) => (
+                  <option key={product.id} value={product.name}>
+                    {product.name}
+                  </option>
+                ))}
+              </datalist>
+            </ModalContent>
+            <ModalContent>
+              <Input
+                fullWidth
+                placeholder="Jumlah. Misal : 5 kg, 2 liter, atau 3"
+                onChange={inputProductQuantityHandler}
+              />
+            </ModalContent>
+          </>
+        }
+        footer={
+          <Button
+            variant="primary"
+            icon="/plus--white.svg"
+            align="center"
+            fullWidth
+            onClick={sendPayload}
+          >
+            Tambah Produk
+          </Button>
+        }
+      />
     </>
   )
 }

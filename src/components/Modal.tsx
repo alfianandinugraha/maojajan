@@ -1,40 +1,45 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
+import { CSSTransition } from 'react-transition-group'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   header?: React.ReactNode
   content?: React.ReactNode
   footer?: React.ReactNode
   closeHandler?: () => void
+  isShow: boolean
 }
 
 const ModalContainer = styled.section`
   position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0px;
+  left: 50%;
   z-index: 10;
   display: flex;
-  top: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  width: 100%;
+  max-width: 300px;
 `
 
 const Backdrop = styled.div`
-  background-color: rgba(50, 50, 44, 0.25);
+  background-color: ${(props) => props.theme.color.dark};
+  opacity: 0.25;
   width: 100%;
   height: 100%;
   position: fixed;
   z-index: 10;
   top: 0;
+  left: 0;
 `
 
 const ModalWrapper = styled.main`
   position: relative;
-  max-width: 300px;
   background-color: white;
   padding: 16px;
   margin: auto;
-  z-index: 11;
   width: 100%;
+  height: 100%;
   border-radius: 5px;
 `
 
@@ -62,22 +67,38 @@ export default function Modal(props: Props): ReactElement {
   const closeModal = () => props.closeHandler && props.closeHandler()
 
   return (
-    <ModalContainer {...props}>
-      <ModalWrapper>
-        <ModalHeader>
-          {props.header}
-          <img
-            src="/cross--danger.svg"
-            alt="Close modal"
-            onClick={closeModal}
-            aria-hidden="true"
-          />
-        </ModalHeader>
-        {props.content}
-        {props.footer}
-      </ModalWrapper>
-      <Backdrop onClick={closeModal} />
-    </ModalContainer>
+    <>
+      <CSSTransition
+        in={props.isShow}
+        timeout={500}
+        unmountOnExit
+        classNames="modal"
+      >
+        <ModalContainer {...props}>
+          <ModalWrapper>
+            <ModalHeader>
+              {props.header}
+              <img
+                src="/cross--danger.svg"
+                alt="Close modal"
+                onClick={closeModal}
+                aria-hidden="true"
+              />
+            </ModalHeader>
+            {props.content}
+            {props.footer}
+          </ModalWrapper>
+        </ModalContainer>
+      </CSSTransition>
+      <CSSTransition
+        in={props.isShow}
+        timeout={500}
+        unmountOnExit
+        classNames="backdrop-modal"
+      >
+        <Backdrop onClick={closeModal} />
+      </CSSTransition>
+    </>
   )
 }
 

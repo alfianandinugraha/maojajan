@@ -147,6 +147,7 @@ const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
       </Card>
       {isModalAddProductShow && (
         <Modal
+          isShow={isModalAddProductShow}
           closeHandler={toggleModalAddProduct}
           header={<ModalTitle>Edit Produk</ModalTitle>}
           content={
@@ -186,6 +187,7 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
       </Card>
       {isModalAddProductShow && (
         <Modal
+          isShow={isModalAddProductShow}
           closeHandler={toggleModalAddProduct}
           header={<ModalTitle>Edit Produk</ModalTitle>}
           content={
