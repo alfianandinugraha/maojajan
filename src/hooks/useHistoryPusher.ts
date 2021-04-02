@@ -11,6 +11,8 @@ interface NavigationPusher {
   toProductsPage: () => void
   toAddCartPage: () => void
   toAddProductPage: () => void
+  toUpdateEmailPage: () => void
+  toUpdatePasswordPage: () => void
 }
 
 const useHistoryPusher = (): NavigationPusher => {
@@ -25,6 +27,8 @@ const useHistoryPusher = (): NavigationPusher => {
   const toProductsPage = () => pusher.push('/products')
   const toAddCartPage = () => pusher.push('/add-cart')
   const toAddProductPage = () => pusher.push('/add-product')
+  const toUpdateEmailPage = () => pusher.push('/update-email')
+  const toUpdatePasswordPage = () => pusher.push('/update-password')
 
   return {
     toLoginPage,
@@ -37,6 +41,8 @@ const useHistoryPusher = (): NavigationPusher => {
     toProfilePage,
     toAddProductPage,
     toAddCartPage,
+    toUpdateEmailPage,
+    toUpdatePasswordPage,
   }
 }
 
