@@ -27,7 +27,7 @@ const MainContainer = styled(Container)`
 export default function MainLayout(props: Props): ReactElement {
   return (
     <MainContainer>
-      <Logo src="MaoJajan-logo--primary.svg" alt="" />
+      <Logo src="/MaoJajan-logo--primary.svg" alt="" />
       {props.children}
       <div style={{ marginBottom: '154px' }} />
       <MenuBar />
