@@ -67,7 +67,7 @@ export default function Modal(props: Props): ReactElement {
         <ModalHeader>
           {props.header}
           <img
-            src="cross--danger.svg"
+            src="/cross--danger.svg"
             alt="Close modal"
             onClick={closeModal}
             aria-hidden="true"

@@ -89,7 +89,7 @@ export default function Card<T>(props: Props<T>): ReactElement {
     <CardItemContainer {...props} disabled={props.disabled}>
       {props.children}
       <CardTrash onClick={passingDeleteCart}>
-        <img src="trash--danger.svg" alt="" />
+        <img src="/trash--danger.svg" alt="" />
       </CardTrash>
     </CardItemContainer>
   )
@@ -103,14 +103,14 @@ const CartCard = (props: Props<Cart>): ReactElement => {
   }
 
   const pushToCartPage = () => {
-    history.push(`/cards/${props.payload.id}`)
+    history.push(`/carts/${props.payload.id}`)
   }
 
   return (
     <Card<Cart> {...props}>
       <LeftCart onClick={finishCartCardHandler}>
         <img
-          src={props.disabled ? 'check--dark.svg' : 'check--white.svg'}
+          src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
           alt=""
         />
       </LeftCart>
@@ -147,7 +147,7 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
           footer={
             <Button
               variant="primary"
-              icon="product--white.svg"
+              icon="/product--white.svg"
               align="center"
               fullWidth
               onClick={toggleModalAddProduct}

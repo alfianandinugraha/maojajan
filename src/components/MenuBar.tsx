@@ -125,26 +125,26 @@ export default function MenuBar(props: Props): ReactElement {
       <MenuBarWrapper>
         <LeftMenu>
           <MenuItem onClick={toDashboard}>
-            <img src="home--white.svg" alt="home icon" />
+            <img src="/home--white.svg" alt="home icon" />
             <p>Home</p>
           </MenuItem>
           <MenuItem onClick={toProducts}>
-            <img src="product--white.svg" alt="product icon" />
+            <img src="/product--white.svg" alt="product icon" />
             <p>Product</p>
           </MenuItem>
         </LeftMenu>
         <RightMenu>
           <MenuItem onClick={toProfile}>
-            <img src="user--white.svg" alt="user icon" />
+            <img src="/user--white.svg" alt="user icon" />
             <p>User</p>
           </MenuItem>
           <MenuItem onClick={toAbout}>
-            <img src="smile--white.svg" alt="smile icon" />
+            <img src="/smile--white.svg" alt="smile icon" />
             <p>About</p>
           </MenuItem>
         </RightMenu>
         <CenterAdd onClick={togglePopUp} isClose={isPopUpShow}>
-          <img src="plus--white.svg" alt="user icon" />
+          <img src="/plus--white.svg" alt="user icon" />
         </CenterAdd>
         {isPopUpShow && (
           <PopUpAddItem>
@@ -152,7 +152,7 @@ export default function MenuBar(props: Props): ReactElement {
               <Button
                 variant="secondary"
                 fullWidth
-                icon="cart--white.svg"
+                icon="/cart--white.svg"
                 onClick={toAddCartPage}
               >
                 Tambah keranjang
@@ -160,13 +160,13 @@ export default function MenuBar(props: Props): ReactElement {
               <Button
                 variant="secondary"
                 fullWidth
-                icon="product--white.svg"
+                icon="/product--white.svg"
                 onClick={toProducts}
               >
                 Tambah Produk
               </Button>
             </PopUpContent>
-            <ArrowPopUp src="arrow-popup--white.svg" />
+            <ArrowPopUp src="/arrow-popup--white.svg" />
           </PopUpAddItem>
         )}
       </MenuBarWrapper>
