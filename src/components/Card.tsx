@@ -145,29 +145,27 @@ const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
           <p>{props.payload.name}</p>
         </ProductCartCardContent>
       </Card>
-      {isModalAddProductShow && (
-        <Modal
-          isShow={isModalAddProductShow}
-          closeHandler={toggleModalAddProduct}
-          header={<ModalTitle>Edit Produk</ModalTitle>}
-          content={
-            <ModalContent>
-              <Input fullWidth placeholder="Nama produk" />
-            </ModalContent>
-          }
-          footer={
-            <Button
-              variant="primary"
-              icon="/product--white.svg"
-              align="center"
-              fullWidth
-              onClick={toggleModalAddProduct}
-            >
-              Edit Produk
-            </Button>
-          }
-        />
-      )}
+      <Modal
+        isShow={isModalAddProductShow}
+        closeHandler={toggleModalAddProduct}
+        header={<ModalTitle>Edit Produk</ModalTitle>}
+        content={
+          <ModalContent>
+            <Input fullWidth placeholder="Nama produk" />
+          </ModalContent>
+        }
+        footer={
+          <Button
+            variant="primary"
+            icon="/product--white.svg"
+            align="center"
+            fullWidth
+            onClick={toggleModalAddProduct}
+          >
+            Edit Produk
+          </Button>
+        }
+      />
     </>
   )
 }
@@ -185,29 +183,27 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
           <p>{props.payload.name}</p>
         </ProductCartCardContent>
       </Card>
-      {isModalAddProductShow && (
-        <Modal
-          isShow={isModalAddProductShow}
-          closeHandler={toggleModalAddProduct}
-          header={<ModalTitle>Edit Produk</ModalTitle>}
-          content={
-            <ModalContent>
-              <Input fullWidth placeholder="Nama produk" />
-            </ModalContent>
-          }
-          footer={
-            <Button
-              variant="primary"
-              icon="/product--white.svg"
-              align="center"
-              fullWidth
-              onClick={toggleModalAddProduct}
-            >
-              Edit Produk
-            </Button>
-          }
-        />
-      )}
+      <Modal
+        isShow={isModalAddProductShow}
+        closeHandler={toggleModalAddProduct}
+        header={<ModalTitle>Edit Produk</ModalTitle>}
+        content={
+          <ModalContent>
+            <Input fullWidth placeholder="Nama produk" />
+          </ModalContent>
+        }
+        footer={
+          <Button
+            variant="primary"
+            icon="/product--white.svg"
+            align="center"
+            fullWidth
+            onClick={toggleModalAddProduct}
+          >
+            Edit Produk
+          </Button>
+        }
+      />
     </>
   )
 }
