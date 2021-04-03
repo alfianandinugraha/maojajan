@@ -15,6 +15,7 @@ import {
   isValidPassword,
   EMPTY_VALUE_MESSAGE,
 } from '@/validation/form'
+import { registerUser } from '@/http/Auth'
 
 export default function index(): ReactElement {
   const history = useHistoryPusher()
@@ -78,7 +79,17 @@ export default function index(): ReactElement {
       return
     }
     alert(JSON.stringify(payload, null, 2))
-    history.toDashboardPage()
+    registerUser({
+      fullName: inputFullName.value,
+      email: inputEmail.value,
+      password: inputPassword.value,
+    })
+      .then(() => {
+        history.toDashboardPage()
+      })
+      .catch((message: string) => {
+        console.error({ message })
+      })
   }
 
   const inputFullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
