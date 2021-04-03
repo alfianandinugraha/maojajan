@@ -1,6 +1,6 @@
 import firebase from '@/utils/Firebase'
-import { storeUser } from '@/http/User'
-import { UserRegisterRequire } from 'Types'
+import { storeUser, getUser } from '@/http/User'
+import { User, UserRegisterRequire } from 'Types'
 import { initialTimestampNow } from '@/initials/intialFirebaseTImestamp'
 
 const registerUser = (userInfo: UserRegisterRequire): Promise<string> => {
@@ -30,4 +30,26 @@ const registerUser = (userInfo: UserRegisterRequire): Promise<string> => {
   return new Promise(processRequest)
 }
 
-export { registerUser }
+const loginUser = async (email: string, password: string): Promise<User> => {
+  const processRequest = async (
+    resolve: (user: User) => void,
+    reject: (message: string) => void
+  ) => {
+    try {
+      const authRequest = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+      if (authRequest.user) {
+        const userInfo: User = await getUser(authRequest.user.uid)
+        resolve(userInfo)
+        return
+      }
+    } catch (err) {
+      reject(err.code)
+    }
+  }
+
+  return new Promise(processRequest)
+}
+
+export { registerUser, loginUser }

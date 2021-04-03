@@ -10,6 +10,7 @@ import AuthLayout, {
 } from '@/layout/AuthLayout'
 import initialInputState from '@/initials/initialInputState'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
+import { loginUser } from '@/http/Auth'
 
 export default function index(): ReactElement {
   const history = useHistoryPusher()
@@ -63,7 +64,11 @@ export default function index(): ReactElement {
       return
     }
     alert(JSON.stringify(payload, null, 2))
-    history.toDashboardPage()
+    loginUser(inputEmail.value, inputPassword.value)
+      .then(() => {
+        history.toDashboardPage()
+      })
+      .catch((err) => console.error({ err }))
   }
 
   return (

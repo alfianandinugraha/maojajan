@@ -14,4 +14,12 @@ const storeUser = async ({
     .doc(uid)
     .set({ email, createdAt, updatedAt, fullName })
 
-export { storeUser }
+const getUser = (uid: string): Promise<User> =>
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(uid)
+    .get()
+    .then((doc) => ({ ...(doc.data() as User), uid: doc.id }))
+
+export { storeUser, getUser }
