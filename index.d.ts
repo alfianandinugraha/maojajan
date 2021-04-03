@@ -35,6 +35,21 @@ interface Product extends ProductFirebase, ProductBase {
   id: string
 }
 
+interface UserFirebase extends FirebaseTimestamp {
+  fullName: string
+  email: string
+}
+
+interface UserRegisterRequire {
+  fullName: string
+  email: string
+  password: string
+}
+
+interface User extends UserFirebase {
+  uid: string
+}
+
 interface ThemeProps {
   color: {
     primary: string
