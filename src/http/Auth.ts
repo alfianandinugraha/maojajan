@@ -52,4 +52,6 @@ const loginUser = async (email: string, password: string): Promise<User> => {
   return new Promise(processRequest)
 }
 
-export { registerUser, loginUser }
+const logoutUser = (): Promise<void> => firebase.auth().signOut()
+
+export { registerUser, loginUser, logoutUser }
