@@ -32,4 +32,8 @@ const getProducts = (uid: string): Promise<Product[]> =>
       })
       return result
     })
-export { storeProduct, getProducts }
+
+const removeProduct = (id: string) =>
+  firebase.firestore().collection('products').doc(id).delete()
+
+export { storeProduct, getProducts, removeProduct }

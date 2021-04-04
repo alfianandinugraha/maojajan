@@ -9,7 +9,7 @@ import { ProductBase, Product } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
-import { storeProduct, getProducts } from '@/http/product'
+import { storeProduct, getProducts, removeProduct } from '@/http/product'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -25,6 +25,16 @@ export default function index(): ReactElement {
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
+
+    if (type === 'DELETE') {
+      removeProduct(payload.id)
+        .then(() => {
+          setProducts(products.filter((product) => product.id !== payload.id))
+        })
+        .catch(() => {
+          console.error('Gagal menghapus produk')
+        })
+    }
   }
 
   const addProductHandler = (payload: string) => {
