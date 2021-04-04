@@ -4,7 +4,7 @@ import initialFirebaseTimestamp from './intialFirebaseTImestamp'
 const initialProduct: Product = {
   uid: 'helloworlduser',
   name: 'Pizza XL Tomatoes',
-  id: Math.random().toString(),
+  id: '',
   ...initialFirebaseTimestamp,
 }
 

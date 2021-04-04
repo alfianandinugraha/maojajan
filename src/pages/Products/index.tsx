@@ -15,6 +15,10 @@ import {
   removeProduct,
   editProduct,
 } from '@/http/product'
+import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
+import Input from '@/components/form/Input'
+import Button from '@/components/form/Button'
+import { initialProduct } from '@/initials/initialProduct'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -26,11 +30,22 @@ const ListProductCart = styled.section`
 
 export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
+  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
+  const [selectedProduct, setSelectedProduct] = useState<Product>(
+    initialProduct
+  )
+  const [productName, setProductName] = useState('')
+
+  const toggleModalAddProduct = () => {
+    setIsModalAddProductShow(!isModalAddProductShow)
+  }
+
+  const inputProductNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductName(e.target.value)
+  }
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
-    console.log(type, payload)
-
     if (type === 'DELETE') {
       removeProduct(payload.id)
         .then(() => {
@@ -41,23 +56,34 @@ export default function index(): ReactElement {
         })
     }
 
-    if (type === 'EDIT_PRODUCT') {
-      const data: Product = payload as Product
-      editProduct(data).then(() => {
-        setProducts(
-          products.map((product) => (product.id === data.id ? data : product))
-        )
-      })
+    if (type === 'CLICK') {
+      const product: Product = payload as Product
+      setProductName(payload.name)
+      setSelectedProduct(product)
+      toggleModalAddProduct()
     }
   }
 
   const addProductHandler = (payload: string) => {
     if (!user) return
     storeProduct(payload, user.uid).then((data) => {
-      console.log(data)
-      console.log('produk berhasil disimpan')
       setProducts([data, ...products])
     })
+  }
+
+  const submitEditProduct = () => {
+    if (!selectedProduct.id) return
+    const productData = { ...selectedProduct, name: productName }
+    editProduct(productData).then(() => {
+      setProducts(
+        products.map((product) =>
+          product.id === selectedProduct.id ? productData : product
+        )
+      )
+    })
+    setSelectedProduct(initialProduct)
+    setProductName('')
+    toggleModalAddProduct()
   }
 
   useEffect(() => {
@@ -86,6 +112,32 @@ export default function index(): ReactElement {
           />
         ))}
       </ListProductCart>
+      <Modal
+        isShow={isModalAddProductShow}
+        closeHandler={toggleModalAddProduct}
+        header={<ModalTitle>Edit Produk</ModalTitle>}
+        content={
+          <ModalContent>
+            <Input
+              fullWidth
+              placeholder="Nama produk"
+              onChange={inputProductNameHandler}
+              value={productName}
+            />
+          </ModalContent>
+        }
+        footer={
+          <Button
+            variant="primary"
+            icon="/product--white.svg"
+            align="center"
+            fullWidth
+            onClick={submitEditProduct}
+          >
+            Edit Produk
+          </Button>
+        }
+      />
     </MainLayout>
   )
 }

@@ -1,10 +1,7 @@
 import DateFormat from '@/utils/DateFormat'
-import React, { ReactElement, useState } from 'react'
-import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
+import React, { ReactElement } from 'react'
 import { Cart, ProductBase, ProductCart } from 'Types'
 import styled from 'styled-components'
-import Input from '@/components/form/Input'
-import Button from '@/components/form/Button'
 
 export type CardAction =
   | 'CHECK'
@@ -151,57 +148,18 @@ const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
 }
 
 const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
-  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
-  const [productName, setProductName] = useState('')
-  const toggleModalAddProduct = () => {
-    setIsModalAddProductShow(!isModalAddProductShow)
-  }
-
-  const inputProductNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductName(e.target.value)
-  }
-
-  const submitEditProduct = () => {
-    props.actionHandler('EDIT_PRODUCT', {
-      ...props.payload,
-      name: productName,
-    })
-    toggleModalAddProduct()
+  const clickContentHandler = () => {
+    props.actionHandler('CLICK', props.payload)
   }
 
   return (
     <>
       <Card<ProductBase> {...props} style={{ height: '48px' }}>
         <FinishCart style={{ width: '12px' }} />
-        <ProductCartCardContent onClick={toggleModalAddProduct}>
+        <ProductCartCardContent onClick={clickContentHandler}>
           <p>{props.payload.name}</p>
         </ProductCartCardContent>
       </Card>
-      <Modal
-        isShow={isModalAddProductShow}
-        closeHandler={toggleModalAddProduct}
-        header={<ModalTitle>Edit Produk</ModalTitle>}
-        content={
-          <ModalContent>
-            <Input
-              fullWidth
-              placeholder="Nama produk"
-              onChange={inputProductNameHandler}
-            />
-          </ModalContent>
-        }
-        footer={
-          <Button
-            variant="primary"
-            icon="/product--white.svg"
-            align="center"
-            fullWidth
-            onClick={submitEditProduct}
-          >
-            Edit Produk
-          </Button>
-        }
-      />
     </>
   )
 }
