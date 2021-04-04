@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import StartPage from '@/pages/Start'
 import LoginPage from '@/pages/Login'
@@ -13,8 +13,13 @@ import ProfilePage from '@/pages/Profile'
 import UpdatePasswordPage from '@/pages/UpdatePassword'
 import UpdateEmailPage from '@/pages/UpdateEmail'
 import styled from 'styled-components'
+import { useAtom } from 'jotai'
+import firebase from 'firebase'
+import { authAtom } from './store/authAtom'
 import './theme/reset.css'
 import './style/animation.css'
+import { userAtom } from './store/userAtom'
+import { getUser } from './http/User'
 
 const RootStyles = styled.div`
   * {
@@ -30,49 +35,78 @@ const RootStyles = styled.div`
   }
 `
 
-const App = (): ReactElement => (
-  <RootStyles>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact>
-          <StartPage />
-        </Route>
-        <Route path="/login" exact>
-          <LoginPage />
-        </Route>
-        <Route path="/register" exact>
-          <RegisterPage />
-        </Route>
-        <Route path="/reset" exact>
-          <ResetPage />
-        </Route>
-        <Route path="/dashboard" exact>
-          <DashboardPage />
-        </Route>
-        <Route path="/add-cart" exact>
-          <AddCartPage />
-        </Route>
-        <Route path="/products" exact>
-          <ProductsPage />
-        </Route>
-        <Route path="/carts/:id" exact>
-          <CartPage />
-        </Route>
-        <Route path="/about" exact>
-          <AboutPage />
-        </Route>
-        <Route path="/profile" exact>
-          <ProfilePage />
-        </Route>
-        <Route path="/update-password" exact>
-          <UpdatePasswordPage />
-        </Route>
-        <Route path="/update-email" exact>
-          <UpdateEmailPage />
-        </Route>
-      </Switch>
-    </BrowserRouter>
-  </RootStyles>
-)
+const App = (): ReactElement => {
+  const [, setIsLoggedIn] = useAtom(authAtom)
+  const [user, setUser] = useAtom(userAtom)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((data) => {
+      if (data) {
+        getUser(data.uid)
+          .then((userInfo) => {
+            setUser(userInfo)
+            setIsLoggedIn(true)
+          })
+          .catch(() => {
+            setIsLoggedIn(false)
+          })
+          .finally(() => {
+            setIsLoading(false)
+          })
+        return
+      }
+      setIsLoggedIn(false)
+      setIsLoading(false)
+    })
+  }, [])
+
+  if (isLoading) return <></>
+
+  return (
+    <RootStyles>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact>
+            <StartPage />
+          </Route>
+          <Route path="/login" exact>
+            <LoginPage />
+          </Route>
+          <Route path="/register" exact>
+            <RegisterPage />
+          </Route>
+          <Route path="/reset" exact>
+            <ResetPage />
+          </Route>
+          <Route path="/dashboard" exact>
+            <DashboardPage />
+          </Route>
+          <Route path="/add-cart" exact>
+            <AddCartPage />
+          </Route>
+          <Route path="/products" exact>
+            <ProductsPage />
+          </Route>
+          <Route path="/carts/:id" exact>
+            <CartPage />
+          </Route>
+          <Route path="/about" exact>
+            <AboutPage />
+          </Route>
+          <Route path="/profile" exact>
+            <ProfilePage />
+          </Route>
+          <Route path="/update-password" exact>
+            <UpdatePasswordPage />
+          </Route>
+          <Route path="/update-email" exact>
+            <UpdateEmailPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </RootStyles>
+  )
+}
 
 export default App

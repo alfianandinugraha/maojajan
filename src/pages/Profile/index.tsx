@@ -8,6 +8,10 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
+import { logoutUser } from '@/http/Auth'
+import { useAtom } from 'jotai'
+import { userAtom } from '@/store/userAtom'
+import { authAtom } from '@/store/authAtom'
 
 const LinkGroup = styled.section`
   display: flex;
@@ -19,6 +23,8 @@ const LinkGroup = styled.section`
 `
 
 export default function index(): ReactElement {
+  const [, setUser] = useAtom(userAtom)
+  const [, setIsLoggedIn] = useAtom(authAtom)
   const pusher = useHistoryPusher()
 
   const toUpdateEmailPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -29,6 +35,13 @@ export default function index(): ReactElement {
   const toUpdatePasswordPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
     pusher.toUpdatePasswordPage()
+  }
+
+  const logoutUserHandler = () => {
+    logoutUser().then(() => {
+      setUser(null)
+      setIsLoggedIn(false)
+    })
   }
 
   return (
@@ -60,6 +73,7 @@ export default function index(): ReactElement {
           align="center"
           style={{ marginTop: '16px' }}
           fullWidth
+          onClick={logoutUserHandler}
         >
           Keluar Aplikasi
         </Button>
