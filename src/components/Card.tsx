@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 
-export type CardAction = 'CHECK' | 'DELETE'
+export type CardAction = 'CHECK' | 'DELETE' | 'EDIT_PRODUCT'
 
 interface Props<T> extends React.HTMLAttributes<HTMLElement> {
   payload: T
@@ -172,9 +172,23 @@ const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
 
 const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
+  const [productName, setProductName] = useState('')
   const toggleModalAddProduct = () => {
     setIsModalAddProductShow(!isModalAddProductShow)
   }
+
+  const inputProductNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductName(e.target.value)
+  }
+
+  const submitEditProduct = () => {
+    props.actionHandler('EDIT_PRODUCT', {
+      ...props.payload,
+      name: productName,
+    })
+    toggleModalAddProduct()
+  }
+
   return (
     <>
       <Card<ProductBase> {...props} style={{ height: '48px' }}>
@@ -189,7 +203,11 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
         header={<ModalTitle>Edit Produk</ModalTitle>}
         content={
           <ModalContent>
-            <Input fullWidth placeholder="Nama produk" />
+            <Input
+              fullWidth
+              placeholder="Nama produk"
+              onChange={inputProductNameHandler}
+            />
           </ModalContent>
         }
         footer={
@@ -198,7 +216,7 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
             icon="/product--white.svg"
             align="center"
             fullWidth
-            onClick={toggleModalAddProduct}
+            onClick={submitEditProduct}
           >
             Edit Produk
           </Button>

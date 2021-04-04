@@ -1,4 +1,4 @@
-import { CartCard } from '@/components/Card'
+import { CartCard, CardAction } from '@/components/Card'
 import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement } from 'react'
@@ -44,7 +44,7 @@ export default function index(): ReactElement {
     console.log(cartId)
   }
 
-  const receiveActionHandler = (action: 'CHECK' | 'DELETE', cartId: Cart) => {
+  const receiveActionHandler = (action: CardAction, cartId: Cart) => {
     switch (action) {
       case 'CHECK':
         checkCartHandler(cartId)
