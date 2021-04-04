@@ -15,7 +15,7 @@ interface Props<T> extends React.HTMLAttributes<HTMLElement> {
   actionHandler: (type: CardAction, sendPayload: T) => void
 }
 
-const LeftCart = styled.div`
+const FinishCart = styled.div`
   background-color: ${(props) => props.theme.color.secondary};
   display: flex;
   justify-content: center;
@@ -67,7 +67,7 @@ const CardItemContainer = styled.section<{ disabled: boolean }>`
     background-color: ${(props) => (props.disabled ? '#D7D7D7' : 'white')};
   }
 
-  ${LeftCart} {
+  ${FinishCart} {
     background-color: ${(props) =>
       props.disabled ? props.theme.color.gray : props.theme.color.secondary};
   }
@@ -108,12 +108,12 @@ const CartCard = (props: Props<Cart>): ReactElement => {
 
   return (
     <Card<Cart> {...props}>
-      <LeftCart onClick={finishCartCardHandler}>
+      <FinishCart onClick={finishCartCardHandler}>
         <img
           src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
           alt=""
         />
-      </LeftCart>
+      </FinishCart>
       <CardContent onClick={pushToCartPage}>
         <h2>{DateFormat(props.payload.date)}</h2>
         <p>{props.payload.products.length} barang</p>
@@ -135,12 +135,12 @@ const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
   return (
     <>
       <Card<ProductCart> {...props} style={{ height: '48px' }}>
-        <LeftCart onClick={finishProductHandler}>
+        <FinishCart onClick={finishProductHandler}>
           <img
             src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
             alt=""
           />
-        </LeftCart>
+        </FinishCart>
         <ProductCartCardContent onClick={toggleModalAddProduct}>
           <p>{props.payload.name}</p>
         </ProductCartCardContent>
@@ -192,7 +192,7 @@ const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
   return (
     <>
       <Card<ProductBase> {...props} style={{ height: '48px' }}>
-        <LeftCart style={{ width: '12px' }} />
+        <FinishCart style={{ width: '12px' }} />
         <ProductCartCardContent onClick={toggleModalAddProduct}>
           <p>{props.payload.name}</p>
         </ProductCartCardContent>
