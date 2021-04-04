@@ -125,49 +125,27 @@ const CartCard = (props: Props<Cart>): ReactElement => {
 }
 
 const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
-  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
-  const toggleModalAddProduct = () => {
-    setIsModalAddProductShow(!isModalAddProductShow)
+  const finishHandler = () => {
+    props.actionHandler('FINISH', props.payload)
   }
 
-  const finishProductHandler = () => {
-    console.log(`Finishing ${props.payload.id}`)
+  const clickContentHandler = () => {
+    props.actionHandler('CLICK', props.payload)
   }
 
   return (
     <>
       <Card<ProductCart> {...props} style={{ height: '48px' }}>
-        <FinishCart onClick={finishProductHandler}>
+        <FinishCart onClick={finishHandler}>
           <img
             src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
             alt=""
           />
         </FinishCart>
-        <ProductCartCardContent onClick={toggleModalAddProduct}>
+        <ProductCartCardContent onClick={clickContentHandler}>
           <p>{props.payload.name}</p>
         </ProductCartCardContent>
       </Card>
-      <Modal
-        isShow={isModalAddProductShow}
-        closeHandler={toggleModalAddProduct}
-        header={<ModalTitle>Edit Produk</ModalTitle>}
-        content={
-          <ModalContent>
-            <Input fullWidth placeholder="Nama produk" />
-          </ModalContent>
-        }
-        footer={
-          <Button
-            variant="primary"
-            icon="/product--white.svg"
-            align="center"
-            fullWidth
-            onClick={toggleModalAddProduct}
-          >
-            Edit Produk
-          </Button>
-        }
-      />
     </>
   )
 }
