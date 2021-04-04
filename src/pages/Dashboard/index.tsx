@@ -2,6 +2,7 @@ import { CartCard, CardAction } from '@/components/Card'
 import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from 'Types'
 
@@ -36,6 +37,8 @@ const CartElement = styled(CartCard)`
 `
 
 export default function index(): ReactElement {
+  const history = useHistory()
+
   const checkCartHandler = (cartId: Cart) => {
     console.log(cartId)
   }
@@ -46,11 +49,14 @@ export default function index(): ReactElement {
 
   const receiveActionHandler = (action: CardAction, cartId: Cart) => {
     switch (action) {
-      case 'CHECK':
+      case 'FINISH':
         checkCartHandler(cartId)
         break
       case 'DELETE':
         deleteCartHandler(cartId)
+        break
+      case 'CLICK':
+        history.push(`/carts/${cartId.id}`)
         break
       default:
     }

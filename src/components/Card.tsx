@@ -3,11 +3,15 @@ import React, { ReactElement, useState } from 'react'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import { Cart, ProductBase, ProductCart } from 'Types'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 
-export type CardAction = 'CHECK' | 'DELETE' | 'EDIT_PRODUCT'
+export type CardAction =
+  | 'CHECK'
+  | 'DELETE'
+  | 'EDIT_PRODUCT'
+  | 'FINISH'
+  | 'CLICK'
 
 interface Props<T> extends React.HTMLAttributes<HTMLElement> {
   payload: T
@@ -96,14 +100,12 @@ export default function Card<T>(props: Props<T>): ReactElement {
 }
 
 const CartCard = (props: Props<Cart>): ReactElement => {
-  const history = useHistory()
-
   const finishCartCardHandler = () => {
-    console.log(`Finishing ${props.payload.id}`)
+    props.actionHandler('FINISH', props.payload)
   }
 
-  const pushToCartPage = () => {
-    history.push(`/carts/${props.payload.id}`)
+  const clickContentHandler = () => {
+    props.actionHandler('CLICK', props.payload)
   }
 
   return (
@@ -114,7 +116,7 @@ const CartCard = (props: Props<Cart>): ReactElement => {
           alt=""
         />
       </FinishCart>
-      <CardContent onClick={pushToCartPage}>
+      <CardContent onClick={clickContentHandler}>
         <h2>{DateFormat(props.payload.date)}</h2>
         <p>{props.payload.products.length} barang</p>
       </CardContent>
