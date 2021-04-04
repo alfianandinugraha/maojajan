@@ -1,19 +1,20 @@
 import firebase from '@/utils/Firebase'
 import { initialTimestampNow } from '@/initials/intialFirebaseTImestamp'
-import { Product } from 'Types'
+import { Product, ProductFirebase } from 'Types'
 
-const storeProduct = (
-  productName: string,
-  uid: string
-): Promise<
-  firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
-> =>
-  firebase.firestore().collection('products').add({
+const storeProduct = (productName: string, uid: string): Promise<Product> => {
+  const firebaseData: ProductFirebase = {
     name: productName,
     uid,
     createdAt: initialTimestampNow,
     updatedAt: initialTimestampNow,
-  })
+  }
+  return firebase
+    .firestore()
+    .collection('products')
+    .add(firebaseData)
+    .then((data) => ({ ...firebaseData, id: data.id }))
+}
 
 const getProducts = (uid: string): Promise<Product[]> =>
   firebase
