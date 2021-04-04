@@ -37,7 +37,7 @@ const RootStyles = styled.div`
 
 const App = (): ReactElement => {
   const [, setIsLoggedIn] = useAtom(authAtom)
-  const [user, setUser] = useAtom(userAtom)
+  const [, setUser] = useAtom(userAtom)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
