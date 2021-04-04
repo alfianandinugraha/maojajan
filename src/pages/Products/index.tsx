@@ -8,6 +8,9 @@ import { ProductBaseCard, CardAction } from '@/components/Card'
 import { initialProduct } from '@/initials/initialProduct'
 import { ProductBase } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
+import { userAtom } from '@/store/userAtom'
+import { useAtom } from 'jotai'
+import { storeProduct } from '@/http/product'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -18,12 +21,18 @@ const ListProductCart = styled.section`
 `
 
 export default function index(): ReactElement {
+  const [user] = useAtom(userAtom)
+
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
   }
 
   const addProductHandler = (payload: string) => {
-    console.log(payload)
+    if (!user) return
+    storeProduct(payload, user.uid).then((data) => {
+      console.log(data)
+      console.log('produk berhasil disimpan')
+    })
   }
 
   return (
