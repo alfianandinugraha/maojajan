@@ -1,16 +1,15 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import MainLayout, {
   HeadingLayout,
   CaptionEditProduct,
 } from '@/layout/MainLayout'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import { initialProduct } from '@/initials/initialProduct'
-import { ProductBase } from 'Types'
+import { ProductBase, Product } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
-import { storeProduct } from '@/http/product'
+import { storeProduct, getProducts } from '@/http/product'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -22,6 +21,7 @@ const ListProductCart = styled.section`
 
 export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
+  const [products, setProducts] = useState<Product[]>([])
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
@@ -35,6 +35,14 @@ export default function index(): ReactElement {
     })
   }
 
+  useEffect(() => {
+    console.log('fetching')
+    if (!user) return
+    getProducts(user.uid).then((data) => {
+      setProducts(data)
+    })
+  }, [])
+
   return (
     <MainLayout>
       <HeadingLayout>List Produk</HeadingLayout>
@@ -44,10 +52,10 @@ export default function index(): ReactElement {
       />
       <CaptionEditProduct />
       <ListProductCart>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
+        {products.map((item) => (
           <ProductBaseCard
-            key={item}
-            payload={initialProduct}
+            key={item.id}
+            payload={item}
             disabled={false}
             actionHandler={actionCardHandler}
           />

@@ -1,5 +1,6 @@
 import firebase from '@/utils/Firebase'
 import { initialTimestampNow } from '@/initials/intialFirebaseTImestamp'
+import { Product } from 'Types'
 
 const storeProduct = (
   productName: string,
@@ -13,4 +14,21 @@ const storeProduct = (
     createdAt: initialTimestampNow,
     updatedAt: initialTimestampNow,
   })
-export { storeProduct }
+
+const getProducts = (uid: string): Promise<Product[]> =>
+  firebase
+    .firestore()
+    .collection('products')
+    .where('uid', '==', uid)
+    .get()
+    .then((ref) => {
+      const result: Product[] = []
+      ref.forEach((doc) => {
+        result.push({
+          ...(doc.data() as Product),
+          id: doc.id,
+        })
+      })
+      return result
+    })
+export { storeProduct, getProducts }
