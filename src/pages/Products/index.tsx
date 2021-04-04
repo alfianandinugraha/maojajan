@@ -9,7 +9,12 @@ import { ProductBase, Product } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
-import { storeProduct, getProducts, removeProduct } from '@/http/product'
+import {
+  storeProduct,
+  getProducts,
+  removeProduct,
+  editProduct,
+} from '@/http/product'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -34,6 +39,15 @@ export default function index(): ReactElement {
         .catch(() => {
           console.error('Gagal menghapus produk')
         })
+    }
+
+    if (type === 'EDIT_PRODUCT') {
+      const data: Product = payload as Product
+      editProduct(data).then(() => {
+        setProducts(
+          products.map((product) => (product.id === data.id ? data : product))
+        )
+      })
     }
   }
 
