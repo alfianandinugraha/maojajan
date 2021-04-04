@@ -32,6 +32,7 @@ export default function index(): ReactElement {
     storeProduct(payload, user.uid).then((data) => {
       console.log(data)
       console.log('produk berhasil disimpan')
+      setProducts([data, ...products])
     })
   }
 
