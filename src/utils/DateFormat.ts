@@ -18,7 +18,7 @@ const indonesianMonth = [
 const DateFormat = (firebaseDate: Firebase.firestore.Timestamp): string => {
   const date = firebaseDate.toDate()
   const month = date.getMonth()
-  const day = date.getDay()
+  const day = date.getDate()
   const year = date.getFullYear()
   const format = `${day} ${indonesianMonth[month]} ${year}`
   return format
