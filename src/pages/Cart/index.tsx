@@ -65,6 +65,26 @@ export default function index(): ReactElement {
     })
   }
 
+  const deleteProductCart = (productCartId: string) => {
+    const newCart = {
+      ...cart,
+      products: cart.products.filter((product) => product.id !== productCartId),
+    }
+
+    if (cart.products.length === 1) {
+      removeCart(params.id).then(() => {
+        setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
+        pusher.toDashboardPage()
+      })
+      return
+    }
+
+    editCart(newCart).then(() => {
+      setCart(newCart)
+      setCarts(editCarts(newCart))
+    })
+  }
+
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     switch (type) {
       case 'FINISH':
@@ -73,6 +93,9 @@ export default function index(): ReactElement {
         break
       case 'CLICK':
         setIsModalAddProductShow(!isModalAddProductShow)
+        break
+      case 'DELETE':
+        deleteProductCart(payload.id)
         break
       default:
     }
