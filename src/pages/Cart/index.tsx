@@ -100,15 +100,19 @@ export default function index(): ReactElement {
   useEffect(() => {
     if (!carts.length) {
       console.log(`fetching cart id: ${params.id}`)
-      getCartById(params.id).then((data) => {
-        console.log('fetching success')
-        if (data) {
-          setCart(data)
-          return
-        }
+      getCartById(params.id)
+        .then((data) => {
+          console.log('fetching success')
+          if (data) {
+            setCart(data)
+            return
+          }
 
-        pusher.toDashboardPage()
-      })
+          pusher.toDashboardPage()
+        })
+        .catch(() => {
+          pusher.toDashboardPage()
+        })
       return
     }
 

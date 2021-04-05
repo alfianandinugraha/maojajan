@@ -9,10 +9,11 @@ const storeCart = (cart: CartFirebase): Promise<Cart> =>
     .add(cart)
     .then((res) => ({ ...cart, id: res.id }))
 
-const getCarts = (): Promise<Cart[]> =>
+const getCarts = (uid: string): Promise<Cart[]> =>
   firebase
     .firestore()
     .collection('carts')
+    .where('uid', '==', uid)
     .get()
     .then((res) => {
       const result: Cart[] = []

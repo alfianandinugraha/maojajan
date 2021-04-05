@@ -7,6 +7,7 @@ import { Cart } from 'Types'
 import { getCarts, finishCart, unfinishCart, removeCart } from '@/http/cart'
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
+import { userAtom } from '@/store/userAtom'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -40,6 +41,7 @@ const CartElement = styled(CartCard)`
 
 export default function index(): ReactElement {
   const [carts, setCarts] = useAtom(cartsAtom)
+  const [user] = useAtom(userAtom)
   const history = useHistory()
 
   const editCarts = (newCart: Cart) =>
@@ -79,7 +81,8 @@ export default function index(): ReactElement {
   }
 
   useEffect(() => {
-    getCarts().then((data) => {
+    if (!user) return
+    getCarts(user.uid).then((data) => {
       console.log(data)
       setCarts(data)
     })
