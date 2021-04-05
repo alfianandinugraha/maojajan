@@ -12,7 +12,13 @@ import { initialCart } from '@/initials/initialCart'
 import { ProductBase, Cart } from 'Types'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
-import { getCartById, finishCart, unfinishCart, removeCart } from '@/http/cart'
+import {
+  getCartById,
+  finishCart,
+  unfinishCart,
+  removeCart,
+  editCart,
+} from '@/http/cart'
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
@@ -48,7 +54,20 @@ export default function index(): ReactElement {
   }
 
   const addProductHandler = (payload: string) => {
-    console.log(payload)
+    const newProduct = {
+      id: Math.random().toString(),
+      name: payload,
+      isPurchased: false,
+    }
+
+    const newCart = {
+      ...cart,
+      products: [newProduct, ...cart.products],
+    }
+    editCart(newCart).then(() => {
+      setCart(newCart)
+      setCarts(editCarts(newCart))
+    })
   }
 
   const toggleModalAddProduct = () => {

@@ -69,4 +69,5 @@ export {
   unfinishCart,
   removeCart,
   getCartById,
+  editCart,
 }
