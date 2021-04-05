@@ -46,7 +46,7 @@ export default function index(): ReactElement {
   const pusher = useHistoryPusher()
   const isFinish = cart.products.every((product) => product.isPurchased)
 
-  const editCarts = (newCart: Cart) =>
+  const editNewCarts = (newCart: Cart) =>
     carts.map((cartItem) => (cartItem.id === newCart.id ? newCart : cartItem))
 
   const toggleFinishCartProduct = (payload: ProductCart) => {
@@ -61,7 +61,7 @@ export default function index(): ReactElement {
 
     editCart(newCart).then(() => {
       setCart(newCart)
-      setCarts(editCarts(newCart))
+      setCarts(editNewCarts(newCart))
     })
   }
 
@@ -81,7 +81,7 @@ export default function index(): ReactElement {
 
     editCart(newCart).then(() => {
       setCart(newCart)
-      setCarts(editCarts(newCart))
+      setCarts(editNewCarts(newCart))
     })
   }
 
@@ -115,7 +115,7 @@ export default function index(): ReactElement {
     }
     editCart(newCart).then(() => {
       setCart(newCart)
-      setCarts(editCarts(newCart))
+      setCarts(editNewCarts(newCart))
     })
   }
 
@@ -125,14 +125,14 @@ export default function index(): ReactElement {
 
   const finishCartHandler = () => {
     finishCart(cart).then((res: Cart) => {
-      setCarts(editCarts(res))
+      setCarts(editNewCarts(res))
       setCart(res)
     })
   }
 
   const unfinishCartHandler = () => {
     unfinishCart(cart).then((res: Cart) => {
-      setCarts(editCarts(res))
+      setCarts(editNewCarts(res))
       setCart(res)
     })
   }
