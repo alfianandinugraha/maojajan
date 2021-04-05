@@ -32,6 +32,12 @@ const ButtonGroup = styled.section`
   }
 `
 
+const CardGroup = styled.section`
+  & > *:first-child {
+    margin-bottom: 16px;
+  }
+`
+
 export default function index(): ReactElement {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const [carts, setCarts] = useAtom(cartsAtom)
@@ -144,14 +150,16 @@ export default function index(): ReactElement {
         payloadHandler={addProductHandler}
       />
       <CaptionEditProduct />
-      {cart.products.map((product) => (
-        <ProductCartCard
-          key={product.id}
-          disabled={product.isPurchased}
-          payload={product}
-          actionHandler={actionCardHandler}
-        />
-      ))}
+      <CardGroup>
+        {cart.products.map((product) => (
+          <ProductCartCard
+            key={product.id}
+            disabled={product.isPurchased}
+            payload={product}
+            actionHandler={actionCardHandler}
+          />
+        ))}
+      </CardGroup>
       <Modal
         isShow={isModalAddProductShow}
         closeHandler={toggleModalAddProduct}
