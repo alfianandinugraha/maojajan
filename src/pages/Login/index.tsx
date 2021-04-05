@@ -11,9 +11,12 @@ import AuthLayout, {
 import initialInputState from '@/initials/initialInputState'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 import { loginUser } from '@/http/Auth'
+import { useAtom } from 'jotai'
+import { authAtom } from '@/store/authAtom'
 
 export default function index(): ReactElement {
   const [isRequestLogin, setIsRequestLogin] = useState(false)
+  const [, setIsLoggedIn] = useAtom(authAtom)
   const history = useHistoryPusher()
 
   const toRegisterPage = () => history.toRegisterPage()
@@ -65,7 +68,7 @@ export default function index(): ReactElement {
     setIsRequestLogin(true)
     loginUser(inputEmail.value, inputPassword.value)
       .then(() => {
-        history.toDashboardPage()
+        setIsLoggedIn(true)
       })
       .catch((err) => console.error({ err }))
       .finally(() => {
