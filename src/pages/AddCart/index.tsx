@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import MainLayout, {
   HeadingLayout,
   CaptionEditProduct,
@@ -6,10 +6,10 @@ import MainLayout, {
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
-import { initialProducts } from '@/initials/initialProduct'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase } from 'Types'
+import { ProductBase, ProductCart } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
+import { initialProductCart } from '@/initials/initialProductCart'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -24,12 +24,20 @@ const ListProductCart = styled.section`
 `
 
 export default function index(): ReactElement {
+  const [productCarts, setProductCarts] = useState<ProductCart[]>([])
+
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
   }
 
   const addProductHandler = (payload: string) => {
     console.log(payload)
+    const productCart = {
+      ...initialProductCart,
+      name: payload,
+      id: Math.random().toString(),
+    }
+    setProductCarts([productCart, ...productCarts])
   }
 
   return (
@@ -54,10 +62,10 @@ export default function index(): ReactElement {
       </Button>
       <CaptionEditProduct />
       <ListProductCart>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
+        {productCarts.map((item) => (
           <ProductBaseCard
-            key={item}
-            payload={initialProducts[0]}
+            key={item.id}
+            payload={item}
             disabled={false}
             actionHandler={actionCardHandler}
           />
