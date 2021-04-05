@@ -3,12 +3,13 @@ import MainLayout, {
   ProfileInputGroup,
   ProfileButtonGroup,
 } from '@/layout/MainLayout'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { logoutUser } from '@/http/Auth'
+import { editUser } from '@/http/User'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
 import { authAtom } from '@/store/authAtom'
@@ -23,7 +24,9 @@ const LinkGroup = styled.section`
 `
 
 export default function index(): ReactElement {
-  const [, setUser] = useAtom(userAtom)
+  const [user, setUser] = useAtom(userAtom)
+  const [fullName, setFullName] = useState(user ? user.fullName : '')
+  const [isRequestFullName, setIsRequestFullName] = useState(false)
   const [, setIsLoggedIn] = useAtom(authAtom)
   const pusher = useHistoryPusher()
 
@@ -37,6 +40,21 @@ export default function index(): ReactElement {
     pusher.toUpdatePasswordPage()
   }
 
+  const inputFullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFullName(e.target.value)
+  }
+
+  const submitFormHandler = () => {
+    if (!user || user.fullName === fullName || isRequestFullName) return
+    setIsRequestFullName(true)
+    const newUser = { ...user, fullName }
+    editUser(newUser).then(() => {
+      console.log('update fullname berhasil')
+      setIsRequestFullName(false)
+      setUser(newUser)
+    })
+  }
+
   const logoutUserHandler = () => {
     logoutUser().then(() => {
       setUser(null)
@@ -48,13 +66,13 @@ export default function index(): ReactElement {
     <MainLayout>
       <HeadingLayout>Pengaturan</HeadingLayout>
       <ProfileInputGroup>
-        <Input fullWidth icon="user--gray.svg" value="Alfian Andi Nugraha" />
         <Input
           fullWidth
-          icon="email--dark.svg"
-          value="alfian@andi.com"
-          disabled
+          icon="user--gray.svg"
+          value={fullName}
+          onChange={inputFullNameHandler}
         />
+        <Input fullWidth icon="email--dark.svg" disabled value={user?.email} />
       </ProfileInputGroup>
       <LinkGroup>
         <a href="/" onClick={toUpdateEmailPage}>
@@ -65,7 +83,13 @@ export default function index(): ReactElement {
         </a>
       </LinkGroup>
       <ProfileButtonGroup>
-        <Button variant="primary" align="center" fullWidth>
+        <Button
+          variant="primary"
+          align="center"
+          fullWidth
+          onClick={submitFormHandler}
+          isLoading={isRequestFullName}
+        >
           Simpan Perubahan
         </Button>
         <Button
