@@ -16,10 +16,13 @@ import {
   EMPTY_VALUE_MESSAGE,
 } from '@/validation/form'
 import { registerUser } from '@/http/Auth'
+import { useAtom } from 'jotai'
+import { authAtom } from '@/store/authAtom'
 
 export default function index(): ReactElement {
   const history = useHistoryPusher()
   const [isRequestRegister, setIsRequestRegister] = useState(false)
+  const [, setIsLoggedIn] = useAtom(authAtom)
   const [inputFullName, setInputFullName] = useState<InputState<string>>(
     initialInputState
   )
@@ -79,7 +82,7 @@ export default function index(): ReactElement {
       password: inputPassword.value,
     })
       .then(() => {
-        history.toDashboardPage()
+        setIsLoggedIn(true)
       })
       .catch((message: string) => {
         console.error({ message })
