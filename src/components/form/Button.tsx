@@ -14,6 +14,7 @@ interface ButtonProps {
   fullWidth?: boolean
   align?: 'center' | 'left' | 'right'
   isDisabled?: boolean
+  isLoading?: boolean
 }
 
 const ImageIcon = styled.img`
@@ -24,6 +25,17 @@ const ImageIcon = styled.img`
 
 const Children = styled.p`
   color: white !important;
+`
+
+const LoadingAnimate = styled.div`
+  height: 23px;
+  width: 23px;
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-top: 2px solid ${(props) => props.theme.color.dark};
+  border-left: 2px solid ${(props) => props.theme.color.dark};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
 `
 
 const Button = styled.button<ButtonProps>`
@@ -45,6 +57,8 @@ const Button = styled.button<ButtonProps>`
     `background-color: ${props.theme.color.danger};`}
   ${(props) =>
     props.isDisabled && `background-color: ${props.theme.color.gray};`}
+  ${(props) =>
+    props.isLoading && `background-color: ${props.theme.color.gray};`}
   ${(props) =>
     props.variant === 'auth' &&
     `
@@ -78,8 +92,13 @@ const Button = styled.button<ButtonProps>`
 export default function index(props: Props): ReactElement {
   return (
     <Button {...props}>
-      {props.icon && <ImageIcon src={props.icon} alt="icon" />}
-      <Children>{props.children}</Children>
+      {props.isLoading && <LoadingAnimate />}
+      {!props.isLoading && (
+        <>
+          {props.icon && <ImageIcon src={props.icon} alt="icon" />}
+          <Children>{props.children}</Children>
+        </>
+      )}
     </Button>
   )
 }
