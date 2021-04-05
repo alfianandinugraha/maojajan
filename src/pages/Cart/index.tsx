@@ -9,7 +9,7 @@ import Button from '@/components/form/Button'
 import AddProductButton from '@/components/AddProductButton'
 import { CardAction, ProductCartCard } from '@/components/Card'
 import { initialCart } from '@/initials/initialCart'
-import { ProductBase, Cart } from 'Types'
+import { ProductBase, Cart, ProductCart } from 'Types'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
 import {
@@ -49,8 +49,28 @@ export default function index(): ReactElement {
   const editCarts = (newCart: Cart) =>
     carts.map((cartItem) => (cartItem.id === newCart.id ? newCart : cartItem))
 
+  const toggleFinishCartProduct = (payload: ProductCart) => {
+    const newCart = {
+      ...cart,
+      products: cart.products.map((product) =>
+        product.id === payload.id
+          ? { ...payload, isPurchased: !payload.isPurchased }
+          : product
+      ),
+    }
+
+    editCart(newCart).then(() => {
+      setCart(newCart)
+      setCarts(editCarts(newCart))
+    })
+  }
+
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     switch (type) {
+      case 'FINISH':
+        console.log('finishing product cart')
+        toggleFinishCartProduct(payload as ProductCart)
+        break
       case 'CLICK':
         setIsModalAddProductShow(!isModalAddProductShow)
         break
