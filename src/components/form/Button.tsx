@@ -13,6 +13,7 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'auth' | 'outline-dashed' | 'danger'
   fullWidth?: boolean
   align?: 'center' | 'left' | 'right'
+  isDisabled?: boolean
 }
 
 const ImageIcon = styled.img`
@@ -42,6 +43,8 @@ const Button = styled.button<ButtonProps>`
   ${(props) =>
     props.variant === 'danger' &&
     `background-color: ${props.theme.color.danger};`}
+  ${(props) =>
+    props.isDisabled && `background-color: ${props.theme.color.gray};`}
   ${(props) =>
     props.variant === 'auth' &&
     `
