@@ -15,6 +15,7 @@ import { userAtom } from '@/store/userAtom'
 import { initialCart } from '@/initials/initialCart'
 import firebase from '@/utils/Firebase'
 import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
+import { storeCart } from '@/http/cart'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -60,7 +61,10 @@ export default function index(): ReactElement {
       products: productCarts,
     }
     const cartFirebase: CartFirebase = cartFirebaseFactory(cart)
-    console.log(cartFirebase)
+    storeCart(cartFirebase).then((res) => {
+      console.log('keranjang berhasil di tambahkan')
+      console.log(res)
+    })
   }
 
   return (
