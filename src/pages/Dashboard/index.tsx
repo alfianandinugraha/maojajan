@@ -1,10 +1,12 @@
 import { CartCard, CardAction } from '@/components/Card'
 import DashboardLayout from '@/layout/DashboardLayout'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from 'Types'
 import { getCarts, finishCart, unfinishCart, removeCart } from '@/http/cart'
+import { useAtom } from 'jotai'
+import { cartsAtom } from '@/store/cartAtom'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -37,7 +39,7 @@ const CartElement = styled(CartCard)`
 `
 
 export default function index(): ReactElement {
-  const [carts, setCarts] = useState<Cart[]>([])
+  const [carts, setCarts] = useAtom(cartsAtom)
   const history = useHistory()
 
   const editCarts = (newCart: Cart) =>
