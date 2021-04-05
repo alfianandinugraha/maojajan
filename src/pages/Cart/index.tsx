@@ -12,9 +12,10 @@ import { initialCart } from '@/initials/initialCart'
 import { ProductBase, Cart } from 'Types'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
-import { getCartById } from '@/http/cart'
+import { getCartById, finishCart, unfinishCart } from '@/http/cart'
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 
 const ButtonGroup = styled.section`
   margin-bottom: 16px;
@@ -27,9 +28,14 @@ const ButtonGroup = styled.section`
 
 export default function index(): ReactElement {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
-  const [carts] = useAtom(cartsAtom)
+  const [carts, setCarts] = useAtom(cartsAtom)
   const [cart, setCart] = useState<Cart>(initialCart)
   const params = useParams<{ id: string }>()
+  const pusher = useHistoryPusher()
+  const isFinish = cart.products.every((product) => product.isPurchased)
+
+  const editCarts = (newCart: Cart) =>
+    carts.map((cartItem) => (cartItem.id === newCart.id ? newCart : cartItem))
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     switch (type) {
@@ -49,14 +55,31 @@ export default function index(): ReactElement {
     setIsModalAddProductShow(!isModalAddProductShow)
   }
 
-  const finishCartHandler = () => {}
+  const finishCartHandler = () => {
+    finishCart(cart).then((res: Cart) => {
+      setCarts(editCarts(res))
+      setCart(res)
+    })
+  }
+
+  const unfinishCartHandler = () => {
+    unfinishCart(cart).then((res: Cart) => {
+      setCarts(editCarts(res))
+      setCart(res)
+    })
+  }
 
   useEffect(() => {
     if (!carts.length) {
       console.log(`fetching cart id: ${params.id}`)
       getCartById(params.id).then((data) => {
         console.log('fetching success')
-        setCart(data)
+        if (data) {
+          setCart(data)
+          return
+        }
+
+        pusher.toDashboardPage()
       })
       return
     }
@@ -71,7 +94,8 @@ export default function index(): ReactElement {
         <Button
           variant="secondary"
           icon="/check--white.svg"
-          onClick={finishCartHandler}
+          onClick={isFinish ? unfinishCartHandler : finishCartHandler}
+          isDisabled={isFinish}
         >
           Selesai
         </Button>
@@ -87,7 +111,7 @@ export default function index(): ReactElement {
       {cart.products.map((product) => (
         <ProductCartCard
           key={product.id}
-          disabled={false}
+          disabled={product.isPurchased}
           payload={product}
           actionHandler={actionCardHandler}
         />
