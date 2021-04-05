@@ -7,9 +7,14 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase, ProductCart } from 'Types'
+import { ProductBase, ProductCart, Cart, CartFirebase } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 import { initialProductCart } from '@/initials/initialProductCart'
+import { useAtom } from 'jotai'
+import { userAtom } from '@/store/userAtom'
+import { initialCart } from '@/initials/initialCart'
+import firebase from '@/utils/Firebase'
+import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -25,19 +30,37 @@ const ListProductCart = styled.section`
 
 export default function index(): ReactElement {
   const [productCarts, setProductCarts] = useState<ProductCart[]>([])
+  const [user] = useAtom(userAtom)
+  const [cartDate, setCartDate] = useState<Date>(new Date())
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
   }
 
+  const inputDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = new Date(e.target.value)
+    setCartDate(date)
+  }
+
   const addProductHandler = (payload: string) => {
-    console.log(payload)
     const productCart = {
       ...initialProductCart,
       name: payload,
       id: Math.random().toString(),
     }
     setProductCarts([productCart, ...productCarts])
+  }
+
+  const storeCartHandler = () => {
+    if (!user) return
+    const cart: Cart = {
+      ...initialCart,
+      uid: user.uid,
+      date: new firebase.firestore.Timestamp(cartDate.getTime() / 1000, 0),
+      products: productCarts,
+    }
+    const cartFirebase: CartFirebase = cartFirebaseFactory(cart)
+    console.log(cartFirebase)
   }
 
   return (
@@ -47,6 +70,7 @@ export default function index(): ReactElement {
         placeholder="Untuk tanggal"
         icon="calendar--gray.svg"
         type="date"
+        onChange={inputDateHandler}
       />
       <AddProductButton
         payloadHandler={addProductHandler}
@@ -57,6 +81,7 @@ export default function index(): ReactElement {
         icon="cart--white.svg"
         align="center"
         style={{ marginBottom: '16px' }}
+        onClick={storeCartHandler}
       >
         Simpan
       </Button>
