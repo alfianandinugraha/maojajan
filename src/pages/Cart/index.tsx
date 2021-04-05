@@ -42,6 +42,8 @@ export default function index(): ReactElement {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const [carts, setCarts] = useAtom(cartsAtom)
   const [cart, setCart] = useState<Cart>(initialCart)
+  const [isLoadingFinishCart, setIsLoadingFinishCart] = useState(false)
+  const [isLoadingRemoveCart, setIsLoadingRemoveCart] = useState(false)
   const params = useParams<{ id: string }>()
   const pusher = useHistoryPusher()
   const isFinish = cart.products.every((product) => product.isPurchased)
@@ -119,17 +121,23 @@ export default function index(): ReactElement {
     setIsModalAddProductShow(!isModalAddProductShow)
   }
 
-  const finishCartHandler = () => {
-    finishCart(cart).then((res: Cart) => editCartsAtom(res))
-  }
+  const statusCartHandler = () => {
+    setIsLoadingFinishCart(true)
+    let request = finishCart
 
-  const unfinishCartHandler = () => {
-    unfinishCart(cart).then((res: Cart) => editCartsAtom(res))
+    if (isFinish) request = unfinishCart
+
+    request(cart).then((res: Cart) => {
+      editCartsAtom(res)
+      setIsLoadingFinishCart(false)
+    })
   }
 
   const removeCartHandler = () => {
     console.log(`removing cart id : ${params.id}`)
+    setIsLoadingRemoveCart(true)
     removeCart(params.id).then(() => {
+      setIsLoadingRemoveCart(false)
       console.log('remove successfully')
       setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
       pusher.toDashboardPage()
@@ -165,15 +173,19 @@ export default function index(): ReactElement {
         <Button
           variant="secondary"
           icon="/check--white.svg"
-          onClick={isFinish ? unfinishCartHandler : finishCartHandler}
+          onClick={statusCartHandler}
           isDisabled={isFinish}
+          isLoading={isLoadingFinishCart}
+          style={{ width: '105.14px' }}
         >
           Selesai
         </Button>
         <Button
           variant="danger"
           icon="/trash--white.svg"
-          onClick={removeCartHandler}
+          onClick={!isLoadingRemoveCart ? removeCartHandler : undefined}
+          isLoading={isLoadingRemoveCart}
+          style={{ width: '101.16px' }}
         >
           Hapus
         </Button>
