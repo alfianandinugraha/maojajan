@@ -19,6 +19,7 @@ import { registerUser } from '@/http/Auth'
 
 export default function index(): ReactElement {
   const history = useHistoryPusher()
+  const [isRequestRegister, setIsRequestRegister] = useState(false)
   const [inputFullName, setInputFullName] = useState<InputState<string>>(
     initialInputState
   )
@@ -35,13 +36,6 @@ export default function index(): ReactElement {
   const toLoginPage = () => history.toLoginPage()
 
   const submitHandler = () => {
-    const payload = {
-      fullName: inputFullName.value,
-      email: inputEmail.value,
-      password: inputPassword.value,
-      rePassword: inputRePassword.value,
-    }
-
     if (!inputFullName.value) {
       setInputFullName({
         ...inputFullName,
@@ -78,7 +72,7 @@ export default function index(): ReactElement {
     ) {
       return
     }
-    alert(JSON.stringify(payload, null, 2))
+    setIsRequestRegister(true)
     registerUser({
       fullName: inputFullName.value,
       email: inputEmail.value,
@@ -89,6 +83,9 @@ export default function index(): ReactElement {
       })
       .catch((message: string) => {
         console.error({ message })
+      })
+      .finally(() => {
+        setIsRequestRegister(false)
       })
   }
 
@@ -171,6 +168,7 @@ export default function index(): ReactElement {
         variant="auth"
         style={{ marginTop: '86px' }}
         onClick={submitHandler}
+        isLoading={isRequestRegister}
       >
         Register
       </Button>
