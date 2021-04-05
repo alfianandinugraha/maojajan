@@ -12,7 +12,7 @@ import { initialCart } from '@/initials/initialCart'
 import { ProductBase, Cart } from 'Types'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
-import { getCartById, finishCart, unfinishCart } from '@/http/cart'
+import { getCartById, finishCart, unfinishCart, removeCart } from '@/http/cart'
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
@@ -69,6 +69,15 @@ export default function index(): ReactElement {
     })
   }
 
+  const removeCartHandler = () => {
+    console.log(`removing cart id : ${params.id}`)
+    removeCart(params.id).then(() => {
+      console.log('remove successfully')
+      setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
+      pusher.toDashboardPage()
+    })
+  }
+
   useEffect(() => {
     if (!carts.length) {
       console.log(`fetching cart id: ${params.id}`)
@@ -99,7 +108,11 @@ export default function index(): ReactElement {
         >
           Selesai
         </Button>
-        <Button variant="danger" icon="/trash--white.svg">
+        <Button
+          variant="danger"
+          icon="/trash--white.svg"
+          onClick={removeCartHandler}
+        >
           Hapus
         </Button>
       </ButtonGroup>
