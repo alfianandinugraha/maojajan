@@ -51,3 +51,12 @@
   top: 70% !important;
   transition: opacity 500ms, top 500ms;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
