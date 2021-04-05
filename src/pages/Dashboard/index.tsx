@@ -1,10 +1,10 @@
 import { CartCard, CardAction } from '@/components/Card'
-import initialCarts from '@/initials/initialCarts'
 import DashboardLayout from '@/layout/DashboardLayout'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from 'Types'
+import { getCarts } from '@/http/cart'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -37,6 +37,7 @@ const CartElement = styled(CartCard)`
 `
 
 export default function index(): ReactElement {
+  const [carts, setCarts] = useState<Cart[]>([])
   const history = useHistory()
 
   const checkCartHandler = (cartId: Cart) => {
@@ -62,6 +63,13 @@ export default function index(): ReactElement {
     }
   }
 
+  useEffect(() => {
+    getCarts().then((data) => {
+      console.log(data)
+      setCarts(data)
+    })
+  }, [])
+
   return (
     <DashboardLayout>
       <Header>
@@ -69,7 +77,7 @@ export default function index(): ReactElement {
         <h1>Alfian Andi</h1>
       </Header>
       <div>
-        {initialCarts.map((item) => (
+        {carts.map((item) => (
           <CartElement
             disabled={item.products.every((product) => product.isPurchased)}
             key={item.id}

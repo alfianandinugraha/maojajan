@@ -8,4 +8,20 @@ const storeCart = (cart: CartFirebase): Promise<Cart> =>
     .add(cart)
     .then((res) => ({ ...cart, id: res.id }))
 
-export { storeCart }
+const getCarts = (): Promise<Cart[]> =>
+  firebase
+    .firestore()
+    .collection('carts')
+    .get()
+    .then((res) => {
+      const result: Cart[] = []
+      res.forEach((doc) => {
+        result.push({
+          ...(doc.data() as Cart),
+          id: doc.id,
+        })
+      })
+      return result
+    })
+
+export { storeCart, getCarts }
