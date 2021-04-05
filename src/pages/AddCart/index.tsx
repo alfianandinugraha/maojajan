@@ -16,6 +16,7 @@ import { initialCart } from '@/initials/initialCart'
 import firebase from '@/utils/Firebase'
 import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 import { storeCart } from '@/http/cart'
+import useHistoryPusher from '@/hooks/useHistoryPusher'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -32,7 +33,9 @@ const ListProductCart = styled.section`
 export default function index(): ReactElement {
   const [productCarts, setProductCarts] = useState<ProductCart[]>([])
   const [user] = useAtom(userAtom)
+  const [isRequestStoreCart, setIsRequestStoreCart] = useState(false)
   const [cartDate, setCartDate] = useState<Date>(new Date())
+  const pusher = useHistoryPusher()
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
@@ -53,7 +56,8 @@ export default function index(): ReactElement {
   }
 
   const storeCartHandler = () => {
-    if (!user) return
+    if (!user || isRequestStoreCart) return
+    setIsRequestStoreCart(true)
     const cart: Cart = {
       ...initialCart,
       uid: user.uid,
@@ -63,6 +67,8 @@ export default function index(): ReactElement {
     const cartFirebase: CartFirebase = cartFirebaseFactory(cart)
     storeCart(cartFirebase).then((res) => {
       console.log('keranjang berhasil di tambahkan')
+      setIsRequestStoreCart(false)
+      pusher.toDashboardPage()
       console.log(res)
     })
   }
@@ -87,6 +93,7 @@ export default function index(): ReactElement {
         align="center"
         style={{ marginBottom: '16px' }}
         onClick={storeCartHandler}
+        isLoading={isRequestStoreCart}
       >
         Simpan
       </Button>
