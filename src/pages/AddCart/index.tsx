@@ -75,6 +75,7 @@ export default function index(): ReactElement {
         icon="calendar--gray.svg"
         type="date"
         onChange={inputDateHandler}
+        value={cartDate.toISOString().split('T')[0]}
       />
       <AddProductButton
         payloadHandler={addProductHandler}
