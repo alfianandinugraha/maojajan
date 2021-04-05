@@ -4,7 +4,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from 'Types'
-import { getCarts, finishCart, unfinishCart } from '@/http/cart'
+import { getCarts, finishCart, unfinishCart, removeCart } from '@/http/cart'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -53,6 +53,9 @@ export default function index(): ReactElement {
 
   const deleteCartHandler = (cartId: Cart) => {
     console.log(cartId)
+    removeCart(cartId.id).then(() => {
+      setCarts(carts.filter((cart) => cart.id !== cartId.id))
+    })
   }
 
   const receiveActionHandler = (action: CardAction, cartId: Cart) => {

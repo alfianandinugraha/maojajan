@@ -33,6 +33,9 @@ const editCart = (cart: Cart): Promise<Cart> =>
     .set(cartFirebaseFactory(cart))
     .then(() => cart)
 
+const removeCart = (id: string): Promise<void> =>
+  firebase.firestore().collection('carts').doc(id).delete()
+
 const editAllIsPurchased = (cart: Cart, value: boolean) => {
   const newProducts = cart.products.map((product) => ({
     ...product,
@@ -51,4 +54,4 @@ const finishCart = (cart: Cart): Promise<Cart> =>
 const unfinishCart = (cart: Cart): Promise<Cart> =>
   editCart(editAllIsPurchased(cart, false))
 
-export { storeCart, getCarts, finishCart, unfinishCart }
+export { storeCart, getCarts, finishCart, unfinishCart, removeCart }
