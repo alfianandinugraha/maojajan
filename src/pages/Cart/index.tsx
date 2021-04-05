@@ -49,6 +49,11 @@ export default function index(): ReactElement {
   const editNewCarts = (newCart: Cart) =>
     carts.map((cartItem) => (cartItem.id === newCart.id ? newCart : cartItem))
 
+  const editCartsAtom = (newCart: Cart) => {
+    setCart(newCart)
+    setCarts(editNewCarts(newCart))
+  }
+
   const toggleFinishCartProduct = (payload: ProductCart) => {
     const newCart = {
       ...cart,
@@ -59,10 +64,7 @@ export default function index(): ReactElement {
       ),
     }
 
-    editCart(newCart).then(() => {
-      setCart(newCart)
-      setCarts(editNewCarts(newCart))
-    })
+    editCart(newCart).then(() => editCartsAtom(newCart))
   }
 
   const deleteProductCart = (productCartId: string) => {
@@ -79,10 +81,7 @@ export default function index(): ReactElement {
       return
     }
 
-    editCart(newCart).then(() => {
-      setCart(newCart)
-      setCarts(editNewCarts(newCart))
-    })
+    editCart(newCart).then(() => editCartsAtom(newCart))
   }
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
@@ -113,10 +112,7 @@ export default function index(): ReactElement {
       ...cart,
       products: [newProduct, ...cart.products],
     }
-    editCart(newCart).then(() => {
-      setCart(newCart)
-      setCarts(editNewCarts(newCart))
-    })
+    editCart(newCart).then(() => editCartsAtom(newCart))
   }
 
   const toggleModalAddProduct = () => {
@@ -124,17 +120,11 @@ export default function index(): ReactElement {
   }
 
   const finishCartHandler = () => {
-    finishCart(cart).then((res: Cart) => {
-      setCarts(editNewCarts(res))
-      setCart(res)
-    })
+    finishCart(cart).then((res: Cart) => editCartsAtom(res))
   }
 
   const unfinishCartHandler = () => {
-    unfinishCart(cart).then((res: Cart) => {
-      setCarts(editNewCarts(res))
-      setCart(res)
-    })
+    unfinishCart(cart).then((res: Cart) => editCartsAtom(res))
   }
 
   const removeCartHandler = () => {
