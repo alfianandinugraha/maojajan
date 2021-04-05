@@ -25,6 +25,14 @@ const getCarts = (): Promise<Cart[]> =>
       return result
     })
 
+const getCartById = (id: string): Promise<Cart> =>
+  firebase
+    .firestore()
+    .collection('carts')
+    .doc(id)
+    .get()
+    .then((res) => res.data() as Cart)
+
 const editCart = (cart: Cart): Promise<Cart> =>
   firebase
     .firestore()
@@ -54,4 +62,11 @@ const finishCart = (cart: Cart): Promise<Cart> =>
 const unfinishCart = (cart: Cart): Promise<Cart> =>
   editCart(editAllIsPurchased(cart, false))
 
-export { storeCart, getCarts, finishCart, unfinishCart, removeCart }
+export {
+  storeCart,
+  getCarts,
+  finishCart,
+  unfinishCart,
+  removeCart,
+  getCartById,
+}

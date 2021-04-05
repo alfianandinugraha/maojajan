@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import MainLayout, {
   HeadingLayout,
   CaptionEditProduct,
@@ -8,10 +8,13 @@ import styled from 'styled-components'
 import Button from '@/components/form/Button'
 import AddProductButton from '@/components/AddProductButton'
 import { CardAction, ProductCartCard } from '@/components/Card'
-import { initialProductCart } from '@/initials/initialProductCart'
-import { ProductBase } from 'Types'
+import { initialCart } from '@/initials/initialCart'
+import { ProductBase, Cart } from 'Types'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
+import { getCartById } from '@/http/cart'
+import { useAtom } from 'jotai'
+import { cartsAtom } from '@/store/cartAtom'
 
 const ButtonGroup = styled.section`
   margin-bottom: 16px;
@@ -24,8 +27,9 @@ const ButtonGroup = styled.section`
 
 export default function index(): ReactElement {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
+  const [carts] = useAtom(cartsAtom)
+  const [cart, setCart] = useState<Cart>(initialCart)
   const params = useParams<{ id: string }>()
-  console.log({ params })
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     switch (type) {
@@ -45,11 +49,30 @@ export default function index(): ReactElement {
     setIsModalAddProductShow(!isModalAddProductShow)
   }
 
+  const finishCartHandler = () => {}
+
+  useEffect(() => {
+    if (!carts.length) {
+      console.log(`fetching cart id: ${params.id}`)
+      getCartById(params.id).then((data) => {
+        console.log('fetching success')
+        setCart(data)
+      })
+      return
+    }
+
+    setCart(carts.filter((item) => item.id === params.id)[0])
+  }, [])
+
   return (
     <MainLayout>
       <HeadingLayout>23 April 2020</HeadingLayout>
       <ButtonGroup>
-        <Button variant="secondary" icon="/check--white.svg">
+        <Button
+          variant="secondary"
+          icon="/check--white.svg"
+          onClick={finishCartHandler}
+        >
           Selesai
         </Button>
         <Button variant="danger" icon="/trash--white.svg">
@@ -61,11 +84,14 @@ export default function index(): ReactElement {
         payloadHandler={addProductHandler}
       />
       <CaptionEditProduct />
-      <ProductCartCard
-        disabled={false}
-        payload={initialProductCart}
-        actionHandler={actionCardHandler}
-      />
+      {cart.products.map((product) => (
+        <ProductCartCard
+          key={product.id}
+          disabled={false}
+          payload={product}
+          actionHandler={actionCardHandler}
+        />
+      ))}
       <Modal
         isShow={isModalAddProductShow}
         closeHandler={toggleModalAddProduct}
