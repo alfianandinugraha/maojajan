@@ -4,7 +4,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from 'Types'
-import { getCarts } from '@/http/cart'
+import { getCarts, finishCart, unfinishCart } from '@/http/cart'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -40,8 +40,15 @@ export default function index(): ReactElement {
   const [carts, setCarts] = useState<Cart[]>([])
   const history = useHistory()
 
-  const checkCartHandler = (cartId: Cart) => {
-    console.log(cartId)
+  const editCarts = (newCart: Cart) =>
+    carts.map((cart) => (cart.id === newCart.id ? newCart : cart))
+
+  const checkCartHandler = (cartPayload: Cart) => {
+    finishCart(cartPayload).then((res: Cart) => setCarts(editCarts(res)))
+  }
+
+  const unfinishCartHandler = (cartPayload: Cart) => {
+    unfinishCart(cartPayload).then((res: Cart) => setCarts(editCarts(res)))
   }
 
   const deleteCartHandler = (cartId: Cart) => {
@@ -52,6 +59,9 @@ export default function index(): ReactElement {
     switch (action) {
       case 'FINISH':
         checkCartHandler(cartId)
+        break
+      case 'UNFINISH':
+        unfinishCartHandler(cartId)
         break
       case 'DELETE':
         deleteCartHandler(cartId)

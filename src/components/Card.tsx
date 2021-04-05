@@ -9,6 +9,7 @@ export type CardAction =
   | 'EDIT_PRODUCT'
   | 'FINISH'
   | 'CLICK'
+  | 'UNFINISH'
 
 interface Props<T> extends React.HTMLAttributes<HTMLElement> {
   payload: T
@@ -97,6 +98,10 @@ export default function Card<T>(props: Props<T>): ReactElement {
 }
 
 const CartCard = (props: Props<Cart>): ReactElement => {
+  const unfinishCartCardHandler = () => {
+    props.actionHandler('UNFINISH', props.payload)
+  }
+
   const finishCartCardHandler = () => {
     props.actionHandler('FINISH', props.payload)
   }
@@ -107,7 +112,11 @@ const CartCard = (props: Props<Cart>): ReactElement => {
 
   return (
     <Card<Cart> {...props}>
-      <FinishCart onClick={finishCartCardHandler}>
+      <FinishCart
+        onClick={
+          props.disabled ? unfinishCartCardHandler : finishCartCardHandler
+        }
+      >
         <img
           src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
           alt=""

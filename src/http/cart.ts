@@ -1,5 +1,6 @@
 import firebase from '@/utils/Firebase'
 import { CartFirebase, Cart } from 'Types'
+import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 
 const storeCart = (cart: CartFirebase): Promise<Cart> =>
   firebase
@@ -24,4 +25,30 @@ const getCarts = (): Promise<Cart[]> =>
       return result
     })
 
-export { storeCart, getCarts }
+const editCart = (cart: Cart): Promise<Cart> =>
+  firebase
+    .firestore()
+    .collection('carts')
+    .doc(cart.id)
+    .set(cartFirebaseFactory(cart))
+    .then(() => cart)
+
+const editAllIsPurchased = (cart: Cart, value: boolean) => {
+  const newProducts = cart.products.map((product) => ({
+    ...product,
+    isPurchased: value,
+  }))
+  const newCart = {
+    ...cart,
+    products: newProducts,
+  }
+
+  return newCart
+}
+
+const finishCart = (cart: Cart): Promise<Cart> =>
+  editCart(editAllIsPurchased(cart, true))
+const unfinishCart = (cart: Cart): Promise<Cart> =>
+  editCart(editAllIsPurchased(cart, false))
+
+export { storeCart, getCarts, finishCart, unfinishCart }
