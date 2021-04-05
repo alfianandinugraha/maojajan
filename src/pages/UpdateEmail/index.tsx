@@ -8,9 +8,9 @@ import MainLayout, {
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
 import React, { ReactElement, useState } from 'react'
-import firebase from '@/utils/Firebase'
 import { User } from 'Types'
 import { editUser } from '@/http/User'
+import { validateLoginUser } from '@/http/Auth'
 
 export default function index(): ReactElement {
   const [user, setUser] = useAtom(userAtom)
@@ -26,27 +26,27 @@ export default function index(): ReactElement {
     setPassword(e.target.value)
   }
 
-  const submitEditEmailHandler = () => {
-    if (!user) return
+  const submitEditEmailHandler = async () => {
+    if (!user || isRequestEditEmail) return
     setIsRequestEditEmail(true)
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(user.email, password)
-      .then((credential) => {
-        credential.user?.updateEmail(newEmail).then(() => {
-          const newUser: User = {
-            ...user,
-            email: newEmail,
-          }
-          editUser(newUser).then(() => {
-            setUser(newUser)
-            setIsRequestEditEmail(false)
-            setNewEmail('')
-            setPassword('')
-          })
-          console.log('update email success')
-        })
-      })
+
+    const newUser: User = {
+      ...user,
+      email: newEmail,
+    }
+
+    try {
+      const credential = await validateLoginUser(user.email, password)
+      await credential.user?.updateEmail(newEmail)
+      await editUser(newUser)
+      setUser(newUser)
+      setIsRequestEditEmail(false)
+      setNewEmail('')
+      setPassword('')
+    } catch (err) {
+      setIsRequestEditEmail(false)
+      console.error(err)
+    }
   }
 
   return (
