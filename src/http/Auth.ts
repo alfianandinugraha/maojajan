@@ -3,6 +3,12 @@ import { storeUser, getUser } from '@/http/User'
 import { User, UserRegisterRequire } from 'Types'
 import { initialTimestampNow } from '@/initials/intialFirebaseTImestamp'
 
+const validateLoginUser = (
+  email: string,
+  password: string
+): Promise<firebase.auth.UserCredential> =>
+  firebase.auth().signInWithEmailAndPassword(email, password)
+
 const registerUser = (userInfo: UserRegisterRequire): Promise<string> => {
   const processRequest = async (
     resolve: (message: string) => void,
@@ -54,4 +60,4 @@ const loginUser = async (email: string, password: string): Promise<User> => {
 
 const logoutUser = (): Promise<void> => firebase.auth().signOut()
 
-export { registerUser, loginUser, logoutUser }
+export { registerUser, loginUser, logoutUser, validateLoginUser }
