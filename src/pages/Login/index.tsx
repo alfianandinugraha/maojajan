@@ -13,6 +13,7 @@ import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 import { loginUser } from '@/http/Auth'
 
 export default function index(): ReactElement {
+  const [isRequestLogin, setIsRequestLogin] = useState(false)
   const history = useHistoryPusher()
 
   const toRegisterPage = () => history.toRegisterPage()
@@ -41,10 +42,7 @@ export default function index(): ReactElement {
   }
 
   const submitHandler = () => {
-    const payload = {
-      email: inputEmail.value,
-      password: inputPassword.value,
-    }
+    if (isRequestLogin) return
 
     if (!inputEmail.value) {
       setInputEmail({
@@ -63,12 +61,16 @@ export default function index(): ReactElement {
     if (!inputEmail.value || !inputPassword.value) {
       return
     }
-    alert(JSON.stringify(payload, null, 2))
+
+    setIsRequestLogin(true)
     loginUser(inputEmail.value, inputPassword.value)
       .then(() => {
         history.toDashboardPage()
       })
       .catch((err) => console.error({ err }))
+      .finally(() => {
+        setIsRequestLogin(false)
+      })
   }
 
   return (
@@ -102,6 +104,7 @@ export default function index(): ReactElement {
         variant="auth"
         style={{ marginTop: '86px' }}
         onClick={submitHandler}
+        isLoading={isRequestLogin}
       >
         Login
       </Button>
