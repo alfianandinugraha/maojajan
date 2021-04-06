@@ -50,6 +50,23 @@ interface User extends UserFirebase {
   uid: string
 }
 
+interface DefaultAlertMessageProps {
+  SUCCESS_LOGIN: string
+  FAILED_LOGIN: string
+  SUCCESS_REGISTER: string
+  FAILED_REGISTER: string
+  SUCCESS_UPDATE_EMAIL: string
+  FAILED_UPDATE_EMAIL: string
+  SUCCESS_UPDATE_PASSWORD: string
+  FAILED_UPDATE_PASSWORD: string
+  SUCCESS_STORE_CART: string
+  FAILED_STORE_CART: string
+  SUCCESS_UPDATE_CART: string
+  FAILED_UPDATE_CART: string
+  SUCCESS_REMOVE_CART: string
+  FAILED_REMOVE_CART: string
+}
+
 type AlertVariant = 'danger' | 'success'
 
 interface AlertProps {
@@ -93,5 +110,6 @@ declare module 'Types' {
     Product,
     ProductBase,
     AlertVariant,
+    DefaultAlertMessageProps,
   }
 }
