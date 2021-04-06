@@ -1,15 +1,16 @@
 import firebase from '@/utils/Firebase'
-import { initialTimestampNow } from '@/initials/intialFirebaseTImestamp'
 import { Product, ProductFirebase } from 'Types'
 import { productFirebaseFactory } from '@/factory/productFirebaseFactory'
+import { generateFirebaseTimestampNow } from '@/services/FirebaseTimestamp'
 
 const storeProduct = (productName: string, uid: string): Promise<Product> => {
   const firebaseData: ProductFirebase = {
     name: productName,
     uid,
-    createdAt: initialTimestampNow,
-    updatedAt: initialTimestampNow,
+    createdAt: generateFirebaseTimestampNow(),
+    updatedAt: generateFirebaseTimestampNow(),
   }
+
   return firebase
     .firestore()
     .collection('products')
