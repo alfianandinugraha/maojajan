@@ -42,6 +42,7 @@ export default function index(): ReactElement {
   const [addProductName, setAddProductName] = useState<InputState<string>>(
     initialInputState
   )
+  const [isRequestAddProductName, setIsRequestAddProductName] = useState(false)
 
   const toggleModalEditProduct = () => {
     setIsModalEditProductShow(!isModalEditProductShow)
@@ -87,8 +88,8 @@ export default function index(): ReactElement {
   }
 
   const storeProductToFirebaseHandler = () => {
-    if (!user || !addProductName.value) return
-
+    if (!user || !addProductName.value || isRequestAddProductName) return
+    setIsRequestAddProductName(true)
     storeProduct(addProductName.value, user.uid)
       .then((data) => {
         pushSuccessAlert(defaultMessage.SUCCESS_STORE_PRODUCT)
@@ -98,6 +99,9 @@ export default function index(): ReactElement {
       .catch((err) => {
         console.log(err)
         pushDangerAlert(defaultMessage.FAILED_STORE_PRODUCT)
+      })
+      .finally(() => {
+        setIsRequestAddProductName(false)
       })
   }
 
@@ -202,6 +206,7 @@ export default function index(): ReactElement {
             icon="/plus--white.svg"
             align="center"
             fullWidth
+            isLoading={isRequestAddProductName}
             onClick={
               !addProductName.errorMessage
                 ? storeProductToFirebaseHandler
