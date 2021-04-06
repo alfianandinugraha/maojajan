@@ -13,6 +13,7 @@ import { editUser } from '@/http/User'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
 import { authAtom } from '@/store/authAtom'
+import usePushAlert from '@/hooks/usePushAlert'
 
 const LinkGroup = styled.section`
   display: flex;
@@ -25,6 +26,7 @@ const LinkGroup = styled.section`
 
 export default function index(): ReactElement {
   const [user, setUser] = useAtom(userAtom)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [fullName, setFullName] = useState(user ? user.fullName : '')
   const [isRequestFullName, setIsRequestFullName] = useState(false)
   const [, setIsLoggedIn] = useAtom(authAtom)
@@ -48,11 +50,17 @@ export default function index(): ReactElement {
     if (!user || user.fullName === fullName || isRequestFullName) return
     setIsRequestFullName(true)
     const newUser = { ...user, fullName }
-    editUser(newUser).then(() => {
-      console.log('update fullname berhasil')
-      setIsRequestFullName(false)
-      setUser(newUser)
-    })
+    editUser(newUser)
+      .then(() => {
+        console.log('update fullname berhasil')
+        pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_FULLNAME)
+        setIsRequestFullName(false)
+        setUser(newUser)
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_UPDATE_FULLNAME)
+      })
   }
 
   const logoutUserHandler = () => {

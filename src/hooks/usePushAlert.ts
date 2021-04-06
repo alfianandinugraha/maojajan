@@ -23,6 +23,8 @@ const defaultAlertMessage: DefaultAlertMessageProps = {
   FAILED_UPDATE_PRODUCT: 'Produk berhasil gagal diperbarui',
   SUCCESS_REMOVE_PRODUCT: 'Produk berhasil dihapus',
   FAILED_REMOVE_PRODUCT: 'Produk gagal dihapus',
+  SUCCESS_UPDATE_FULLNAME: 'Nama berhasil diperbaharui',
+  FAILED_UPDATE_FULLNAME: 'Nama gagal diperbaharui',
 }
 
 interface PushAlertHookProps {
