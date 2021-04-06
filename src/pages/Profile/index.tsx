@@ -14,6 +14,8 @@ import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
 import { authAtom } from '@/store/authAtom'
 import usePushAlert from '@/hooks/usePushAlert'
+import { InputState } from 'Types'
+import { isValidFullName } from '@/validation/form'
 
 const LinkGroup = styled.section`
   display: flex;
@@ -27,7 +29,10 @@ const LinkGroup = styled.section`
 export default function index(): ReactElement {
   const [user, setUser] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
-  const [fullName, setFullName] = useState(user ? user.fullName : '')
+  const [fullName, setFullName] = useState<InputState<string>>({
+    value: user ? user.fullName : '',
+    errorMessage: '',
+  })
   const [isRequestFullName, setIsRequestFullName] = useState(false)
   const [, setIsLoggedIn] = useAtom(authAtom)
   const pusher = useHistoryPusher()
@@ -43,13 +48,23 @@ export default function index(): ReactElement {
   }
 
   const inputFullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFullName(e.target.value)
+    setFullName({
+      errorMessage: isValidFullName(e.target.value).errorMessage,
+      value: e.target.value,
+    })
   }
 
   const submitFormHandler = () => {
-    if (!user || user.fullName === fullName || isRequestFullName) return
+    if (
+      !user ||
+      user.fullName === fullName.value ||
+      isRequestFullName ||
+      !fullName.value
+    )
+      return
     setIsRequestFullName(true)
-    const newUser = { ...user, fullName }
+
+    const newUser = { ...user, fullName: fullName.value }
     editUser(newUser)
       .then(() => {
         console.log('update fullname berhasil')
@@ -77,8 +92,9 @@ export default function index(): ReactElement {
         <Input
           fullWidth
           icon="user--gray.svg"
-          value={fullName}
+          value={fullName.value}
           onChange={inputFullNameHandler}
+          errorMessage={fullName.errorMessage}
         />
         <Input fullWidth icon="email--dark.svg" disabled value={user?.email} />
       </ProfileInputGroup>
