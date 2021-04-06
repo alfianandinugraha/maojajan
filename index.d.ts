@@ -65,6 +65,8 @@ interface DefaultAlertMessageProps {
   FAILED_UPDATE_CART: string
   SUCCESS_REMOVE_CART: string
   FAILED_REMOVE_CART: string
+  SUCCESS_STORE_PRODUCT: string
+  FAILED_STORE_PRODUCT: string
 }
 
 type AlertVariant = 'danger' | 'success'

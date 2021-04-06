@@ -19,6 +19,7 @@ import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import { initialProduct } from '@/initials/initialProduct'
+import usePushAlert from '@/hooks/usePushAlert'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -30,6 +31,7 @@ const ListProductCart = styled.section`
 
 export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product>(
@@ -66,9 +68,15 @@ export default function index(): ReactElement {
 
   const addProductHandler = (payload: string) => {
     if (!user) return
-    storeProduct(payload, user.uid).then((data) => {
-      setProducts([data, ...products])
-    })
+    storeProduct(payload, user.uid)
+      .then((data) => {
+        pushSuccessAlert(defaultMessage.SUCCESS_STORE_PRODUCT)
+        setProducts([data, ...products])
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_STORE_PRODUCT)
+      })
   }
 
   const submitEditProduct = () => {
