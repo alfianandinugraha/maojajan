@@ -5,8 +5,7 @@ import MainLayout, {
 } from '@/layout/MainLayout'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase, Product } from 'Types'
-import AddProductButton from '@/components/AddProductButton'
+import { ProductBase, Product, InputState } from 'Types'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
 import {
@@ -20,6 +19,7 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import { initialProduct } from '@/initials/initialProduct'
 import usePushAlert from '@/hooks/usePushAlert'
+import initialInputState from '@/initials/initialInputState'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -32,19 +32,37 @@ const ListProductCart = styled.section`
 export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
+  const [isModalEditProductShow, setIsModalEditProductShow] = useState(false)
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product>(
     initialProduct
   )
   const [productName, setProductName] = useState('')
+  const [addProductName, setAddProductName] = useState<InputState<string>>(
+    initialInputState
+  )
+
+  const toggleModalEditProduct = () => {
+    setIsModalEditProductShow(!isModalEditProductShow)
+  }
 
   const toggleModalAddProduct = () => {
+    setAddProductName(initialInputState)
     setIsModalAddProductShow(!isModalAddProductShow)
   }
 
   const inputProductNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProductName(e.target.value)
+  }
+
+  const inputAddProductNameHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAddProductName({
+      value: e.target.value,
+      errorMessage: e.target.value ? '' : 'Data tidak boleh kosong',
+    })
   }
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
@@ -64,16 +82,18 @@ export default function index(): ReactElement {
       const product: Product = payload as Product
       setProductName(payload.name)
       setSelectedProduct(product)
-      toggleModalAddProduct()
+      toggleModalEditProduct()
     }
   }
 
-  const addProductHandler = (payload: string) => {
-    if (!user) return
-    storeProduct(payload, user.uid)
+  const storeProductToFirebaseHandler = () => {
+    if (!user || !addProductName.value) return
+
+    storeProduct(addProductName.value, user.uid)
       .then((data) => {
         pushSuccessAlert(defaultMessage.SUCCESS_STORE_PRODUCT)
         setProducts([data, ...products])
+        toggleModalAddProduct()
       })
       .catch((err) => {
         console.log(err)
@@ -99,7 +119,7 @@ export default function index(): ReactElement {
       })
     setSelectedProduct(initialProduct)
     setProductName('')
-    toggleModalAddProduct()
+    toggleModalEditProduct()
   }
 
   useEffect(() => {
@@ -113,10 +133,15 @@ export default function index(): ReactElement {
   return (
     <MainLayout>
       <HeadingLayout>List Produk</HeadingLayout>
-      <AddProductButton
+      <Button
+        variant="outline-dashed"
+        icon="/plus--primary.svg"
+        align="center"
         style={{ marginBottom: '16px' }}
-        payloadHandler={addProductHandler}
-      />
+        onClick={toggleModalAddProduct}
+      >
+        Tambah Produk
+      </Button>
       <CaptionEditProduct />
       <ListProductCart>
         {products.map((item) => (
@@ -129,8 +154,8 @@ export default function index(): ReactElement {
         ))}
       </ListProductCart>
       <Modal
-        isShow={isModalAddProductShow}
-        closeHandler={toggleModalAddProduct}
+        isShow={isModalEditProductShow}
+        closeHandler={toggleModalEditProduct}
         header={<ModalTitle>Edit Produk</ModalTitle>}
         content={
           <ModalContent>
@@ -151,6 +176,39 @@ export default function index(): ReactElement {
             onClick={submitEditProduct}
           >
             Edit Produk
+          </Button>
+        }
+      />
+      <Modal
+        closeHandler={toggleModalAddProduct}
+        isShow={isModalAddProductShow}
+        header={<ModalTitle>Tambah Produk</ModalTitle>}
+        content={
+          <>
+            <ModalContent>
+              <Input
+                list="products"
+                placeholder="Pilih / input produk"
+                fullWidth
+                onChange={inputAddProductNameHandler}
+                {...addProductName}
+              />
+            </ModalContent>
+          </>
+        }
+        footer={
+          <Button
+            variant="primary"
+            icon="/plus--white.svg"
+            align="center"
+            fullWidth
+            onClick={
+              !addProductName.errorMessage
+                ? storeProductToFirebaseHandler
+                : undefined
+            }
+          >
+            Tambah Produk
           </Button>
         }
       />
