@@ -13,10 +13,12 @@ import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 import { loginUser } from '@/http/Auth'
 import { useAtom } from 'jotai'
 import { authAtom } from '@/store/authAtom'
+import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {
   const [isRequestLogin, setIsRequestLogin] = useState(false)
   const [, setIsLoggedIn] = useAtom(authAtom)
+  const { pushDangerAlert, pushSuccessAlert } = usePushAlert()
   const history = useHistoryPusher()
 
   const toRegisterPage = () => history.toRegisterPage()
@@ -69,8 +71,12 @@ export default function index(): ReactElement {
     loginUser(inputEmail.value, inputPassword.value)
       .then(() => {
         setIsLoggedIn(true)
+        pushSuccessAlert('Login berhasil')
       })
-      .catch((err) => console.error({ err }))
+      .catch((err) => {
+        console.error({ err })
+        pushDangerAlert('Terjadi kesalahan, silahkan coba lagi')
+      })
       .finally(() => {
         setIsRequestLogin(false)
       })
