@@ -20,6 +20,7 @@ import './theme/reset.css'
 import './style/animation.css'
 import { userAtom } from './store/userAtom'
 import { getUser } from './http/User'
+import AlertGroup from './components/alert/AlertGroup'
 
 const RootStyles = styled.div`
   * {
@@ -65,6 +66,7 @@ const App = (): ReactElement => {
 
   return (
     <RootStyles>
+      <AlertGroup />
       <BrowserRouter>
         <Switch>
           <Route path="/" exact>
