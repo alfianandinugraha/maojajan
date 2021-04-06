@@ -19,6 +19,10 @@ const defaultAlertMessage: DefaultAlertMessageProps = {
   FAILED_REMOVE_CART: 'Keranjang gagal dihapus',
   SUCCESS_STORE_PRODUCT: 'Produk berhasil ditambahkan',
   FAILED_STORE_PRODUCT: 'Produk gagal ditambahkan',
+  SUCCESS_UPDATE_PRODUCT: 'Produk berhasil diperbarui',
+  FAILED_UPDATE_PRODUCT: 'Produk berhasil gagal diperbarui',
+  SUCCESS_REMOVE_PRODUCT: 'Produk berhasil dihapus',
+  FAILED_REMOVE_PRODUCT: 'Produk gagal dihapus',
 }
 
 interface PushAlertHookProps {

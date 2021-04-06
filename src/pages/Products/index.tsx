@@ -51,10 +51,12 @@ export default function index(): ReactElement {
     if (type === 'DELETE') {
       removeProduct(payload.id)
         .then(() => {
+          pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_PRODUCT)
           setProducts(products.filter((product) => product.id !== payload.id))
         })
-        .catch(() => {
-          console.error('Gagal menghapus produk')
+        .catch((err) => {
+          console.error(err)
+          pushDangerAlert(defaultMessage.FAILED_REMOVE_PRODUCT)
         })
     }
 
@@ -82,13 +84,19 @@ export default function index(): ReactElement {
   const submitEditProduct = () => {
     if (!selectedProduct.id) return
     const productData = { ...selectedProduct, name: productName }
-    editProduct(productData).then(() => {
-      setProducts(
-        products.map((product) =>
-          product.id === selectedProduct.id ? productData : product
+    editProduct(productData)
+      .then(() => {
+        pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_PRODUCT)
+        setProducts(
+          products.map((product) =>
+            product.id === selectedProduct.id ? productData : product
+          )
         )
-      )
-    })
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_UPDATE_PRODUCT)
+      })
     setSelectedProduct(initialProduct)
     setProductName('')
     toggleModalAddProduct()
