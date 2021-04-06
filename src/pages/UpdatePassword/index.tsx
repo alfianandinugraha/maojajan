@@ -10,36 +10,64 @@ import { validateLoginUser } from '@/http/Auth'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
 import usePushAlert from '@/hooks/usePushAlert'
+import { InputState } from 'Types'
+import { isValidPassword } from '@/validation/form'
+import initialInputState from '@/initials/initialInputState'
 
 export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
-  const [oldPassword, setOldPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [reNewPassword, setReNewPassword] = useState('')
+  const [oldPassword, setOldPassword] = useState<InputState<string>>(
+    initialInputState
+  )
+  const [newPassword, setNewPassword] = useState<InputState<string>>(
+    initialInputState
+  )
+  const [reNewPassword, setReNewPassword] = useState<InputState<string>>(
+    initialInputState
+  )
   const [isRequestEditPassword, setIsRequestEditPassword] = useState(false)
 
   const inputOldPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOldPassword(e.target.value)
+    setOldPassword({
+      value: e.target.value,
+      errorMessage: isValidPassword(e.target.value).errorMessage,
+    })
   }
 
   const inputNewPasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPassword(e.target.value)
+    setNewPassword({
+      value: e.target.value,
+      errorMessage: isValidPassword(e.target.value).errorMessage,
+    })
   }
 
   const inputReNewPasswordHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setReNewPassword(e.target.value)
+    let { errorMessage } = isValidPassword(e.target.value)
+    if (e.target.value !== newPassword.value) {
+      errorMessage = 'Password tidak sama'
+    }
+    setReNewPassword({
+      value: e.target.value,
+      errorMessage,
+    })
   }
 
   const submitEditPasswordHandler = async () => {
-    if (!user) return
+    if (
+      !user ||
+      newPassword.value !== reNewPassword.value ||
+      !oldPassword.value ||
+      isRequestEditPassword
+    )
+      return
     setIsRequestEditPassword(true)
 
     try {
-      const credentials = await validateLoginUser(user.email, oldPassword)
-      await credentials.user?.updatePassword(newPassword)
+      const credentials = await validateLoginUser(user.email, oldPassword.value)
+      await credentials.user?.updatePassword(newPassword.value)
       setIsRequestEditPassword(false)
       pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_PASSWORD)
     } catch (err) {
@@ -48,9 +76,9 @@ export default function index(): ReactElement {
       console.error(err)
     }
 
-    setOldPassword('')
-    setNewPassword('')
-    setReNewPassword('')
+    setOldPassword(initialInputState)
+    setNewPassword(initialInputState)
+    setReNewPassword(initialInputState)
   }
 
   return (
@@ -62,7 +90,8 @@ export default function index(): ReactElement {
           icon="lock--gray.svg"
           placeholder="Password Lama"
           onChange={inputOldPasswordHandler}
-          value={oldPassword}
+          value={oldPassword.value}
+          errorMessage={oldPassword.errorMessage}
           type="password"
         />
       </ProfileInputGroup>
@@ -72,7 +101,8 @@ export default function index(): ReactElement {
           fullWidth
           icon="lock--gray.svg"
           placeholder="Password baru"
-          value={newPassword}
+          value={newPassword.value}
+          errorMessage={newPassword.errorMessage}
           onChange={inputNewPasswordHandler}
           type="password"
         />
@@ -80,7 +110,8 @@ export default function index(): ReactElement {
           fullWidth
           icon="lock--gray.svg"
           placeholder="Ulangi password baru"
-          value={reNewPassword}
+          value={reNewPassword.value}
+          errorMessage={reNewPassword.errorMessage}
           onChange={inputReNewPasswordHandler}
           type="password"
         />
