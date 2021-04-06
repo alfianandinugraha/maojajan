@@ -52,6 +52,24 @@
   transition: opacity 500ms, top 500ms;
 }
 
+.alert-enter {
+  right: -322px;
+}
+
+.alert-enter-active {
+  right: 0px;
+  transition: right 500ms;
+}
+
+.alert-exit {
+  right: 0px;
+}
+
+.alert-exit-active {
+  right: -322px;
+  transition: right 500ms;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
