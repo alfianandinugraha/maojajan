@@ -18,7 +18,7 @@ import usePushAlert from '@/hooks/usePushAlert'
 export default function index(): ReactElement {
   const [isRequestLogin, setIsRequestLogin] = useState(false)
   const [, setIsLoggedIn] = useAtom(authAtom)
-  const { pushDangerAlert, pushSuccessAlert } = usePushAlert()
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const history = useHistoryPusher()
 
   const toRegisterPage = () => history.toRegisterPage()
@@ -71,11 +71,11 @@ export default function index(): ReactElement {
     loginUser(inputEmail.value, inputPassword.value)
       .then(() => {
         setIsLoggedIn(true)
-        pushSuccessAlert('Login berhasil')
+        pushSuccessAlert(defaultMessage.SUCCESS_LOGIN)
       })
       .catch((err) => {
         console.error({ err })
-        pushDangerAlert('Terjadi kesalahan, silahkan coba lagi')
+        pushDangerAlert(defaultMessage.FAILED_LOGIN)
       })
       .finally(() => {
         setIsRequestLogin(false)

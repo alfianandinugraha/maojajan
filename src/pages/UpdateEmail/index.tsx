@@ -11,9 +11,11 @@ import React, { ReactElement, useState } from 'react'
 import { User } from 'Types'
 import { editUser } from '@/http/User'
 import { validateLoginUser } from '@/http/Auth'
+import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {
   const [user, setUser] = useAtom(userAtom)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [newEmail, setNewEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isRequestEditEmail, setIsRequestEditEmail] = useState(false)
@@ -43,7 +45,9 @@ export default function index(): ReactElement {
       setIsRequestEditEmail(false)
       setNewEmail('')
       setPassword('')
+      pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_EMAIL)
     } catch (err) {
+      pushDangerAlert(defaultMessage.FAILED_UPDATE_EMAIL)
       setIsRequestEditEmail(false)
       console.error(err)
     }

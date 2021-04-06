@@ -9,9 +9,11 @@ import React, { ReactElement, useState } from 'react'
 import { validateLoginUser } from '@/http/Auth'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
+import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [reNewPassword, setReNewPassword] = useState('')
@@ -39,7 +41,9 @@ export default function index(): ReactElement {
       const credentials = await validateLoginUser(user.email, oldPassword)
       await credentials.user?.updatePassword(newPassword)
       setIsRequestEditPassword(false)
+      pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_PASSWORD)
     } catch (err) {
+      pushDangerAlert(defaultMessage.FAILED_UPDATE_PASSWORD)
       setIsRequestEditPassword(false)
       console.error(err)
     }

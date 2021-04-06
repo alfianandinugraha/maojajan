@@ -18,10 +18,12 @@ import {
 import { registerUser } from '@/http/Auth'
 import { useAtom } from 'jotai'
 import { authAtom } from '@/store/authAtom'
+import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {
   const history = useHistoryPusher()
   const [isRequestRegister, setIsRequestRegister] = useState(false)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [, setIsLoggedIn] = useAtom(authAtom)
   const [inputFullName, setInputFullName] = useState<InputState<string>>(
     initialInputState
@@ -82,9 +84,11 @@ export default function index(): ReactElement {
       password: inputPassword.value,
     })
       .then(() => {
+        pushSuccessAlert(defaultMessage.SUCCESS_REGISTER)
         setIsLoggedIn(true)
       })
       .catch((message: string) => {
+        pushDangerAlert(defaultMessage.FAILED_REGISTER)
         console.error({ message })
       })
       .finally(() => {

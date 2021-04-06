@@ -17,6 +17,7 @@ import firebase from '@/utils/Firebase'
 import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 import { storeCart } from '@/http/cart'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
+import usePushAlert from '@/hooks/usePushAlert'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -32,6 +33,7 @@ const ListProductCart = styled.section`
 
 export default function index(): ReactElement {
   const [productCarts, setProductCarts] = useState<ProductCart[]>([])
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [user] = useAtom(userAtom)
   const [isRequestStoreCart, setIsRequestStoreCart] = useState(false)
   const [cartDate, setCartDate] = useState<Date>(new Date())
@@ -65,12 +67,18 @@ export default function index(): ReactElement {
       products: productCarts,
     }
     const cartFirebase: CartFirebase = cartFirebaseFactory(cart)
-    storeCart(cartFirebase).then((res) => {
-      console.log('keranjang berhasil di tambahkan')
-      setIsRequestStoreCart(false)
-      pusher.toDashboardPage()
-      console.log(res)
-    })
+    storeCart(cartFirebase)
+      .then((res) => {
+        console.log('keranjang berhasil di tambahkan')
+        setIsRequestStoreCart(false)
+        pushSuccessAlert(defaultMessage.SUCCESS_STORE_CART)
+        pusher.toDashboardPage()
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_STORE_CART)
+      })
   }
 
   return (

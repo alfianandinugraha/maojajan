@@ -8,6 +8,7 @@ import { getCarts, finishCart, unfinishCart, removeCart } from '@/http/cart'
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import { userAtom } from '@/store/userAtom'
+import usePushAlert from '@/hooks/usePushAlert'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -41,6 +42,7 @@ const CartElement = styled(CartCard)`
 
 export default function index(): ReactElement {
   const [carts, setCarts] = useAtom(cartsAtom)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [user] = useAtom(userAtom)
   const history = useHistory()
 
@@ -48,18 +50,40 @@ export default function index(): ReactElement {
     carts.map((cart) => (cart.id === newCart.id ? newCart : cart))
 
   const checkCartHandler = (cartPayload: Cart) => {
-    finishCart(cartPayload).then((res: Cart) => setCarts(editCarts(res)))
+    finishCart(cartPayload)
+      .then((res: Cart) => {
+        setCarts(editCarts(res))
+        pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_CART)
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
+      })
   }
 
   const unfinishCartHandler = (cartPayload: Cart) => {
-    unfinishCart(cartPayload).then((res: Cart) => setCarts(editCarts(res)))
+    unfinishCart(cartPayload)
+      .then((res: Cart) => {
+        setCarts(editCarts(res))
+        pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_CART)
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
+      })
   }
 
   const deleteCartHandler = (cartId: Cart) => {
     console.log(cartId)
-    removeCart(cartId.id).then(() => {
-      setCarts(carts.filter((cart) => cart.id !== cartId.id))
-    })
+    removeCart(cartId.id)
+      .then(() => {
+        pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_CART)
+        setCarts(carts.filter((cart) => cart.id !== cartId.id))
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_REMOVE_CART)
+      })
   }
 
   const receiveActionHandler = (action: CardAction, cartId: Cart) => {

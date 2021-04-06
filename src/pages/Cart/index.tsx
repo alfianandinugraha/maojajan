@@ -22,6 +22,7 @@ import {
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
+import usePushAlert from '@/hooks/usePushAlert'
 
 const ButtonGroup = styled.section`
   margin-bottom: 16px;
@@ -44,6 +45,7 @@ export default function index(): ReactElement {
   const [cart, setCart] = useState<Cart>(initialCart)
   const [isLoadingFinishCart, setIsLoadingFinishCart] = useState(false)
   const [isLoadingRemoveCart, setIsLoadingRemoveCart] = useState(false)
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const params = useParams<{ id: string }>()
   const pusher = useHistoryPusher()
   const isFinish = cart.products.every((product) => product.isPurchased)
@@ -69,6 +71,23 @@ export default function index(): ReactElement {
     editCart(newCart).then(() => editCartsAtom(newCart))
   }
 
+  const removeCartHandler = () => {
+    console.log(`removing cart id : ${params.id}`)
+    setIsLoadingRemoveCart(true)
+    removeCart(params.id)
+      .then(() => {
+        setIsLoadingRemoveCart(false)
+        console.log('remove successfully')
+        setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
+        pusher.toDashboardPage()
+        pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_CART)
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_REMOVE_CART)
+      })
+  }
+
   const deleteProductCart = (productCartId: string) => {
     const newCart = {
       ...cart,
@@ -76,10 +95,7 @@ export default function index(): ReactElement {
     }
 
     if (cart.products.length === 1) {
-      removeCart(params.id).then(() => {
-        setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
-        pusher.toDashboardPage()
-      })
+      removeCartHandler()
       return
     }
 
@@ -127,21 +143,16 @@ export default function index(): ReactElement {
 
     if (isFinish) request = unfinishCart
 
-    request(cart).then((res: Cart) => {
-      editCartsAtom(res)
-      setIsLoadingFinishCart(false)
-    })
-  }
-
-  const removeCartHandler = () => {
-    console.log(`removing cart id : ${params.id}`)
-    setIsLoadingRemoveCart(true)
-    removeCart(params.id).then(() => {
-      setIsLoadingRemoveCart(false)
-      console.log('remove successfully')
-      setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
-      pusher.toDashboardPage()
-    })
+    request(cart)
+      .then((res: Cart) => {
+        editCartsAtom(res)
+        setIsLoadingFinishCart(false)
+        pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_CART)
+      })
+      .catch((err) => {
+        console.log(err)
+        pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
+      })
   }
 
   useEffect(() => {
