@@ -50,6 +50,14 @@ interface User extends UserFirebase {
   uid: string
 }
 
+type AlertVariant = 'danger' | 'success'
+
+interface AlertProps {
+  message?: string
+  variant?: AlertVariant
+  alertId: string
+}
+
 interface ThemeProps {
   color: {
     primary: string
@@ -84,5 +92,6 @@ declare module 'Types' {
     ProductFirebase,
     Product,
     ProductBase,
+    AlertVariant,
   }
 }
