@@ -74,6 +74,11 @@ export default function index(): ReactElement {
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
     switch (type) {
+      case 'DELETE':
+        setProductCarts(
+          productCarts.filter((productCart) => productCart.id !== payload.id)
+        )
+        break
       case 'CLICK':
         setSelectedProductCart(payload as ProductCart)
         setProductCartName({
