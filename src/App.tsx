@@ -12,6 +12,7 @@ import AboutPage from '@/pages/About'
 import ProfilePage from '@/pages/Profile'
 import UpdatePasswordPage from '@/pages/UpdatePassword'
 import UpdateEmailPage from '@/pages/UpdateEmail'
+import VerifyPasswordPage from '@/pages/VerifyPassword'
 import styled from 'styled-components'
 import { useAtom } from 'jotai'
 import firebase from 'firebase'
@@ -104,6 +105,9 @@ const App = (): ReactElement => {
           </Route>
           <Route path="/update-email" exact>
             <UpdateEmailPage />
+          </Route>
+          <Route path="/verify-password" exact>
+            <VerifyPasswordPage />
           </Route>
         </Switch>
       </BrowserRouter>
