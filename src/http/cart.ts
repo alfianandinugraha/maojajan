@@ -13,6 +13,7 @@ const getCarts = (uid: string): Promise<Cart[]> =>
   firebase
     .firestore()
     .collection('carts')
+    .orderBy('date', 'asc')
     .where('uid', '==', uid)
     .get()
     .then((res) => {
