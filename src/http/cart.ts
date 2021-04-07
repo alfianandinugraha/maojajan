@@ -32,7 +32,7 @@ const getCartById = (id: string): Promise<Cart> =>
     .collection('carts')
     .doc(id)
     .get()
-    .then((res) => res.data() as Cart)
+    .then((res) => ({ ...(res.data() as Cart), id }))
 
 const editCart = (cart: Cart): Promise<Cart> =>
   firebase
