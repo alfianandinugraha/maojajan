@@ -63,4 +63,21 @@ const logoutUser = (): Promise<void> => firebase.auth().signOut()
 const resetPassword = (email: string): Promise<void> =>
   firebase.auth().sendPasswordResetEmail(email)
 
-export { registerUser, loginUser, logoutUser, validateLoginUser, resetPassword }
+const verifyResetCode = (actionCode: string): Promise<string> =>
+  firebase.auth().verifyPasswordResetCode(actionCode)
+
+const confirmResetPassword = (
+  actionCode: string,
+  newPassword: string
+): Promise<void> =>
+  firebase.auth().confirmPasswordReset(actionCode, newPassword)
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  validateLoginUser,
+  resetPassword,
+  verifyResetCode,
+  confirmResetPassword,
+}
