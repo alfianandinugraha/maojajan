@@ -142,6 +142,7 @@ export default function index(): ReactElement {
         setIsRequestStoreCart(false)
         setCarts([res, ...carts])
         pushSuccessAlert(defaultMessage.SUCCESS_STORE_CART)
+        localStorage.removeItem('maojajan-productcart')
         pusher.toDashboardPage()
         console.log(res)
       })
