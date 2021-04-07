@@ -1,6 +1,6 @@
 import { CartCard, CardAction } from '@/components/Card'
 import DashboardLayout from '@/layout/DashboardLayout'
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from 'Types'
@@ -41,14 +41,54 @@ const CartElement = styled(CartCard)`
   }
 `
 
+const ButtonFilterGroup = styled.section`
+  display: flex;
+  justify-content: center;
+`
+
+const ButtonFilter = styled.button<{ isSelected?: boolean }>`
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: ${(props) => props.theme.color.primary} !important;
+
+  ${(props) =>
+    props.isSelected &&
+    `
+    background-color: ${props.theme.color.primary} !important;
+    border: 1px solid white !important;
+    color: white !important;
+  `}
+`
+
 export default function index(): ReactElement {
   const [carts, setCarts] = useAtom(cartsAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [user] = useAtom(userAtom)
+  const [buttonFiltersState, setButtonFiltersState] = useState<
+    { text: string; isSelected: boolean; id: string }[]
+  >([
+    { text: 'Belum selesai', isSelected: true, id: '1' },
+    { text: 'Selesai', isSelected: false, id: '2' },
+    { text: 'Semua', isSelected: false, id: '3' },
+  ])
   const history = useHistory()
 
   const editCarts = (newCart: Cart) =>
     carts.map((cart) => (cart.id === newCart.id ? newCart : cart))
+
+  const switchButtonFilter = (id: string) => {
+    setButtonFiltersState(
+      buttonFiltersState.map((item) => ({
+        ...item,
+        isSelected: item.id === id,
+      }))
+    )
+  }
 
   const checkCartHandler = (cartPayload: Cart) => {
     finishCart(cartPayload)
@@ -122,16 +162,30 @@ export default function index(): ReactElement {
       {!carts.length ? (
         <EmptyCarts />
       ) : (
-        <div>
-          {carts.map((item) => (
-            <CartElement
-              disabled={item.products.every((product) => product.isPurchased)}
-              key={item.id}
-              payload={item}
-              actionHandler={receiveActionHandler}
-            />
-          ))}
-        </div>
+        <>
+          <ButtonFilterGroup>
+            {buttonFiltersState.map((item) => (
+              <ButtonFilter
+                type="button"
+                isSelected={item.isSelected}
+                key={item.id}
+                onClick={() => switchButtonFilter(item.id)}
+              >
+                {item.text}
+              </ButtonFilter>
+            ))}
+          </ButtonFilterGroup>
+          <div>
+            {carts.map((item) => (
+              <CartElement
+                disabled={item.products.every((product) => product.isPurchased)}
+                key={item.id}
+                payload={item}
+                actionHandler={receiveActionHandler}
+              />
+            ))}
+          </div>
+        </>
       )}
     </DashboardLayout>
   )
