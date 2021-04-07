@@ -9,6 +9,7 @@ import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import { userAtom } from '@/store/userAtom'
 import usePushAlert from '@/hooks/usePushAlert'
+import EmptyCarts from './EmptyCarts'
 
 const Header = styled.header`
   margin-bottom: 12px;
@@ -118,16 +119,20 @@ export default function index(): ReactElement {
         <p>Hello,</p>
         <h1>Alfian Andi</h1>
       </Header>
-      <div>
-        {carts.map((item) => (
-          <CartElement
-            disabled={item.products.every((product) => product.isPurchased)}
-            key={item.id}
-            payload={item}
-            actionHandler={receiveActionHandler}
-          />
-        ))}
-      </div>
+      {!carts.length ? (
+        <EmptyCarts />
+      ) : (
+        <div>
+          {carts.map((item) => (
+            <CartElement
+              disabled={item.products.every((product) => product.isPurchased)}
+              key={item.id}
+              payload={item}
+              actionHandler={receiveActionHandler}
+            />
+          ))}
+        </div>
+      )}
     </DashboardLayout>
   )
 }
