@@ -60,4 +60,7 @@ const loginUser = async (email: string, password: string): Promise<User> => {
 
 const logoutUser = (): Promise<void> => firebase.auth().signOut()
 
-export { registerUser, loginUser, logoutUser, validateLoginUser }
+const resetPassword = (email: string): Promise<void> =>
+  firebase.auth().sendPasswordResetEmail(email)
+
+export { registerUser, loginUser, logoutUser, validateLoginUser, resetPassword }

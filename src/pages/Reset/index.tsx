@@ -10,9 +10,15 @@ import AuthLayout, {
 import initialInputState from '@/initials/initialInputState'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
+import { resetPassword } from '@/http/Auth'
+import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {
   const history = useHistoryPusher()
+  const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
+  const [isRequestSendResetPassword, setIsRequestSendResetPassword] = useState(
+    false
+  )
   const [inputEmail, setInputEmail] = useState<InputState<string>>(
     initialInputState
   )
@@ -29,19 +35,33 @@ export default function index(): ReactElement {
   }
 
   const submitHandler = () => {
-    const payload = {
-      email: inputEmail.value,
-    }
-
-    if (!inputEmail.value) {
+    if (isRequestSendResetPassword) return
+    const email = inputEmail.value
+    if (!email) {
       setInputEmail({
         ...inputEmail,
         errorMessage: EMPTY_VALUE_MESSAGE,
       })
+      return
     }
 
-    if (!inputEmail.value) return
-    alert(JSON.stringify(payload, null, 2))
+    if (!email) return
+    setIsRequestSendResetPassword(true)
+    resetPassword(email)
+      .then(() => {
+        pushSuccessAlert(defaultMessage.SUCCESS_SEND_RESET_PASSWORD)
+      })
+      .catch((err) => {
+        pushDangerAlert(defaultMessage.FAILED_SEND_RESET_PASSWORD)
+        setInputEmail({
+          ...inputEmail,
+          value: '',
+        })
+        console.error(err)
+      })
+      .finally(() => {
+        setIsRequestSendResetPassword(false)
+      })
   }
 
   return (
@@ -61,6 +81,7 @@ export default function index(): ReactElement {
         variant="auth"
         style={{ marginTop: '102px' }}
         onClick={submitHandler}
+        isLoading={isRequestSendResetPassword}
       >
         Kirim
       </Button>

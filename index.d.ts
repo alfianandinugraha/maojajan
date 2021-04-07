@@ -73,6 +73,8 @@ interface DefaultAlertMessageProps {
   FAILED_REMOVE_PRODUCT: string
   SUCCESS_UPDATE_FULLNAME: string
   FAILED_UPDATE_FULLNAME: string
+  SUCCESS_SEND_RESET_PASSWORD: string
+  FAILED_SEND_RESET_PASSWORD: string
 }
 
 type AlertVariant = 'danger' | 'success'

@@ -25,6 +25,8 @@ const defaultAlertMessage: DefaultAlertMessageProps = {
   FAILED_REMOVE_PRODUCT: 'Produk gagal dihapus',
   SUCCESS_UPDATE_FULLNAME: 'Nama berhasil diperbaharui',
   FAILED_UPDATE_FULLNAME: 'Nama gagal diperbaharui',
+  SUCCESS_SEND_RESET_PASSWORD: 'Terkirim, silahkan periksa Email',
+  FAILED_SEND_RESET_PASSWORD: 'Gagal me-reset email',
 }
 
 interface PushAlertHookProps {
