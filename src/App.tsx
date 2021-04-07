@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import StartPage from '@/pages/Start'
 import LoginPage from '@/pages/Login'
 import RegisterPage from '@/pages/Register'
-import ResetPage from '@/pages/Reset'
+import ResetPage from '@/pages/ResetPassword'
 import DashboardPage from '@/pages/Dashboard'
 import AddCartPage from '@/pages/AddCart'
 import ProductsPage from '@/pages/Products'
@@ -79,7 +79,7 @@ const App = (): ReactElement => {
           <Route path="/register" exact>
             <RegisterPage />
           </Route>
-          <Route path="/reset" exact>
+          <Route path="/reset-password" exact>
             <ResetPage />
           </Route>
           <Route path="/dashboard" exact>

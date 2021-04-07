@@ -19,7 +19,7 @@ const useHistoryPusher = (): NavigationPusher => {
   const pusher = useHistory()
   const toLoginPage = () => pusher.push('/login')
   const toRegisterPage = () => pusher.push('/register')
-  const toResetPage = () => pusher.push('/reset')
+  const toResetPage = () => pusher.push('/reset-password')
   const toStartPage = () => pusher.push('/')
   const toAboutPage = () => pusher.push('/about')
   const toDashboardPage = () => pusher.push('/dashboard')
