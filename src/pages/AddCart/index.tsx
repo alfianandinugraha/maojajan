@@ -19,6 +19,7 @@ import { storeCart } from '@/http/cart'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
 import { cartsAtom } from '@/store/cartAtom'
+import EmptyProductCarts from './EmptyProductCarts'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -98,17 +99,24 @@ export default function index(): ReactElement {
         payloadHandler={addProductHandler}
         style={{ margin: '16px 0' }}
       />
-      <Button
-        variant="primary"
-        icon="cart--white.svg"
-        align="center"
-        style={{ marginBottom: '16px' }}
-        onClick={storeCartHandler}
-        isLoading={isRequestStoreCart}
-      >
-        Simpan
-      </Button>
-      <CaptionEditProduct />
+      {!productCarts.length ? (
+        <EmptyProductCarts />
+      ) : (
+        <>
+          <Button
+            variant="primary"
+            icon="cart--white.svg"
+            align="center"
+            style={{ marginBottom: '16px' }}
+            onClick={storeCartHandler}
+            isLoading={isRequestStoreCart}
+          >
+            Simpan
+          </Button>
+          <CaptionEditProduct />
+        </>
+      )}
+
       <ListProductCart>
         {productCarts.map((item) => (
           <ProductBaseCard

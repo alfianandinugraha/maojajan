@@ -20,6 +20,7 @@ import Button from '@/components/form/Button'
 import { initialProduct } from '@/initials/initialProduct'
 import usePushAlert from '@/hooks/usePushAlert'
 import initialInputState from '@/initials/initialInputState'
+import EmptyProductCarts from '../AddCart/EmptyProductCarts'
 
 const ListProductCart = styled.section`
   margin-top: 16px;
@@ -147,16 +148,20 @@ export default function index(): ReactElement {
         Tambah Produk
       </Button>
       <CaptionEditProduct />
-      <ListProductCart>
-        {products.map((item) => (
-          <ProductBaseCard
-            key={item.id}
-            payload={item}
-            disabled={false}
-            actionHandler={actionCardHandler}
-          />
-        ))}
-      </ListProductCart>
+      {!products.length ? (
+        <EmptyProductCarts />
+      ) : (
+        <ListProductCart>
+          {products.map((item) => (
+            <ProductBaseCard
+              key={item.id}
+              payload={item}
+              disabled={false}
+              actionHandler={actionCardHandler}
+            />
+          ))}
+        </ListProductCart>
+      )}
       <Modal
         isShow={isModalEditProductShow}
         closeHandler={toggleModalEditProduct}
