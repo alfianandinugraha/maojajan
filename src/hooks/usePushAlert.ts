@@ -27,6 +27,8 @@ const defaultAlertMessage: DefaultAlertMessageProps = {
   FAILED_UPDATE_FULLNAME: 'Nama gagal diperbaharui',
   SUCCESS_SEND_RESET_PASSWORD: 'Terkirim, silahkan periksa Email',
   FAILED_SEND_RESET_PASSWORD: 'Gagal me-reset email',
+  SUCCESS_RESET_PASSWORD: 'Reset password berhasil',
+  FAILED_RESET_PASSWORD: 'Reset password gagal',
 }
 
 interface PushAlertHookProps {

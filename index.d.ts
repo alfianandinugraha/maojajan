@@ -75,6 +75,8 @@ interface DefaultAlertMessageProps {
   FAILED_UPDATE_FULLNAME: string
   SUCCESS_SEND_RESET_PASSWORD: string
   FAILED_SEND_RESET_PASSWORD: string
+  SUCCESS_RESET_PASSWORD: string
+  FAILED_RESET_PASSWORD: string
 }
 
 type AlertVariant = 'danger' | 'success'
