@@ -89,6 +89,9 @@ export default function index(): ReactElement {
   const editCarts = (newCart: Cart) =>
     carts.map((cart) => (cart.id === newCart.id ? newCart : cart))
 
+  const getIdButtonFilterSelected = (): string =>
+    buttonFiltersState.filter((item) => item.isSelected)[0].id
+
   const userFullName = () => {
     if (!user) return 'Hey'
     const MAX_FULLNAME_LENGTH = 9
@@ -194,9 +197,7 @@ export default function index(): ReactElement {
 
   useEffect(() => {
     if (!carts.length) return
-    const selectedButtonFilterId = buttonFiltersState.filter(
-      (item) => item.isSelected
-    )[0].id
+    const selectedButtonFilterId = getIdButtonFilterSelected()
     updateFilteredCarts(selectedButtonFilterId)
   }, [carts])
 
@@ -222,6 +223,8 @@ export default function index(): ReactElement {
               </ButtonFilter>
             ))}
           </ButtonFilterGroup>
+          {getIdButtonFilterSelected() === 'FINISH' &&
+            !filteredCarts.length && <EmptyCarts />}
           <div>
             {filteredCarts.map((item) => (
               <CartElement
