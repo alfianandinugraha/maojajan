@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import MainLayout, {
   HeadingLayout,
   CaptionEditProduct,
@@ -150,6 +150,21 @@ export default function index(): ReactElement {
         pushDangerAlert(defaultMessage.FAILED_STORE_CART)
       })
   }
+
+  useEffect(() => {
+    const productCartsLocalStorage = localStorage.getItem(
+      'maojajan-productcart'
+    )
+    if (!productCartsLocalStorage) return
+    setProductCarts(JSON.parse(productCartsLocalStorage))
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem(
+      'maojajan-productcart',
+      JSON.stringify(!productCarts.length ? [] : productCarts)
+    )
+  }, [productCarts])
 
   return (
     <MainLayout>
