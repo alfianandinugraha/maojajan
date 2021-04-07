@@ -18,6 +18,7 @@ import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 import { storeCart } from '@/http/cart'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
+import { cartsAtom } from '@/store/cartAtom'
 
 const InputDate = styled(Input)`
   margin-bottom: 16px;
@@ -38,6 +39,7 @@ export default function index(): ReactElement {
   const [isRequestStoreCart, setIsRequestStoreCart] = useState(false)
   const [cartDate, setCartDate] = useState<Date>(new Date())
   const pusher = useHistoryPusher()
+  const [carts, setCarts] = useAtom(cartsAtom)
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
@@ -71,6 +73,7 @@ export default function index(): ReactElement {
       .then((res) => {
         console.log('keranjang berhasil di tambahkan')
         setIsRequestStoreCart(false)
+        setCarts([res, ...carts])
         pushSuccessAlert(defaultMessage.SUCCESS_STORE_CART)
         pusher.toDashboardPage()
         console.log(res)
