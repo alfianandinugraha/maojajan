@@ -11,6 +11,12 @@ import { userAtom } from '@/store/userAtom'
 import usePushAlert from '@/hooks/usePushAlert'
 import EmptyCarts from './EmptyCarts'
 
+interface ButtonFiltersStateProps {
+  text: string
+  isSelected: boolean
+  id: string
+}
+
 const Header = styled.header`
   margin-bottom: 12px;
 
@@ -54,6 +60,7 @@ const ButtonFilter = styled.button<{ isSelected?: boolean }>`
   margin-right: 8px;
   margin-bottom: 8px;
   cursor: pointer;
+  font-size: 12px !important;
   color: ${(props) => props.theme.color.primary} !important;
 
   ${(props) =>
@@ -67,19 +74,38 @@ const ButtonFilter = styled.button<{ isSelected?: boolean }>`
 
 export default function index(): ReactElement {
   const [carts, setCarts] = useAtom(cartsAtom)
+  const [filteredCarts, setFilteredCarts] = useState(carts)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [user] = useAtom(userAtom)
   const [buttonFiltersState, setButtonFiltersState] = useState<
-    { text: string; isSelected: boolean; id: string }[]
+    ButtonFiltersStateProps[]
   >([
-    { text: 'Belum selesai', isSelected: true, id: '1' },
-    { text: 'Selesai', isSelected: false, id: '2' },
-    { text: 'Semua', isSelected: false, id: '3' },
+    { text: 'Belum selesai', isSelected: true, id: 'FINISH' },
+    { text: 'Selesai', isSelected: false, id: 'UNFINISH' },
+    { text: 'Semua', isSelected: false, id: 'ALL' },
   ])
   const history = useHistory()
 
   const editCarts = (newCart: Cart) =>
     carts.map((cart) => (cart.id === newCart.id ? newCart : cart))
+
+  const updateFilteredCarts = (id: string) => {
+    let newCarts: Cart[] = [...carts]
+    switch (id) {
+      case 'FINISH':
+        newCarts = carts.filter(
+          (cart) => !cart.products.every((product) => product.isPurchased)
+        )
+        break
+      case 'UNFINISH':
+        newCarts = carts.filter((cart) =>
+          cart.products.every((product) => product.isPurchased)
+        )
+        break
+      default:
+    }
+    setFilteredCarts(newCarts)
+  }
 
   const switchButtonFilter = (id: string) => {
     setButtonFiltersState(
@@ -88,6 +114,7 @@ export default function index(): ReactElement {
         isSelected: item.id === id,
       }))
     )
+    updateFilteredCarts(id)
   }
 
   const checkCartHandler = (cartPayload: Cart) => {
@@ -150,8 +177,17 @@ export default function index(): ReactElement {
     getCarts(user.uid).then((data) => {
       console.log(data)
       setCarts(data)
+      setFilteredCarts(data)
     })
   }, [])
+
+  useEffect(() => {
+    if (!carts.length) return
+    const selectedButtonFilterId = buttonFiltersState.filter(
+      (item) => item.isSelected
+    )[0].id
+    updateFilteredCarts(selectedButtonFilterId)
+  }, [carts])
 
   return (
     <DashboardLayout>
@@ -176,7 +212,7 @@ export default function index(): ReactElement {
             ))}
           </ButtonFilterGroup>
           <div>
-            {carts.map((item) => (
+            {filteredCarts.map((item) => (
               <CartElement
                 disabled={item.products.every((product) => product.isPurchased)}
                 key={item.id}
