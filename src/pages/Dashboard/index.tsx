@@ -89,6 +89,17 @@ export default function index(): ReactElement {
   const editCarts = (newCart: Cart) =>
     carts.map((cart) => (cart.id === newCart.id ? newCart : cart))
 
+  const userFullName = () => {
+    if (!user) return 'Hey'
+    const MAX_FULLNAME_LENGTH = 9
+    const fullname = user?.fullName
+      .split(' ')[0]
+      .trim()
+      .slice(0, MAX_FULLNAME_LENGTH)
+
+    return fullname + (fullname.length >= MAX_FULLNAME_LENGTH ? '...' : '')
+  }
+
   const updateFilteredCarts = (id: string) => {
     let newCarts: Cart[] = [...carts]
     switch (id) {
@@ -193,7 +204,7 @@ export default function index(): ReactElement {
     <DashboardLayout>
       <Header>
         <p>Hello,</p>
-        <h1>Alfian Andi</h1>
+        <h1>{userFullName()}</h1>
       </Header>
       {!carts.length ? (
         <EmptyCarts />
