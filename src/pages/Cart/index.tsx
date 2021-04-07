@@ -9,7 +9,7 @@ import Button from '@/components/form/Button'
 import AddProductButton from '@/components/AddProductButton'
 import { CardAction, ProductCartCard } from '@/components/Card'
 import { initialCart } from '@/initials/initialCart'
-import { ProductBase, Cart, ProductCart } from 'Types'
+import { ProductBase, Cart, ProductCart, InputState } from 'Types'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
 import {
@@ -23,6 +23,8 @@ import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
+import initialInputState from '@/initials/initialInputState'
+import { initialProductCart } from '@/initials/initialProductCart'
 
 const ButtonGroup = styled.section`
   margin-bottom: 16px;
@@ -40,15 +42,29 @@ const CardGroup = styled.section`
 `
 
 export default function index(): ReactElement {
-  const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
+  const [
+    isModalUpdateProductCartShow,
+    setIsModalUpdateProductCarttShow,
+  ] = useState(false)
   const [carts, setCarts] = useAtom(cartsAtom)
   const [cart, setCart] = useState<Cart>(initialCart)
   const [isLoadingFinishCart, setIsLoadingFinishCart] = useState(false)
   const [isLoadingRemoveCart, setIsLoadingRemoveCart] = useState(false)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
+  const [updateProductCartName, setUpdateProductCartName] = useState<
+    InputState<string>
+  >(initialInputState)
+  const [
+    selectedUpdateProductCart,
+    setSelectedUpdateProductCart,
+  ] = useState<ProductCart>(initialProductCart)
   const params = useParams<{ id: string }>()
   const pusher = useHistoryPusher()
   const isFinish = cart.products.every((product) => product.isPurchased)
+
+  const toggleModalUpdateProductCart = () => {
+    setIsModalUpdateProductCarttShow(!isModalUpdateProductCartShow)
+  }
 
   const editNewCarts = (newCart: Cart) =>
     carts.map((cartItem) => (cartItem.id === newCart.id ? newCart : cartItem))
@@ -109,7 +125,12 @@ export default function index(): ReactElement {
         toggleFinishCartProduct(payload as ProductCart)
         break
       case 'CLICK':
-        setIsModalAddProductShow(!isModalAddProductShow)
+        setUpdateProductCartName({
+          ...updateProductCartName,
+          value: payload.name,
+        })
+        setSelectedUpdateProductCart(payload as ProductCart)
+        toggleModalUpdateProductCart()
         break
       case 'DELETE':
         deleteProductCart(payload.id)
@@ -133,10 +154,6 @@ export default function index(): ReactElement {
     editCart(newCart).then(() => editCartsAtom(newCart))
   }
 
-  const toggleModalAddProduct = () => {
-    setIsModalAddProductShow(!isModalAddProductShow)
-  }
-
   const statusCartHandler = () => {
     setIsLoadingFinishCart(true)
     let request = finishCart
@@ -153,6 +170,41 @@ export default function index(): ReactElement {
         console.log(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
       })
+  }
+
+  const inputUpdateProductCartNameHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUpdateProductCartName({
+      value: e.target.value,
+      errorMessage: e.target.value ? '' : 'Data tidak boleh kosong',
+    })
+  }
+
+  const submitUpdateProductCartHandler = () => {
+    if (!updateProductCartName.value) return
+
+    const newProductCart = {
+      ...selectedUpdateProductCart,
+      name: updateProductCartName.value,
+    }
+
+    const newCart = {
+      ...cart,
+      products: cart.products.map((product) =>
+        product.id === newProductCart.id ? newProductCart : product
+      ),
+    }
+
+    editCart(newCart)
+      .then((res) => {
+        editCartsAtom(res)
+        toggleModalUpdateProductCart()
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    console.log(newCart)
   }
 
   useEffect(() => {
@@ -217,12 +269,17 @@ export default function index(): ReactElement {
         ))}
       </CardGroup>
       <Modal
-        isShow={isModalAddProductShow}
-        closeHandler={toggleModalAddProduct}
+        isShow={isModalUpdateProductCartShow}
+        closeHandler={toggleModalUpdateProductCart}
         header={<ModalTitle>Edit Produk</ModalTitle>}
         content={
           <ModalContent>
-            <Input fullWidth placeholder="Nama produk" />
+            <Input
+              fullWidth
+              placeholder="Nama produk"
+              onChange={inputUpdateProductCartNameHandler}
+              {...updateProductCartName}
+            />
           </ModalContent>
         }
         footer={
@@ -231,7 +288,7 @@ export default function index(): ReactElement {
             icon="/product--white.svg"
             align="center"
             fullWidth
-            onClick={toggleModalAddProduct}
+            onClick={submitUpdateProductCartHandler}
           >
             Edit Produk
           </Button>
