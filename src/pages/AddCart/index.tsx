@@ -7,7 +7,7 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase, ProductCart, Cart, CartFirebase } from 'Types'
+import { ProductBase, ProductCart, Cart, CartFirebase, InputState } from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 import { initialProductCart } from '@/initials/initialProductCart'
 import { useAtom } from 'jotai'
@@ -19,6 +19,8 @@ import { storeCart } from '@/http/cart'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
 import { cartsAtom } from '@/store/cartAtom'
+import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
+import initialInputState from '@/initials/initialInputState'
 import EmptyProductCarts from './EmptyProductCarts'
 
 const InputDate = styled(Input)`
@@ -38,17 +40,76 @@ export default function index(): ReactElement {
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [user] = useAtom(userAtom)
   const [isRequestStoreCart, setIsRequestStoreCart] = useState(false)
+  const [isModalProductCartShow, setIsModalProductCartShow] = useState(false)
+  const [productCartName, setProductCartName] = useState<InputState<string>>(
+    initialInputState
+  )
+  const [productCartQuantity, setProductCartQuantity] = useState('')
+  const [selectedProductCart, setSelectedProductCart] = useState<
+    ProductCart | undefined
+  >()
   const [cartDate, setCartDate] = useState<Date>(new Date())
   const pusher = useHistoryPusher()
   const [carts, setCarts] = useAtom(cartsAtom)
 
+  const modalProductCartHandler = () => {
+    if (isModalProductCartShow) {
+      setProductCartName(initialInputState)
+      setProductCartQuantity('')
+    }
+    setIsModalProductCartShow(!isModalProductCartShow)
+  }
+
+  const inputProductCartName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductCartName({
+      value: e.target.value,
+      errorMessage: e.target.value ? '' : 'Data tidak boleh kosong',
+    })
+  }
+
+  const inputProductCartQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductCartQuantity(e.target.value)
+  }
+
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
     console.log(type, payload)
+    switch (type) {
+      case 'CLICK':
+        setSelectedProductCart(payload as ProductCart)
+        setProductCartName({
+          ...productCartName,
+          value: payload.name,
+        })
+        modalProductCartHandler()
+        break
+      default:
+    }
   }
 
   const inputDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value)
     setCartDate(date)
+  }
+
+  const submitModalProductCartHandler = () => {
+    if (!productCartName.value) return
+
+    if (selectedProductCart) {
+      console.log('update cart !!')
+      console.log(`Updating ${selectedProductCart.name}...`)
+      const newProduct: ProductCart = {
+        ...selectedProductCart,
+        name: `${productCartQuantity} ${productCartName.value}`,
+      }
+      setSelectedProductCart(undefined)
+      setProductCarts(
+        productCarts.map((productCart) =>
+          productCart.id === newProduct.id ? newProduct : productCart
+        )
+      )
+    }
+
+    modalProductCartHandler()
   }
 
   const addProductHandler = (payload: string) => {
@@ -127,6 +188,44 @@ export default function index(): ReactElement {
           />
         ))}
       </ListProductCart>
+
+      <Modal
+        closeHandler={modalProductCartHandler}
+        isShow={isModalProductCartShow}
+        header={<ModalTitle>Ubah Produk</ModalTitle>}
+        content={
+          <>
+            <ModalContent>
+              <Input
+                list="products"
+                placeholder="Pilih / input produk"
+                onChange={inputProductCartName}
+                fullWidth
+                {...productCartName}
+              />
+            </ModalContent>
+            <ModalContent>
+              <Input
+                fullWidth
+                placeholder="Jumlah. Misal : 5 kg, 2 liter, atau 3"
+                onChange={inputProductCartQuantity}
+                value={productCartQuantity}
+              />
+            </ModalContent>
+          </>
+        }
+        footer={
+          <Button
+            variant="primary"
+            icon="/plus--white.svg"
+            align="center"
+            fullWidth
+            onClick={submitModalProductCartHandler}
+          >
+            Ubah Produk
+          </Button>
+        }
+      />
     </MainLayout>
   )
 }
