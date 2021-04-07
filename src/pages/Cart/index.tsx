@@ -32,7 +32,7 @@ const ButtonGroup = styled.section`
 `
 
 const CardGroup = styled.section`
-  & > *:first-child {
+  & > *:not(:last-child) {
     margin-bottom: 16px;
   }
 `
