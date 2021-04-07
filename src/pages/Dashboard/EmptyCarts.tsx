@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import Button from '@/components/form/Button'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 
+interface Props extends React.HTMLAttributes<HTMLElement> {}
+
 const EmptyCartsContainer = styled.section`
   padding: 16px;
   background-color: white;
@@ -15,13 +17,13 @@ const EmptyCartsContainer = styled.section`
   }
 `
 
-const EmptyCarts = (): React.ReactElement => {
+const EmptyCarts = (props: Props): React.ReactElement => {
   const pusher = useHistoryPusher()
 
   const toAddCart = () => pusher.toAddCartPage()
 
   return (
-    <EmptyCartsContainer>
+    <EmptyCartsContainer {...props}>
       <h3>Tidak ada keranjang</h3>
       <Button
         variant="secondary"
