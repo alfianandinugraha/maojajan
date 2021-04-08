@@ -15,7 +15,6 @@ import {
   InputState,
   Product,
 } from 'Types'
-import AddProductButton from '@/components/AddProductButton'
 import { initialProductCart } from '@/initials/initialProductCart'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
@@ -121,18 +120,16 @@ export default function index(): ReactElement {
           productCart.id === newProduct.id ? newProduct : productCart
         )
       )
+    } else {
+      const productCart = {
+        ...initialProductCart,
+        name: productCartName.value,
+        id: Math.random().toString(),
+      }
+      setProductCarts([productCart, ...productCarts])
     }
 
     modalProductCartHandler()
-  }
-
-  const addProductHandler = (payload: string) => {
-    const productCart = {
-      ...initialProductCart,
-      name: payload,
-      id: Math.random().toString(),
-    }
-    setProductCarts([productCart, ...productCarts])
   }
 
   const storeCartHandler = () => {
@@ -195,10 +192,20 @@ export default function index(): ReactElement {
         onChange={inputDateHandler}
         value={cartDate.toISOString().split('T')[0]}
       />
-      <AddProductButton
+      <Button
+        variant="outline-dashed"
+        icon="/plus--primary.svg"
+        align="center"
+        style={{ margin: '16px 0' }}
+        fullWidth
+        onClick={modalProductCartHandler}
+      >
+        Tambah Produk
+      </Button>
+      {/* <AddProductButton
         payloadHandler={addProductHandler}
         style={{ margin: '16px 0' }}
-      />
+      /> */}
       {!productCarts.length ? (
         <EmptyProductCarts />
       ) : (
