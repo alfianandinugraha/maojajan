@@ -108,7 +108,7 @@ const ArrowPopUp = styled.img`
   margin: auto;
 `
 
-export default function MenuBar(props: Props): ReactElement {
+function MenuBar(props: Props): ReactElement {
   const history = useHistoryPusher()
   const [isPopUpShow, setIsPopUpShow] = useState<boolean>(false)
 
@@ -180,3 +180,5 @@ export default function MenuBar(props: Props): ReactElement {
     </MenuBarContainer>
   )
 }
+
+export default React.memo(MenuBar)
