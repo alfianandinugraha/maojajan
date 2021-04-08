@@ -7,7 +7,14 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase, ProductCart, Cart, CartFirebase, InputState } from 'Types'
+import {
+  ProductBase,
+  ProductCart,
+  Cart,
+  CartFirebase,
+  InputState,
+  Product,
+} from 'Types'
 import AddProductButton from '@/components/AddProductButton'
 import { initialProductCart } from '@/initials/initialProductCart'
 import { useAtom } from 'jotai'
@@ -16,6 +23,7 @@ import { initialCart } from '@/initials/initialCart'
 import firebase from '@/utils/Firebase'
 import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 import { storeCart } from '@/http/cart'
+import { getProducts } from '@/http/product'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
 import { cartsAtom } from '@/store/cartAtom'
@@ -51,6 +59,7 @@ export default function index(): ReactElement {
   const [cartDate, setCartDate] = useState<Date>(new Date())
   const pusher = useHistoryPusher()
   const [carts, setCarts] = useAtom(cartsAtom)
+  const [products, setProducts] = useState<Product[]>([])
 
   const modalProductCartHandler = () => {
     if (isModalProductCartShow) {
@@ -153,6 +162,15 @@ export default function index(): ReactElement {
   }
 
   useEffect(() => {
+    if (!user) return
+    getProducts(user.uid)
+      .then((payload) => {
+        setProducts(payload)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+
     const productCartsLocalStorage = localStorage.getItem(
       'maojajan-productcart'
     )
@@ -225,6 +243,11 @@ export default function index(): ReactElement {
                 {...productCartName}
               />
             </ModalContent>
+            <datalist id="products">
+              {products.map((item) => (
+                <option value={item.name} key={item.id} aria-label="Product" />
+              ))}
+            </datalist>
             <ModalContent>
               <Input
                 fullWidth
