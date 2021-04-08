@@ -6,8 +6,7 @@ import MainLayout, {
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from '@/components/form/Button'
-import AddProductButton from '@/components/AddProductButton'
-import { Cart } from 'Types'
+import { Cart, ProductCart, Product } from 'Types'
 import {
   getCartById,
   finishCart,
@@ -15,10 +14,13 @@ import {
   removeCart,
   editCart,
 } from '@/http/cart'
+import { getProducts } from '@/http/product'
 import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
+import ProductCartModal from '@/components/Modal/ProductCartModal'
+import { userAtom } from '@/store/userAtom'
 import ListProductCart from './ListProductCart'
 import cartAtom from './cartAtom'
 
@@ -42,6 +44,11 @@ export default function index(): ReactElement {
   const [cart, setCart] = useAtom(cartAtom)
   const [isLoadingFinishCart, setIsLoadingFinishCart] = useState(false)
   const [isLoadingRemoveCart, setIsLoadingRemoveCart] = useState(false)
+  const [isModalAddProductCartShow, setIsModalAddProductCartShow] = useState(
+    false
+  )
+  const [products, setProducts] = useState<Product[]>([])
+  const [user] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const params = useParams<{ id: string }>()
   const pusher = useHistoryPusher()
@@ -53,6 +60,10 @@ export default function index(): ReactElement {
   const editCartsAtom = (newCart: Cart) => {
     setCart(newCart)
     setCarts(editNewCarts(newCart))
+  }
+
+  const toggleModalAddProductCartHandler = () => {
+    setIsModalAddProductCartShow(!isModalAddProductCartShow)
   }
 
   const removeCartHandler = () => {
@@ -72,18 +83,20 @@ export default function index(): ReactElement {
       })
   }
 
-  const addProductHandler = (payload: string) => {
-    const newProduct = {
-      id: Math.random().toString(),
-      name: payload,
-      isPurchased: false,
-    }
-
+  const addProductCartHandler = (payload: ProductCart) => {
     const newCart = {
       ...cart,
-      products: [newProduct, ...cart.products],
+      products: [payload, ...cart.products],
     }
-    editCart(newCart).then(() => editCartsAtom(newCart))
+    console.log(newCart)
+    editCart(newCart)
+      .then(() => editCartsAtom(newCart))
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        toggleModalAddProductCartHandler()
+      })
   }
 
   const statusCartHandler = () => {
@@ -105,6 +118,16 @@ export default function index(): ReactElement {
   }
 
   useEffect(() => {
+    if (user) {
+      getProducts(user.uid)
+        .then((payload) => {
+          setProducts(payload)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
     if (!carts.length) {
       console.log(`fetching cart id: ${params.id}`)
       getCartById(params.id)
@@ -150,12 +173,23 @@ export default function index(): ReactElement {
           Hapus
         </Button>
       </ButtonGroup>
-      <AddProductButton
+      <Button
         style={{ marginBottom: '16px' }}
-        payloadHandler={addProductHandler}
-      />
+        icon="/plus--primary.svg"
+        variant="outline-dashed"
+        align="center"
+        onClick={toggleModalAddProductCartHandler}
+      >
+        Tambah Produk
+      </Button>
       <CaptionEditProduct />
       <CardGroup>{cart.id && <ListProductCart cart={cart} />}</CardGroup>
+      <ProductCartModal
+        isShow={isModalAddProductCartShow}
+        closeHandler={toggleModalAddProductCartHandler}
+        onClickButton={addProductCartHandler}
+        products={products}
+      />
     </MainLayout>
   )
 }

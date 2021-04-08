@@ -7,15 +7,7 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
 import { ProductBaseCard, CardAction } from '@/components/Card'
-import {
-  ProductBase,
-  ProductCart,
-  Cart,
-  CartFirebase,
-  InputState,
-  Product,
-} from 'Types'
-import { initialProductCart } from '@/initials/initialProductCart'
+import { ProductBase, ProductCart, Cart, CartFirebase, Product } from 'Types'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
 import { initialCart } from '@/initials/initialCart'
@@ -26,8 +18,7 @@ import { getProducts } from '@/http/product'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
 import { cartsAtom } from '@/store/cartAtom'
-import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
-import initialInputState from '@/initials/initialInputState'
+import ProductCartModal from '@/components/Modal/ProductCartModal'
 import EmptyProductCarts from './EmptyProductCarts'
 
 const InputDate = styled(Input)`
@@ -48,10 +39,6 @@ export default function index(): ReactElement {
   const [user] = useAtom(userAtom)
   const [isRequestStoreCart, setIsRequestStoreCart] = useState(false)
   const [isModalProductCartShow, setIsModalProductCartShow] = useState(false)
-  const [productCartName, setProductCartName] = useState<InputState<string>>(
-    initialInputState
-  )
-  const [productCartQuantity, setProductCartQuantity] = useState('')
   const [selectedProductCart, setSelectedProductCart] = useState<
     ProductCart | undefined
   >()
@@ -61,26 +48,18 @@ export default function index(): ReactElement {
   const [products, setProducts] = useState<Product[]>([])
 
   const modalProductCartHandler = () => {
-    if (isModalProductCartShow) {
-      setProductCartName(initialInputState)
-      setProductCartQuantity('')
+    if (selectedProductCart) {
+      setSelectedProductCart(undefined)
     }
     setIsModalProductCartShow(!isModalProductCartShow)
   }
 
-  const inputProductCartName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductCartName({
-      value: e.target.value,
-      errorMessage: e.target.value ? '' : 'Data tidak boleh kosong',
-    })
-  }
-
-  const inputProductCartQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductCartQuantity(e.target.value)
+  const openModalFromButton = () => {
+    setSelectedProductCart(undefined)
+    modalProductCartHandler()
   }
 
   const actionCardHandler = (type: CardAction, payload: ProductBase) => {
-    console.log(type, payload)
     switch (type) {
       case 'DELETE':
         setProductCarts(
@@ -89,10 +68,6 @@ export default function index(): ReactElement {
         break
       case 'CLICK':
         setSelectedProductCart(payload as ProductCart)
-        setProductCartName({
-          ...productCartName,
-          value: payload.name,
-        })
         modalProductCartHandler()
         break
       default:
@@ -104,15 +79,13 @@ export default function index(): ReactElement {
     setCartDate(date)
   }
 
-  const submitModalProductCartHandler = () => {
-    if (!productCartName.value) return
-
+  const submitModalProductCartHandler = (payload: ProductCart) => {
     if (selectedProductCart) {
       console.log('update cart !!')
       console.log(`Updating ${selectedProductCart.name}...`)
       const newProduct: ProductCart = {
         ...selectedProductCart,
-        name: `${productCartQuantity} ${productCartName.value}`,
+        name: payload.name,
       }
       setSelectedProductCart(undefined)
       setProductCarts(
@@ -121,12 +94,7 @@ export default function index(): ReactElement {
         )
       )
     } else {
-      const productCart = {
-        ...initialProductCart,
-        name: productCartName.value,
-        id: Math.random().toString(),
-      }
-      setProductCarts([productCart, ...productCarts])
+      setProductCarts([payload, ...productCarts])
     }
 
     modalProductCartHandler()
@@ -198,14 +166,10 @@ export default function index(): ReactElement {
         align="center"
         style={{ margin: '16px 0' }}
         fullWidth
-        onClick={modalProductCartHandler}
+        onClick={openModalFromButton}
       >
         Tambah Produk
       </Button>
-      {/* <AddProductButton
-        payloadHandler={addProductHandler}
-        style={{ margin: '16px 0' }}
-      /> */}
       {!productCarts.length ? (
         <EmptyProductCarts />
       ) : (
@@ -234,48 +198,12 @@ export default function index(): ReactElement {
           />
         ))}
       </ListProductCart>
-
-      <Modal
+      <ProductCartModal
         closeHandler={modalProductCartHandler}
         isShow={isModalProductCartShow}
-        header={<ModalTitle>Ubah Produk</ModalTitle>}
-        content={
-          <>
-            <ModalContent>
-              <Input
-                list="products"
-                placeholder="Pilih / input produk"
-                onChange={inputProductCartName}
-                fullWidth
-                {...productCartName}
-              />
-            </ModalContent>
-            <datalist id="products">
-              {products.map((item) => (
-                <option value={item.name} key={item.id} aria-label="Product" />
-              ))}
-            </datalist>
-            <ModalContent>
-              <Input
-                fullWidth
-                placeholder="Jumlah. Misal : 5 kg, 2 liter, atau 3"
-                onChange={inputProductCartQuantity}
-                value={productCartQuantity}
-              />
-            </ModalContent>
-          </>
-        }
-        footer={
-          <Button
-            variant="primary"
-            icon="/plus--white.svg"
-            align="center"
-            fullWidth
-            onClick={submitModalProductCartHandler}
-          >
-            Ubah Produk
-          </Button>
-        }
+        payload={selectedProductCart}
+        onClickButton={submitModalProductCartHandler}
+        products={products}
       />
     </MainLayout>
   )
