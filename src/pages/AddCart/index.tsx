@@ -6,8 +6,8 @@ import MainLayout, {
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import styled from 'styled-components'
-import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase, ProductCart, Cart, CartFirebase, Product } from 'Types'
+import Card from '@/components/Card'
+import { ProductCart, Cart, CartFirebase, Product } from 'Types'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
 import { initialCart } from '@/initials/initialCart'
@@ -59,19 +59,15 @@ export default function index(): ReactElement {
     modalProductCartHandler()
   }
 
-  const actionCardHandler = (type: CardAction, payload: ProductBase) => {
-    switch (type) {
-      case 'DELETE':
-        setProductCarts(
-          productCarts.filter((productCart) => productCart.id !== payload.id)
-        )
-        break
-      case 'CLICK':
-        setSelectedProductCart(payload as ProductCart)
-        modalProductCartHandler()
-        break
-      default:
-    }
+  const deleteProductCartHandler = (payload: ProductCart) => {
+    setProductCarts(
+      productCarts.filter((productCart) => productCart.id !== payload.id)
+    )
+  }
+
+  const openModalFromProductCartHandler = (payload: ProductCart) => {
+    setSelectedProductCart(payload)
+    modalProductCartHandler()
   }
 
   const inputDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,14 +185,25 @@ export default function index(): ReactElement {
       )}
 
       <ListProductCart>
-        {productCarts.map((item) => (
-          <ProductBaseCard
-            key={item.id}
-            payload={item}
-            disabled={false}
-            actionHandler={actionCardHandler}
-          />
-        ))}
+        {productCarts.map((item) => {
+          const productCartId = item.id
+          return (
+            <Card
+              key={productCartId}
+              style={{ height: '48px' }}
+              onClickRemove={() => {
+                console.log(`removing ${productCartId}...`)
+                deleteProductCartHandler(item)
+              }}
+              onClickBody={() => {
+                console.log('Opening modal...')
+                openModalFromProductCartHandler(item)
+              }}
+            >
+              <p>{item.name}</p>
+            </Card>
+          )
+        })}
       </ListProductCart>
       <ProductCartModal
         closeHandler={modalProductCartHandler}

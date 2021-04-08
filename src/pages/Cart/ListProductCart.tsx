@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Cart, ProductBase, InputState, ProductCart } from 'Types'
+import { Cart, InputState, ProductCart } from 'Types'
 import { initialProductCart } from '@/initials/initialProductCart'
-import { CardAction, ProductCartCard } from '@/components/Card'
 import initialInputState from '@/initials/initialInputState'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
@@ -10,6 +9,7 @@ import { removeCart, editCart } from '@/http/cart'
 import { useAtom } from 'jotai'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import useCartsAtom from '@/hooks/useCartsAtom'
+import Card from '@/components/Card'
 import cartAtom from './cartAtom'
 
 interface Props {
@@ -125,40 +125,43 @@ const ListProductCart = (props: Props): React.ReactElement => {
       })
   }
 
-  const actionProductCartCardHandler = (
-    type: CardAction,
-    payload: ProductBase
-  ) => {
-    switch (type) {
-      case 'FINISH':
-        console.log('finishing product cart')
-        toggleFinishProductCart(payload as ProductCart)
-        break
-      case 'CLICK':
-        setSelectedUpdateProductCart(payload as ProductCart)
-        setUpdateProductCartName({
-          ...updateProductCartName,
-          value: payload.name,
-        })
-        toggleModalUpdateProductCart()
-        break
-      case 'DELETE':
-        removeProductCartHandler(payload.id)
-        break
-      default:
-    }
-  }
-
   return (
     <>
-      {cart.products.map((product) => (
-        <ProductCartCard
+      {cart.products.map((product) => {
+        const productId = product.id
+        return (
+          <Card
+            key={product.id}
+            disabled={product.isPurchased}
+            style={{ height: '48px' }}
+            onClickRemove={() => {
+              console.log(`removing ${productId}...`)
+              removeProductCartHandler(productId)
+            }}
+            onClickToggleFinish={() => {
+              console.log(`toggling finish ${productId}...`)
+              toggleFinishProductCart(product)
+            }}
+            onClickBody={() => {
+              console.log('Opening modal...')
+              setSelectedUpdateProductCart(product)
+              setUpdateProductCartName({
+                ...updateProductCartName,
+                value: product.name,
+              })
+              toggleModalUpdateProductCart()
+            }}
+          >
+            <p>{product.name}</p>
+          </Card>
+        )
+      })}
+      {/* <ProductCartCard
           key={product.id}
           disabled={product.isPurchased}
           payload={product}
           actionHandler={actionProductCartCardHandler}
-        />
-      ))}
+        /> */}
       <Modal
         isShow={isModalUpdateProductCartShow}
         closeHandler={toggleModalUpdateProductCart}

@@ -4,8 +4,7 @@ import MainLayout, {
   CaptionEditProduct,
 } from '@/layout/MainLayout'
 import styled from 'styled-components'
-import { ProductBaseCard, CardAction } from '@/components/Card'
-import { ProductBase, Product, InputState } from 'Types'
+import { Product, InputState } from 'Types'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
 import {
@@ -20,6 +19,7 @@ import Button from '@/components/form/Button'
 import { initialProduct } from '@/initials/initialProduct'
 import usePushAlert from '@/hooks/usePushAlert'
 import initialInputState from '@/initials/initialInputState'
+import Card from '@/components/Card'
 import EmptyProductCarts from '../AddCart/EmptyProductCarts'
 
 const ListProductCart = styled.section`
@@ -67,27 +67,6 @@ export default function index(): ReactElement {
     })
   }
 
-  const actionCardHandler = (type: CardAction, payload: ProductBase) => {
-    if (type === 'DELETE') {
-      removeProduct(payload.id)
-        .then(() => {
-          pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_PRODUCT)
-          setProducts(products.filter((product) => product.id !== payload.id))
-        })
-        .catch((err) => {
-          console.error(err)
-          pushDangerAlert(defaultMessage.FAILED_REMOVE_PRODUCT)
-        })
-    }
-
-    if (type === 'CLICK') {
-      const product: Product = payload as Product
-      setProductName(payload.name)
-      setSelectedProduct(product)
-      toggleModalEditProduct()
-    }
-  }
-
   const storeProductToFirebaseHandler = () => {
     if (!user || !addProductName.value || isRequestAddProductName) return
     setIsRequestAddProductName(true)
@@ -104,6 +83,24 @@ export default function index(): ReactElement {
       .finally(() => {
         setIsRequestAddProductName(false)
       })
+  }
+
+  const removeProductHandler = (id: string) => {
+    removeProduct(id)
+      .then(() => {
+        pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_PRODUCT)
+        setProducts(products.filter((product) => product.id !== id))
+      })
+      .catch((err) => {
+        console.error(err)
+        pushDangerAlert(defaultMessage.FAILED_REMOVE_PRODUCT)
+      })
+  }
+
+  const clickCardHandler = (product: Product) => {
+    setProductName(product.name)
+    setSelectedProduct(product)
+    toggleModalEditProduct()
   }
 
   const submitEditProduct = () => {
@@ -152,14 +149,31 @@ export default function index(): ReactElement {
         <EmptyProductCarts />
       ) : (
         <ListProductCart>
-          {products.map((item) => (
-            <ProductBaseCard
+          {products.map((item) => {
+            const { id } = item
+            return (
+              <Card
+                key={id}
+                style={{ height: '48px' }}
+                onClickRemove={() => {
+                  console.log(`removing ${id}...`)
+                  removeProductHandler(id)
+                }}
+                onClickBody={() => {
+                  console.log('Opening modal...')
+                  clickCardHandler(item)
+                }}
+              >
+                <p>{item.name}</p>
+              </Card>
+            )
+          })}
+          {/* <ProductBaseCard
               key={item.id}
               payload={item}
               disabled={false}
               actionHandler={actionCardHandler}
-            />
-          ))}
+            /> */}
         </ListProductCart>
       )}
       <Modal

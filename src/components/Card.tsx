@@ -1,20 +1,11 @@
-import DateFormat from '@/utils/DateFormat'
-import React, { ReactElement } from 'react'
-import { Cart, ProductBase, ProductCart } from 'Types'
+import React from 'react'
 import styled from 'styled-components'
 
-export type CardAction =
-  | 'CHECK'
-  | 'DELETE'
-  | 'EDIT_PRODUCT'
-  | 'FINISH'
-  | 'CLICK'
-  | 'UNFINISH'
-
-interface Props<T> extends React.HTMLAttributes<HTMLElement> {
-  payload: T
-  disabled: boolean
-  actionHandler: (type: CardAction, sendPayload: T) => void
+interface CardProps extends React.HTMLAttributes<HTMLElement> {
+  disabled?: boolean
+  onClickRemove?: () => void
+  onClickToggleFinish?: () => void
+  onClickBody: () => void
 }
 
 const FinishCart = styled.div`
@@ -37,13 +28,13 @@ const CardContent = styled.div`
   padding-left: 14px;
   cursor: pointer;
 
-  h2 {
+  .heading {
     font-size: 16px;
     font-weight: bold;
     line-height: normal;
   }
 
-  p {
+  .label {
     font-size: 12px;
     color: ${(props) => props.theme.color.gray};
     line-height: normal;
@@ -75,102 +66,40 @@ const CardItemContainer = styled.section<{ disabled: boolean }>`
   }
 `
 
-const ProductCartCardContent = styled(CardContent)`
-  p {
-    color: ${(props) => props.theme.color.dark};
-    font-size: 14px;
-  }
-`
-
-export default function Card<T>(props: Props<T>): ReactElement {
-  const passingDeleteCart = () => {
-    props.actionHandler('DELETE', props.payload)
-  }
+const Card = (props: CardProps): React.ReactElement => {
+  const removeHandler = () => props.onClickRemove && props.onClickRemove()
+  const toggleFinishHandler = () =>
+    props.onClickToggleFinish && props.onClickToggleFinish()
+  const clickBodyHandler = () => props.onClickBody()
 
   return (
-    <CardItemContainer {...props} disabled={props.disabled}>
-      {props.children}
-      <CardTrash onClick={passingDeleteCart}>
+    <CardItemContainer {...props} disabled={!!props.disabled}>
+      <FinishCart
+        onClick={toggleFinishHandler}
+        style={!props.onClickToggleFinish ? { width: '12px' } : undefined}
+      >
+        {props.onClickToggleFinish && (
+          <img
+            src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
+            alt=""
+          />
+        )}
+      </FinishCart>
+      <CardContent onClick={clickBodyHandler}>{props.children}</CardContent>
+      <CardTrash onClick={removeHandler}>
         <img src="/trash--danger.svg" alt="" />
       </CardTrash>
     </CardItemContainer>
   )
 }
 
-const CartCard = (props: Props<Cart>): ReactElement => {
-  const unfinishCartCardHandler = () => {
-    props.actionHandler('UNFINISH', props.payload)
-  }
+const content = () => <></>
+content.displayName = 'content'
 
-  const finishCartCardHandler = () => {
-    props.actionHandler('FINISH', props.payload)
-  }
-
-  const clickContentHandler = () => {
-    props.actionHandler('CLICK', props.payload)
-  }
-
-  return (
-    <Card<Cart> {...props}>
-      <FinishCart
-        onClick={
-          props.disabled ? unfinishCartCardHandler : finishCartCardHandler
-        }
-      >
-        <img
-          src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
-          alt=""
-        />
-      </FinishCart>
-      <CardContent onClick={clickContentHandler}>
-        <h2>{DateFormat(props.payload.date)}</h2>
-        <p>{props.payload.products.length} barang</p>
-      </CardContent>
-    </Card>
-  )
+Card.defaultProps = {
+  disabled: false,
+  onClickRemove: undefined,
+  onClickToggleFinish: undefined,
 }
 
-const ProductCartCard = (props: Props<ProductCart>): ReactElement => {
-  const finishHandler = () => {
-    props.actionHandler('FINISH', props.payload)
-  }
-
-  const clickContentHandler = () => {
-    props.actionHandler('CLICK', props.payload)
-  }
-
-  return (
-    <>
-      <Card<ProductCart> {...props} style={{ height: '48px' }}>
-        <FinishCart onClick={finishHandler}>
-          <img
-            src={props.disabled ? '/check--dark.svg' : '/check--white.svg'}
-            alt=""
-          />
-        </FinishCart>
-        <ProductCartCardContent onClick={clickContentHandler}>
-          <p>{props.payload.name}</p>
-        </ProductCartCardContent>
-      </Card>
-    </>
-  )
-}
-
-const ProductBaseCard = (props: Props<ProductBase>): ReactElement => {
-  const clickContentHandler = () => {
-    props.actionHandler('CLICK', props.payload)
-  }
-
-  return (
-    <>
-      <Card<ProductBase> {...props} style={{ height: '48px' }}>
-        <FinishCart style={{ width: '12px' }} />
-        <ProductCartCardContent onClick={clickContentHandler}>
-          <p>{props.payload.name}</p>
-        </ProductCartCardContent>
-      </Card>
-    </>
-  )
-}
-
-export { CartCard, ProductBaseCard, ProductCartCard }
+export default Card

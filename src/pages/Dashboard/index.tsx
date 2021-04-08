@@ -1,4 +1,4 @@
-import { CartCard, CardAction } from '@/components/Card'
+import Card from '@/components/Card'
 import DashboardLayout from '@/layout/DashboardLayout'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import { userAtom } from '@/store/userAtom'
 import usePushAlert from '@/hooks/usePushAlert'
+import DateFormat from '@/utils/DateFormat'
 import EmptyCarts from './EmptyCarts'
 
 interface ButtonFiltersStateProps {
@@ -41,7 +42,7 @@ const Header = styled.header`
   }
 `
 
-const CartElement = styled(CartCard)`
+const CartElement = styled(Card)`
   &:not(:last-child) {
     margin-bottom: 16px;
   }
@@ -168,24 +169,6 @@ export default function index(): ReactElement {
       })
   }
 
-  const receiveActionHandler = (action: CardAction, cartId: Cart) => {
-    switch (action) {
-      case 'FINISH':
-        checkCartHandler(cartId)
-        break
-      case 'UNFINISH':
-        unfinishCartHandler(cartId)
-        break
-      case 'DELETE':
-        deleteCartHandler(cartId)
-        break
-      case 'CLICK':
-        history.push(`/carts/${cartId.id}`)
-        break
-      default:
-    }
-  }
-
   useEffect(() => {
     if (!user || carts.length) return
     getCarts(user.uid).then((data) => {
@@ -226,14 +209,35 @@ export default function index(): ReactElement {
           {getIdButtonFilterSelected() === 'FINISH' &&
             !filteredCarts.length && <EmptyCarts />}
           <div>
-            {filteredCarts.map((item) => (
-              <CartElement
-                disabled={item.products.every((product) => product.isPurchased)}
-                key={item.id}
-                payload={item}
-                actionHandler={receiveActionHandler}
-              />
-            ))}
+            {filteredCarts.map((item) => {
+              const isFinish = item.products.every(
+                (product) => product.isPurchased
+              )
+              const { id } = item
+
+              return (
+                <CartElement
+                  key={item.id}
+                  disabled={isFinish}
+                  onClickRemove={() => {
+                    console.log(`removing ${id}...`)
+                    deleteCartHandler(item)
+                  }}
+                  onClickToggleFinish={() => {
+                    console.log(`toggling finish ${id}...`)
+                    if (isFinish) {
+                      unfinishCartHandler(item)
+                      return
+                    }
+                    checkCartHandler(item)
+                  }}
+                  onClickBody={() => history.push(`/carts/${item.id}`)}
+                >
+                  <h2 className="heading">{DateFormat(item.date)}</h2>
+                  <p className="label">{item.products.length} barang</p>
+                </CartElement>
+              )
+            })}
           </div>
         </>
       )}
