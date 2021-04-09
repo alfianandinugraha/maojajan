@@ -212,7 +212,6 @@ export default function index(): ReactElement {
               const isFinish = item.products.every(
                 (product) => product.isPurchased
               )
-              const { id } = item
 
               return (
                 <CartElement
