@@ -1,32 +1,11 @@
 import { Product } from 'Types'
-import initialFirebaseTimestamp from './intialFirebaseTImestamp'
+import getInitialFirebaseTimestamp from './initialFirebaseTimestamp'
 
-const initialProduct: Product = {
+const getInitialProduct = (): Product => ({
   uid: 'helloworlduser',
   name: 'Pizza XL Tomatoes',
   id: '',
-  ...initialFirebaseTimestamp,
-}
+  ...getInitialFirebaseTimestamp(),
+})
 
-const initialProducts: Product[] = [
-  {
-    uid: 'helloworlduser',
-    name: 'Pizza XL Tomatoes',
-    id: Math.random().toString(),
-    ...initialFirebaseTimestamp,
-  },
-  {
-    uid: 'helloworlduser',
-    name: 'Pizza XL Tomatoes',
-    id: Math.random().toString(),
-    ...initialFirebaseTimestamp,
-  },
-  {
-    uid: 'helloworlduser',
-    name: 'Pizza XL Tomatoes',
-    id: Math.random().toString(),
-    ...initialFirebaseTimestamp,
-  },
-]
-
-export { initialProduct, initialProducts }
+export default getInitialProduct

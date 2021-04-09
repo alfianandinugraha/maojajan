@@ -10,7 +10,7 @@ import Card from '@/components/Card'
 import { ProductCart, Cart, CartFirebase, Product } from 'Types'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
-import { initialCart } from '@/initials/initialCart'
+import getInitialCart from '@/initials/initialCart'
 import firebase from '@/utils/Firebase'
 import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
 import { storeCart } from '@/http/cart'
@@ -100,7 +100,7 @@ export default function index(): ReactElement {
     if (!user || isRequestStoreCart) return
     setIsRequestStoreCart(true)
     const cart: Cart = {
-      ...initialCart,
+      ...getInitialCart(),
       uid: user.uid,
       date: new firebase.firestore.Timestamp(cartDate.getTime() / 1000, 0),
       products: productCarts,

@@ -1,16 +1,13 @@
 import { FirebaseTimestamp } from 'Types'
-import Firebase from 'firebase'
+import { generateFirebaseTimestampNow } from '@/utils/Date'
 
-const initialTimestamp = new Firebase.firestore.Timestamp(0, 0)
-const initialTimestampNow = new Firebase.firestore.Timestamp(
-  new Date().getTime() / 1000,
-  0
-)
+const getInitialFirebaseTimestamp = (): FirebaseTimestamp => {
+  const timestamp = generateFirebaseTimestampNow()
 
-const initialFirebaseTimestamp: FirebaseTimestamp = {
-  createdAt: new Firebase.firestore.Timestamp(0, 0),
-  updatedAt: new Firebase.firestore.Timestamp(0, 0),
+  return {
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  }
 }
 
-export default initialFirebaseTimestamp
-export { initialTimestamp, initialTimestampNow }
+export default getInitialFirebaseTimestamp

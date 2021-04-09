@@ -1,9 +1,9 @@
 import { ProductCart } from 'Types'
 
-const initialProductCart: ProductCart = {
+const getInitialProductCart = (): ProductCart => ({
   id: Math.random().toString(),
   name: '',
   isPurchased: false,
-}
+})
 
-export { initialProductCart }
+export default getInitialProductCart

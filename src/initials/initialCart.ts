@@ -1,13 +1,13 @@
 import { Cart } from 'Types'
-import { initialTimestampNow } from './intialFirebaseTImestamp'
+import { generateFirebaseTimestampNow } from '@/utils/Date'
+import getInitialFirebaseTimestamp from './initialFirebaseTimestamp'
 
-const initialCart: Cart = {
-  createdAt: initialTimestampNow,
-  updatedAt: initialTimestampNow,
-  date: initialTimestampNow,
+const getInitialCart = (): Cart => ({
+  ...getInitialFirebaseTimestamp(),
+  date: generateFirebaseTimestampNow(),
   uid: '',
   products: [],
   id: '',
-}
+})
 
-export { initialCart }
+export default getInitialCart

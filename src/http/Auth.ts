@@ -1,7 +1,7 @@
 import firebase from '@/utils/Firebase'
 import { storeUser, getUser } from '@/http/User'
 import { User, UserRegisterRequire } from 'Types'
-import { initialTimestampNow } from '@/initials/intialFirebaseTImestamp'
+import { generateFirebaseTimestampNow } from '@/utils/Date'
 
 const validateLoginUser = (
   email: string,
@@ -23,8 +23,8 @@ const registerUser = (userInfo: UserRegisterRequire): Promise<string> => {
           uid: authRequest.user.uid,
           fullName: userInfo.fullName,
           email: userInfo.email,
-          createdAt: initialTimestampNow,
-          updatedAt: initialTimestampNow,
+          createdAt: generateFirebaseTimestampNow(),
+          updatedAt: generateFirebaseTimestampNow(),
         })
       }
       resolve('Pendaftaran berhasil')

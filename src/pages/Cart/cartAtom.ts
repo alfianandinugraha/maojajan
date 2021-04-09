@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 import { Cart } from 'Types'
-import { initialCart } from '@/initials/initialCart'
+import getInitialCart from '@/initials/initialCart'
 
-const cartAtom = atom<Cart>(initialCart)
+const cartAtom = atom<Cart>(getInitialCart())
 
 export default cartAtom

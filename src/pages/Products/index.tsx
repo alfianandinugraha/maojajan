@@ -16,7 +16,7 @@ import {
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
-import { initialProduct } from '@/initials/initialProduct'
+import getInitialProduct from '@/initials/initialProduct'
 import usePushAlert from '@/hooks/usePushAlert'
 import initialInputState from '@/initials/initialInputState'
 import Card from '@/components/Card'
@@ -37,7 +37,7 @@ export default function index(): ReactElement {
   const [isModalAddProductShow, setIsModalAddProductShow] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product>(
-    initialProduct
+    getInitialProduct()
   )
   const [productName, setProductName] = useState('')
   const [addProductName, setAddProductName] = useState<InputState<string>>(
@@ -119,7 +119,7 @@ export default function index(): ReactElement {
         console.log(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_PRODUCT)
       })
-    setSelectedProduct(initialProduct)
+    setSelectedProduct(getInitialProduct())
     setProductName('')
     toggleModalEditProduct()
   }

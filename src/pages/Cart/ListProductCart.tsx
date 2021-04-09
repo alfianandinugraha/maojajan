@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Cart, InputState, ProductCart } from 'Types'
-import { initialProductCart } from '@/initials/initialProductCart'
+import getInitialProductCart from '@/initials/initialProductCart'
 import initialInputState from '@/initials/initialInputState'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
 import Input from '@/components/form/Input'
@@ -27,7 +27,7 @@ const ListProductCart = (props: Props): React.ReactElement => {
   const [
     selectedUpdateProductCart,
     setSelectedUpdateProductCart,
-  ] = useState<ProductCart>(initialProductCart)
+  ] = useState<ProductCart>(getInitialProductCart())
   const [, setCarts] = useCartsAtom()
   const [cart, setCart] = useAtom(cartAtom)
   const pusher = useHistoryPusher()

@@ -3,7 +3,7 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import { InputState, ProductCart, Product } from 'Types'
 import initialInputState from '@/initials/initialInputState'
-import { initialProductCart } from '@/initials/initialProductCart'
+import getInitialProductCart from '@/initials/initialProductCart'
 import Modal, { ModalTitle, ModalContent, ModalProps } from './Modal'
 
 interface ProductCartModalProps extends ModalProps {
@@ -40,7 +40,7 @@ const ProductCartModal = (props: ProductCartModalProps): React.ReactElement => {
     if (productCartName.errorMessage) return
 
     const newProductCart: ProductCart = {
-      ...initialProductCart,
+      ...getInitialProductCart(),
       id: props.payload ? props.payload.id : Math.random().toString(),
       name: `${productCartQuantity.trim()} ${productCartName.value.trim()}`.trim(),
     }
