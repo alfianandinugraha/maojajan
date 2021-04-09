@@ -21,6 +21,11 @@ import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
 import ProductCartModal from '@/components/Modal/ProductCartModal'
 import { userAtom } from '@/store/userAtom'
+import {
+  DateToInputValueHTML,
+  DateToFirebase,
+  HeadingDateFormat,
+} from '@/utils/Date'
 import ListProductCart from './ListProductCart'
 import cartAtom from './cartAtom'
 
@@ -36,6 +41,43 @@ const ButtonGroup = styled.section`
 const CardGroup = styled.section`
   & > *:not(:last-child) {
     margin-bottom: 16px;
+  }
+`
+
+const LabelInputDate = styled.label`
+  position: relative;
+
+  input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+  }
+`
+
+const DashboardHeadingLayout = styled(HeadingLayout)`
+  span {
+    font-size: 24px !important;
+    margin-right: 12px;
+  }
+
+  img {
+    cursor: pointer;
   }
 `
 
@@ -117,6 +159,22 @@ export default function index(): ReactElement {
       })
   }
 
+  const changeDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = new Date(e.target.value)
+    const firebaseDate = DateToFirebase(newDate)
+
+    const newCart = {
+      ...cart,
+      date: firebaseDate,
+    }
+
+    editCart(newCart)
+      .then(() => editCartsAtom(newCart))
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   useEffect(() => {
     if (user) {
       getProducts(user.uid)
@@ -151,7 +209,19 @@ export default function index(): ReactElement {
 
   return (
     <MainLayout>
-      <HeadingLayout>23 April 2020</HeadingLayout>
+      <DashboardHeadingLayout>
+        <span>{HeadingDateFormat(cart.date)}</span>
+        <LabelInputDate htmlFor="date">
+          <img src="/calendar--gray.svg" alt="Calendar icon" />
+          <input
+            type="date"
+            name="date"
+            id="date"
+            onChange={changeDateHandler}
+            value={DateToInputValueHTML(cart.date.toDate())}
+          />
+        </LabelInputDate>
+      </DashboardHeadingLayout>
       <ButtonGroup>
         <Button
           variant="secondary"
