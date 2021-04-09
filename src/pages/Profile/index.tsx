@@ -13,6 +13,7 @@ import { editUser } from '@/http/user'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/store/userAtom'
 import { authAtom } from '@/store/authAtom'
+import { cartsAtom } from '@/store/cartAtom'
 import usePushAlert from '@/hooks/usePushAlert'
 import { InputState } from 'Types'
 import { isValidFullName } from '@/validation/form'
@@ -28,6 +29,7 @@ const LinkGroup = styled.section`
 
 export default function index(): ReactElement {
   const [user, setUser] = useAtom(userAtom)
+  const [, setCarts] = useAtom(cartsAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [fullName, setFullName] = useState<InputState<string>>({
     value: user ? user.fullName : '',
@@ -82,6 +84,7 @@ export default function index(): ReactElement {
     logoutUser().then(() => {
       setUser(null)
       setIsLoggedIn(false)
+      setCarts([])
     })
   }
 
