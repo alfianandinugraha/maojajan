@@ -170,7 +170,8 @@ export default function index(): ReactElement {
   }
 
   useEffect(() => {
-    if (!user || carts.length) return
+    if (!user) return
+    setCarts([])
     getCarts(user.uid).then((data) => {
       console.log(data)
       setCarts(data)
