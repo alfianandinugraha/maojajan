@@ -16,6 +16,7 @@ import { getUser } from './http/user'
 import AlertGroup from './components/Alert/AlertGroup'
 import useTitlePage from './hooks/useTitlePage'
 import TitlePage from './components/TitlePage'
+import ErrorPage from './pages/Error'
 
 const RootStyles = styled.div`
   * {
@@ -80,6 +81,9 @@ const App = (): ReactElement => {
               )}
             </Route>
           ))}
+          <Route>
+            <ErrorPage />
+          </Route>
         </Switch>
       </BrowserRouter>
     </RootStyles>
