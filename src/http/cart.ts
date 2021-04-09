@@ -1,6 +1,7 @@
 import firebase from '@/utils/Firebase'
 import { CartFirebase, Cart } from 'Types'
 import { cartFirebaseFactory } from '@/factory/cartFirebaseFactory'
+import { generateFirebaseTimestampNow } from '@/utils/Date'
 
 const storeCart = (cart: CartFirebase): Promise<Cart> =>
   firebase
@@ -40,7 +41,10 @@ const editCart = (cart: Cart): Promise<Cart> =>
     .firestore()
     .collection('carts')
     .doc(cart.id)
-    .set(cartFirebaseFactory(cart))
+    .set({
+      ...cartFirebaseFactory(cart),
+      updatedAt: generateFirebaseTimestampNow(),
+    })
     .then(() => cart)
 
 const removeCart = (id: string): Promise<void> =>

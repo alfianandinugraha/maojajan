@@ -1,6 +1,6 @@
 import firebase from '@/utils/Firebase'
 import { User } from 'Types'
-import { initialTimestampNow } from '@/initials/initialFirebaseTimestamp'
+import { generateFirebaseTimestampNow } from '@/utils/Date'
 import { userFirebaseFactory } from '@/factory/userFirebaseFactory'
 
 const storeUser = async ({
@@ -27,7 +27,7 @@ const getUser = (uid: string): Promise<User> =>
 const editUser = (user: User): Promise<void> => {
   const newUser: User = {
     ...user,
-    updatedAt: initialTimestampNow,
+    updatedAt: generateFirebaseTimestampNow(),
   }
 
   return firebase

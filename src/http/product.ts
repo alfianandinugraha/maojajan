@@ -1,7 +1,7 @@
 import firebase from '@/utils/Firebase'
 import { Product, ProductFirebase } from 'Types'
 import { productFirebaseFactory } from '@/factory/productFirebaseFactory'
-import { generateFirebaseTimestampNow } from '@/services/FirebaseTimestamp'
+import { generateFirebaseTimestampNow } from '@/utils/Date'
 
 const storeProduct = (productName: string, uid: string): Promise<Product> => {
   const firebaseData: ProductFirebase = {
@@ -43,6 +43,9 @@ const editProduct = (product: Product): Promise<void> =>
     .firestore()
     .collection('products')
     .doc(product.id)
-    .set(productFirebaseFactory(product))
+    .set({
+      ...productFirebaseFactory(product),
+      updatedAt: generateFirebaseTimestampNow(),
+    })
 
 export { storeProduct, getProducts, removeProduct, editProduct }
