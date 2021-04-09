@@ -29,7 +29,7 @@ const config = {
   plugins: ['react', '@typescript-eslint', 'prettier'],
   ignorePatterns: ['.eslintrc.js', 'index.d.ts', 'node_modules/*'],
   rules: {
-    'no-console': [NODE_ENV === 'dev' ? 'off' : 'error'],
+    'no-console': 'off',
     'import/newline-after-import': 'error',
     quotes: ['error', 'single'],
     'prettier/prettier': [
