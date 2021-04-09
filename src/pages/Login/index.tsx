@@ -74,7 +74,7 @@ export default function index(): ReactElement {
         pushSuccessAlert(defaultMessage.SUCCESS_LOGIN)
       })
       .catch((err) => {
-        console.error({ err })
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_LOGIN)
       })
       .finally(() => {

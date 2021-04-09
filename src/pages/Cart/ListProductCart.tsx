@@ -62,7 +62,6 @@ const ListProductCart = (props: Props): React.ReactElement => {
 
     editCart(newCart)
       .then(() => {
-        console.log('Update product cart berhasil...')
         toggleModalUpdateProductCart()
         setCarts.update(newCart)
         setCart(newCart)
@@ -83,7 +82,6 @@ const ListProductCart = (props: Props): React.ReactElement => {
     if (!newCart.products.length) {
       removeCart(newCart.id)
         .then(() => {
-          console.log('remove cart...')
           setCarts.remove(newCart.id)
           pusher.toDashboardPage()
         })
@@ -116,7 +114,6 @@ const ListProductCart = (props: Props): React.ReactElement => {
 
     editCart(newCart)
       .then(() => {
-        console.log('Status product cart berhasil diperbarui')
         setCarts.update(newCart)
         setCart(newCart)
       })
@@ -135,15 +132,12 @@ const ListProductCart = (props: Props): React.ReactElement => {
             disabled={product.isPurchased}
             style={{ height: '48px' }}
             onClickRemove={() => {
-              console.log(`removing ${productId}...`)
               removeProductCartHandler(productId)
             }}
             onClickToggleFinish={() => {
-              console.log(`toggling finish ${productId}...`)
               toggleFinishProductCart(product)
             }}
             onClickBody={() => {
-              console.log('Opening modal...')
               setSelectedUpdateProductCart(product)
               setUpdateProductCartName({
                 ...updateProductCartName,

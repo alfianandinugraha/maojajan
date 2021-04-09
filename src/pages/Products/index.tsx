@@ -77,7 +77,7 @@ export default function index(): ReactElement {
         toggleModalAddProduct()
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_STORE_PRODUCT)
       })
       .finally(() => {
@@ -116,7 +116,7 @@ export default function index(): ReactElement {
         )
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_PRODUCT)
       })
     setSelectedProduct(getInitialProduct())
@@ -125,7 +125,6 @@ export default function index(): ReactElement {
   }
 
   useEffect(() => {
-    console.log('fetching')
     if (!user) return
     getProducts(user.uid).then((data) => {
       setProducts(data)
@@ -156,11 +155,9 @@ export default function index(): ReactElement {
                 key={id}
                 style={{ height: '48px' }}
                 onClickRemove={() => {
-                  console.log(`removing ${id}...`)
                   removeProductHandler(id)
                 }}
                 onClickBody={() => {
-                  console.log('Opening modal...')
                   clickCardHandler(item)
                 }}
               >

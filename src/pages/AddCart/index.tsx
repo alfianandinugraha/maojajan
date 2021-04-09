@@ -77,8 +77,6 @@ export default function index(): ReactElement {
 
   const submitModalProductCartHandler = (payload: ProductCart) => {
     if (selectedProductCart) {
-      console.log('update cart !!')
-      console.log(`Updating ${selectedProductCart.name}...`)
       const newProduct: ProductCart = {
         ...selectedProductCart,
         name: payload.name,
@@ -108,16 +106,14 @@ export default function index(): ReactElement {
     const cartFirebase: CartFirebase = cartFirebaseFactory(cart)
     storeCart(cartFirebase)
       .then((res) => {
-        console.log('keranjang berhasil di tambahkan')
         setIsRequestStoreCart(false)
         setCarts([res, ...carts])
         pushSuccessAlert(defaultMessage.SUCCESS_STORE_CART)
         localStorage.removeItem('maojajan-productcart')
         pusher.toDashboardPage()
-        console.log(res)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_STORE_CART)
       })
   }
@@ -192,11 +188,9 @@ export default function index(): ReactElement {
               key={productCartId}
               style={{ height: '48px' }}
               onClickRemove={() => {
-                console.log(`removing ${productCartId}...`)
                 deleteProductCartHandler(item)
               }}
               onClickBody={() => {
-                console.log('Opening modal...')
                 openModalFromProductCartHandler(item)
               }}
             >

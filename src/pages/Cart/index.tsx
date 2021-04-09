@@ -109,18 +109,17 @@ export default function index(): ReactElement {
   }
 
   const removeCartHandler = () => {
-    console.log(`removing cart id : ${params.id}`)
     setIsLoadingRemoveCart(true)
     removeCart(params.id)
       .then(() => {
         setIsLoadingRemoveCart(false)
-        console.log('remove successfully')
+
         setCarts(carts.filter((cartItem) => cartItem.id !== params.id))
         pusher.toDashboardPage()
         pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_CART)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_REMOVE_CART)
       })
   }
@@ -130,7 +129,7 @@ export default function index(): ReactElement {
       ...cart,
       products: [payload, ...cart.products],
     }
-    console.log(newCart)
+
     editCart(newCart)
       .then(() => editCartsAtom(newCart))
       .catch((err) => {
@@ -154,7 +153,7 @@ export default function index(): ReactElement {
         pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_CART)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
       })
   }
@@ -187,10 +186,8 @@ export default function index(): ReactElement {
     }
 
     if (!carts.length) {
-      console.log(`fetching cart id: ${params.id}`)
       getCartById(params.id)
         .then((data) => {
-          console.log('fetching success')
           if (data) {
             setCart(data)
             return

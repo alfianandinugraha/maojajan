@@ -69,13 +69,12 @@ export default function index(): ReactElement {
     const newUser = { ...user, fullName: fullName.value }
     editUser(newUser)
       .then(() => {
-        console.log('update fullname berhasil')
         pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_FULLNAME)
         setIsRequestFullName(false)
         setUser(newUser)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_FULLNAME)
       })
   }

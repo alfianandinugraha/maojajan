@@ -1,5 +1,3 @@
-const messageConsole = (): void => {
-  console.log('hello this is from logging.ts')
-}
+const messageConsole = (): void => {}
 
 export default messageConsole

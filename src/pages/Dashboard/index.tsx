@@ -139,7 +139,7 @@ export default function index(): ReactElement {
         pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_CART)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
       })
   }
@@ -151,20 +151,19 @@ export default function index(): ReactElement {
         pushSuccessAlert(defaultMessage.SUCCESS_UPDATE_CART)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_UPDATE_CART)
       })
   }
 
   const deleteCartHandler = (cartId: Cart) => {
-    console.log(cartId)
     removeCart(cartId.id)
       .then(() => {
         pushSuccessAlert(defaultMessage.SUCCESS_REMOVE_CART)
         setCarts(carts.filter((cart) => cart.id !== cartId.id))
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         pushDangerAlert(defaultMessage.FAILED_REMOVE_CART)
       })
   }
@@ -173,7 +172,6 @@ export default function index(): ReactElement {
     if (!user) return
     setCarts([])
     getCarts(user.uid).then((data) => {
-      console.log(data)
       setCarts(data)
       setFilteredCarts(data)
     })
@@ -221,11 +219,9 @@ export default function index(): ReactElement {
                   key={item.id}
                   disabled={isFinish}
                   onClickRemove={() => {
-                    console.log(`removing ${id}...`)
                     deleteCartHandler(item)
                   }}
                   onClickToggleFinish={() => {
-                    console.log(`toggling finish ${id}...`)
                     if (isFinish) {
                       unfinishCartHandler(item)
                       return

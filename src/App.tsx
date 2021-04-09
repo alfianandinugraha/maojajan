@@ -60,7 +60,6 @@ const App = (): ReactElement => {
   }, [])
 
   if (isLoading) return <></>
-  console.log('not loading')
 
   return (
     <RootStyles>
