@@ -14,10 +14,8 @@ import { loginUser } from '@/http/auth'
 import { useAtom } from 'jotai'
 import { authAtom } from '@/store/authAtom'
 import usePushAlert from '@/hooks/usePushAlert'
-import useTitlePage from '@/hooks/useTitlePage'
 
 export default function index(): ReactElement {
-  useTitlePage('Login')
   const [isRequestLogin, setIsRequestLogin] = useState(false)
   const [, setIsLoggedIn] = useAtom(authAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()

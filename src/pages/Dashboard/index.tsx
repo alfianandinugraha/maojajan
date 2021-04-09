@@ -10,7 +10,6 @@ import { cartsAtom } from '@/store/cartAtom'
 import { userAtom } from '@/store/userAtom'
 import usePushAlert from '@/hooks/usePushAlert'
 import { HeadingDateFormat } from '@/utils/Date'
-import useTitlePage from '@/hooks/useTitlePage'
 import EmptyCarts from './EmptyCarts'
 
 interface ButtonFiltersStateProps {
@@ -75,7 +74,6 @@ const ButtonFilter = styled.button<{ isSelected?: boolean }>`
 `
 
 export default function index(): ReactElement {
-  useTitlePage('Dashboard')
   const [carts, setCarts] = useAtom(cartsAtom)
   const [filteredCarts, setFilteredCarts] = useState(carts)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()

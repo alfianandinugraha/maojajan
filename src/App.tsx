@@ -1,21 +1,9 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import StartPage from '@/pages/Start'
-import LoginPage from '@/pages/Login'
-import RegisterPage from '@/pages/Register'
-import ResetPage from '@/pages/ResetPassword'
-import DashboardPage from '@/pages/Dashboard'
-import AddCartPage from '@/pages/AddCart'
-import ProductsPage from '@/pages/Products'
-import CartPage from '@/pages/Cart'
-import AboutPage from '@/pages/About'
-import ProfilePage from '@/pages/Profile'
-import UpdatePasswordPage from '@/pages/UpdatePassword'
-import UpdateEmailPage from '@/pages/UpdateEmail'
-import VerifyPasswordPage from '@/pages/VerifyPassword'
 import styled from 'styled-components'
 import { useAtom } from 'jotai'
 import firebase from 'firebase'
+import routes from '@/routes'
 import { authAtom } from './store/authAtom'
 import './theme/reset.css'
 import './style/animation.css'
@@ -23,6 +11,7 @@ import { userAtom } from './store/userAtom'
 import { getUser } from './http/user'
 import AlertGroup from './components/Alert/AlertGroup'
 import useTitlePage from './hooks/useTitlePage'
+import TitlePage from './components/TitlePage'
 
 const RootStyles = styled.div`
   * {
@@ -66,51 +55,19 @@ const App = (): ReactElement => {
   }, [])
 
   if (isLoading) return <></>
+  console.log('not loading')
 
   return (
     <RootStyles>
       <AlertGroup />
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact>
-            <StartPage />
-          </Route>
-          <Route path="/login" exact>
-            <LoginPage />
-          </Route>
-          <Route path="/register" exact>
-            <RegisterPage />
-          </Route>
-          <Route path="/reset-password" exact>
-            <ResetPage />
-          </Route>
-          <Route path="/dashboard" exact>
-            <DashboardPage />
-          </Route>
-          <Route path="/add-cart" exact>
-            <AddCartPage />
-          </Route>
-          <Route path="/products" exact>
-            <ProductsPage />
-          </Route>
-          <Route path="/carts/:id" exact>
-            <CartPage />
-          </Route>
-          <Route path="/about" exact>
-            <AboutPage />
-          </Route>
-          <Route path="/profile" exact>
-            <ProfilePage />
-          </Route>
-          <Route path="/update-password" exact>
-            <UpdatePasswordPage />
-          </Route>
-          <Route path="/update-email" exact>
-            <UpdateEmailPage />
-          </Route>
-          <Route path="/verify-password" exact>
-            <VerifyPasswordPage />
-          </Route>
+          {routes.map((route) => (
+            <Route path={route.path} exact key={route.id}>
+              <TitlePage title={route.title} />
+              <route.component />
+            </Route>
+          ))}
         </Switch>
       </BrowserRouter>
     </RootStyles>

@@ -13,10 +13,8 @@ import usePushAlert from '@/hooks/usePushAlert'
 import { InputState } from 'Types'
 import { isValidPassword } from '@/validation/form'
 import initialInputState from '@/initials/initialInputState'
-import useTitlePage from '@/hooks/useTitlePage'
 
 export default function index(): ReactElement {
-  useTitlePage('Ubah password')
   const [user] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [oldPassword, setOldPassword] = useState<InputState<string>>(

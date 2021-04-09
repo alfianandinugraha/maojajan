@@ -12,10 +12,8 @@ import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 import { resetPassword } from '@/http/auth'
 import usePushAlert from '@/hooks/usePushAlert'
-import useTitlePage from '@/hooks/useTitlePage'
 
 export default function index(): ReactElement {
-  useTitlePage('Reset password')
   const history = useHistoryPusher()
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [isRequestSendResetPassword, setIsRequestSendResetPassword] = useState(

@@ -13,10 +13,8 @@ import { isValidPassword, EMPTY_VALUE_MESSAGE } from '@/validation/form'
 import { verifyResetCode, confirmResetPassword } from '@/http/auth'
 import usePushAlert from '@/hooks/usePushAlert'
 import { useLocation } from 'react-router-dom'
-import useTitlePage from '@/hooks/useTitlePage'
 
 export default function index(): ReactElement {
-  useTitlePage('Verifikasi password')
   const pusher = useHistoryPusher()
   const location = useLocation()
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()

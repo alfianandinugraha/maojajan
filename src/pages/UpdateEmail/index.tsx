@@ -12,10 +12,8 @@ import { User } from 'Types'
 import { editUser } from '@/http/user'
 import { validateLoginUser } from '@/http/auth'
 import usePushAlert from '@/hooks/usePushAlert'
-import useTitlePage from '@/hooks/useTitlePage'
 
 export default function index(): ReactElement {
-  useTitlePage('Ubah email')
   const [user, setUser] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [newEmail, setNewEmail] = useState('')

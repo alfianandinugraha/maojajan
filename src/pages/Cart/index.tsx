@@ -26,7 +26,6 @@ import {
   DateToFirebase,
   HeadingDateFormat,
 } from '@/utils/Date'
-import useTitlePage from '@/hooks/useTitlePage'
 import ListProductCart from './ListProductCart'
 import cartAtom from './cartAtom'
 
@@ -83,7 +82,6 @@ const DashboardHeadingLayout = styled(HeadingLayout)`
 `
 
 export default function index(): ReactElement {
-  useTitlePage('Keranjang')
   const [carts, setCarts] = useAtom(cartsAtom)
   const [cart, setCart] = useAtom(cartAtom)
   const [isLoadingFinishCart, setIsLoadingFinishCart] = useState(false)
