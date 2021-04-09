@@ -9,7 +9,7 @@ import { useAtom } from 'jotai'
 import { cartsAtom } from '@/store/cartAtom'
 import { userAtom } from '@/store/userAtom'
 import usePushAlert from '@/hooks/usePushAlert'
-import DateFormat from '@/utils/DateFormat'
+import { HeadingDateFormat } from '@/utils/Date'
 import EmptyCarts from './EmptyCarts'
 
 interface ButtonFiltersStateProps {
@@ -233,7 +233,7 @@ export default function index(): ReactElement {
                   }}
                   onClickBody={() => history.push(`/carts/${item.id}`)}
                 >
-                  <h2 className="heading">{DateFormat(item.date)}</h2>
+                  <h2 className="heading">{HeadingDateFormat(item.date)}</h2>
                   <p className="label">{item.products.length} barang</p>
                 </CartElement>
               )
