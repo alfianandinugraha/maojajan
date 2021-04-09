@@ -4,8 +4,8 @@ import AuthLayout, {
   AuthHeading,
   AuthInputGroup,
 } from '@/layout/AuthLayout'
-import Input from '@/components/form/Input'
-import Button from '@/components/form/Button'
+import Input from '@/components/Form/Input'
+import Button from '@/components/Form/Button'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { InputState } from 'Types'
 import initialInputState from '@/initials/initialInputState'

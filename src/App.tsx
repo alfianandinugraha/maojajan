@@ -21,7 +21,7 @@ import './theme/reset.css'
 import './style/animation.css'
 import { userAtom } from './store/userAtom'
 import { getUser } from './http/user'
-import AlertGroup from './components/alert/AlertGroup'
+import AlertGroup from './components/Alert/AlertGroup'
 
 const RootStyles = styled.div`
   * {

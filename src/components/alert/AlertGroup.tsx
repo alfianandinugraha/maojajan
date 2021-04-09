@@ -3,7 +3,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import styled from 'styled-components'
 import { useAtom } from 'jotai'
 import { alertsAtom } from '@/store/alertAtom'
-import Alert from './Alert'
+import Alert from '@/components/Alert/Alert'
 
 const AlertGroupWrapper = styled.section`
   position: fixed;

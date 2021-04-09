@@ -1,7 +1,7 @@
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components'
-import Button from '@/components/form/Button'
+import Button from '@/components/Form/Button'
 import { CSSTransition } from 'react-transition-group'
 import Container from './Container'
 

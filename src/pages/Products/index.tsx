@@ -14,8 +14,8 @@ import {
   editProduct,
 } from '@/http/product'
 import Modal, { ModalTitle, ModalContent } from '@/components/Modal'
-import Input from '@/components/form/Input'
-import Button from '@/components/form/Button'
+import Input from '@/components/Form/Input'
+import Button from '@/components/Form/Button'
 import getInitialProduct from '@/initials/initialProduct'
 import usePushAlert from '@/hooks/usePushAlert'
 import initialInputState from '@/initials/initialInputState'

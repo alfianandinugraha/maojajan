@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import Button from '@/components/form/Button'
+import Button from '@/components/Form/Button'
 import AuthLayout from '@/layout/AuthLayout'
 import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'

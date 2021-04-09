@@ -3,8 +3,8 @@ import MainLayout, {
   HeadingLayout,
   CaptionEditProduct,
 } from '@/layout/MainLayout'
-import Input from '@/components/form/Input'
-import Button from '@/components/form/Button'
+import Input from '@/components/Form/Input'
+import Button from '@/components/Form/Button'
 import styled from 'styled-components'
 import Card from '@/components/Card'
 import { ProductCart, Cart, CartFirebase, Product } from 'Types'

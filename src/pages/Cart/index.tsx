@@ -5,7 +5,7 @@ import MainLayout, {
 } from '@/layout/MainLayout'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import Button from '@/components/form/Button'
+import Button from '@/components/Form/Button'
 import { Cart, ProductCart, Product } from 'Types'
 import {
   getCartById,

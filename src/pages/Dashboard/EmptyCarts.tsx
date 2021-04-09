@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Button from '@/components/form/Button'
+import Button from '@/components/Form/Button'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}

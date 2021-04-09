@@ -4,8 +4,8 @@ import MainLayout, {
   ProfileButtonGroup,
 } from '@/layout/MainLayout'
 import React, { ReactElement, useState } from 'react'
-import Input from '@/components/form/Input'
-import Button from '@/components/form/Button'
+import Input from '@/components/Form/Input'
+import Button from '@/components/Form/Button'
 import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { logoutUser } from '@/http/auth'

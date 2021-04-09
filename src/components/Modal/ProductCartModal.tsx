@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Input from '@/components/form/Input'
-import Button from '@/components/form/Button'
+import Input from '@/components/Form/Input'
+import Button from '@/components/Form/Button'
 import { InputState, ProductCart, Product } from 'Types'
 import initialInputState from '@/initials/initialInputState'
 import getInitialProductCart from '@/initials/initialProductCart'
