@@ -2,7 +2,6 @@ import Container from '@/components/Container'
 import MenuBar from '@/components/MenuBar'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
-import { ProtectedMainRoute } from './ProtectedLayout'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
 
@@ -35,15 +34,13 @@ const Background = styled.section`
 
 export default function DashboardLayout(props: Props): ReactElement {
   return (
-    <ProtectedMainRoute>
-      <DashboardContainer>
-        <Background>
-          <img src="bg-dashboard.png" alt="" />
-        </Background>
-        <Logo src="/MaoJajan-logo--white.svg" alt="MaoJajan logo" />
-        {props.children}
-        <MenuBar />
-      </DashboardContainer>
-    </ProtectedMainRoute>
+    <DashboardContainer>
+      <Background>
+        <img src="bg-dashboard.png" alt="" />
+      </Background>
+      <Logo src="/MaoJajan-logo--white.svg" alt="MaoJajan logo" />
+      {props.children}
+      <MenuBar />
+    </DashboardContainer>
   )
 }

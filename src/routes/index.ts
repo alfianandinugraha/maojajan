@@ -19,6 +19,7 @@ interface Route {
   id: string
   title: string
   path: string
+  isProtected?: boolean
 }
 
 const routes: Route[] = [
@@ -27,6 +28,7 @@ const routes: Route[] = [
     id: generateRandomString(),
     title: 'Dashboard',
     path: '/dashboard',
+    isProtected: true,
   },
   {
     component: StartPage,
@@ -57,48 +59,56 @@ const routes: Route[] = [
     id: generateRandomString(),
     title: 'Tambah keranjang',
     path: '/add-cart',
+    isProtected: true,
   },
   {
     component: ProductsPage,
     id: generateRandomString(),
     title: 'Produk',
     path: '/products',
+    isProtected: true,
   },
   {
     component: CartPage,
     id: generateRandomString(),
     title: 'Keranjang',
     path: '/carts/:id',
+    isProtected: true,
   },
   {
     component: AboutPage,
     id: generateRandomString(),
     title: 'Tentang',
     path: '/about',
+    isProtected: true,
   },
   {
     component: ProfilePage,
     id: generateRandomString(),
     title: 'Profil',
     path: '/profile',
+    isProtected: true,
   },
   {
     component: UpdatePasswordPage,
     id: generateRandomString(),
     title: 'Ubah password',
     path: '/update-password',
+    isProtected: true,
   },
   {
     component: UpdateEmailPage,
     id: generateRandomString(),
     title: 'Ubah email',
     path: '/update-email',
+    isProtected: true,
   },
   {
     component: VerifyPasswordPage,
     id: generateRandomString(),
     title: 'Verifikasi password',
     path: '/verify-email',
+    isProtected: true,
   },
 ]
 

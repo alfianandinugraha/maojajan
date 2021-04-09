@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import Typography from '@/components/Typography'
 import { useHistory } from 'react-router-dom'
-import { ProtectedAuthRoute } from './ProtectedLayout'
 
 type Props = React.HTMLAttributes<HTMLElement>
 
@@ -65,18 +64,16 @@ export default function AuthLayout(props: Props): ReactElement {
   const history = useHistory()
   const toStartPage = () => historyPusher.toStartPage()
   return (
-    <ProtectedAuthRoute>
-      <AuthContainer {...props}>
-        {history.location.pathname !== '/' && (
-          <Logo
-            src="/MaoJajan-logo--white.svg"
-            alt="MaoJajan logo"
-            onClick={toStartPage}
-          />
-        )}
-        {props.children}
-      </AuthContainer>
-    </ProtectedAuthRoute>
+    <AuthContainer {...props}>
+      {history.location.pathname !== '/' && (
+        <Logo
+          src="/MaoJajan-logo--white.svg"
+          alt="MaoJajan logo"
+          onClick={toStartPage}
+        />
+      )}
+      {props.children}
+    </AuthContainer>
   )
 }
 

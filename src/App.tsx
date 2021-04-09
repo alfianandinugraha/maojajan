@@ -4,6 +4,10 @@ import styled from 'styled-components'
 import { useAtom } from 'jotai'
 import firebase from 'firebase'
 import routes from '@/routes'
+import {
+  ProtectedMainRoute,
+  ProtectedAuthRoute,
+} from '@/routes/ProtectComponent'
 import { authAtom } from './store/authAtom'
 import './theme/reset.css'
 import './style/animation.css'
@@ -65,7 +69,15 @@ const App = (): ReactElement => {
           {routes.map((route) => (
             <Route path={route.path} exact key={route.id}>
               <TitlePage title={route.title} />
-              <route.component />
+              {route.isProtected ? (
+                <ProtectedMainRoute>
+                  <route.component />
+                </ProtectedMainRoute>
+              ) : (
+                <ProtectedAuthRoute>
+                  <route.component />
+                </ProtectedAuthRoute>
+              )}
             </Route>
           ))}
         </Switch>

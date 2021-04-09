@@ -3,7 +3,6 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import MenuBar from '@/components/MenuBar'
 import { useHistory } from 'react-router-dom'
-import { ProtectedMainRoute } from './ProtectedLayout'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {}
 
@@ -78,18 +77,16 @@ export default function MainLayout(props: Props): ReactElement {
   }
 
   return (
-    <ProtectedMainRoute>
-      <MainContainer>
-        <BackButton onClick={backButtonHandler}>
-          <img src="/back-arrow--white.svg" alt="Back" />
-        </BackButton>
-        <Logo src="/MaoJajan-logo--primary.svg" alt="" />
-        <Background src="/bg-MainLayout.svg" />
-        {props.children}
-        <div style={{ marginBottom: '154px' }} />
-        <MenuBar />
-      </MainContainer>
-    </ProtectedMainRoute>
+    <MainContainer>
+      <BackButton onClick={backButtonHandler}>
+        <img src="/back-arrow--white.svg" alt="Back" />
+      </BackButton>
+      <Logo src="/MaoJajan-logo--primary.svg" alt="" />
+      <Background src="/bg-MainLayout.svg" />
+      {props.children}
+      <div style={{ marginBottom: '154px' }} />
+      <MenuBar />
+    </MainContainer>
   )
 }
 
