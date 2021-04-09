@@ -1,4 +1,6 @@
-const { NODE_ENV } = require('dotenv').config().parsed
+require('dotenv')
+
+const { NODE_ENV } = process.env
 
 const config = {
   root: true,
