@@ -19,8 +19,10 @@ import { registerUser } from '@/http/auth'
 import { useAtom } from 'jotai'
 import { authAtom } from '@/store/authAtom'
 import usePushAlert from '@/hooks/usePushAlert'
+import useTitlePage from '@/hooks/useTitlePage'
 
 export default function index(): ReactElement {
+  useTitlePage('Register')
   const history = useHistoryPusher()
   const [isRequestRegister, setIsRequestRegister] = useState(false)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()

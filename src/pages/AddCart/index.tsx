@@ -19,6 +19,7 @@ import useHistoryPusher from '@/hooks/useHistoryPusher'
 import usePushAlert from '@/hooks/usePushAlert'
 import { cartsAtom } from '@/store/cartAtom'
 import ProductCartModal from '@/components/Modal/ProductCartModal'
+import useTitlePage from '@/hooks/useTitlePage'
 import EmptyProductCarts from './EmptyProductCarts'
 
 const InputDate = styled(Input)`
@@ -34,6 +35,7 @@ const ListProductCart = styled.section`
 `
 
 export default function index(): ReactElement {
+  useTitlePage('Tambah keranjang')
   const [productCarts, setProductCarts] = useState<ProductCart[]>([])
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [user] = useAtom(userAtom)

@@ -20,6 +20,7 @@ import getInitialProduct from '@/initials/initialProduct'
 import usePushAlert from '@/hooks/usePushAlert'
 import initialInputState from '@/initials/initialInputState'
 import Card from '@/components/Card'
+import useTitlePage from '@/hooks/useTitlePage'
 import EmptyProductCarts from '../AddCart/EmptyProductCarts'
 
 const ListProductCart = styled.section`
@@ -31,6 +32,7 @@ const ListProductCart = styled.section`
 `
 
 export default function index(): ReactElement {
+  useTitlePage('Produk')
   const [user] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [isModalEditProductShow, setIsModalEditProductShow] = useState(false)

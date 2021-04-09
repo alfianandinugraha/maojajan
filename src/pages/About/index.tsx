@@ -1,6 +1,7 @@
 import MainLayout, { HeadingLayout } from '@/layout/MainLayout'
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
+import useTitlePage from '@/hooks/useTitlePage'
 
 const AboutImage = styled.img`
   height: 100px;
@@ -24,6 +25,7 @@ const AboutFooter = styled.footer`
 `
 
 export default function index(): ReactElement {
+  useTitlePage('Tentang')
   return (
     <MainLayout>
       <HeadingLayout>Tentang</HeadingLayout>

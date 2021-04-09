@@ -16,6 +16,7 @@ import { authAtom } from '@/store/authAtom'
 import usePushAlert from '@/hooks/usePushAlert'
 import { InputState } from 'Types'
 import { isValidFullName } from '@/validation/form'
+import useTitlePage from '@/hooks/useTitlePage'
 
 const LinkGroup = styled.section`
   display: flex;
@@ -27,6 +28,7 @@ const LinkGroup = styled.section`
 `
 
 export default function index(): ReactElement {
+  useTitlePage('Profil')
   const [user, setUser] = useAtom(userAtom)
   const { pushDangerAlert, pushSuccessAlert, defaultMessage } = usePushAlert()
   const [fullName, setFullName] = useState<InputState<string>>({

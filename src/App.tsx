@@ -22,6 +22,7 @@ import './style/animation.css'
 import { userAtom } from './store/userAtom'
 import { getUser } from './http/user'
 import AlertGroup from './components/Alert/AlertGroup'
+import useTitlePage from './hooks/useTitlePage'
 
 const RootStyles = styled.div`
   * {
@@ -38,6 +39,7 @@ const RootStyles = styled.div`
 `
 
 const App = (): ReactElement => {
+  useTitlePage('Fetching...')
   const [, setIsLoggedIn] = useAtom(authAtom)
   const [, setUser] = useAtom(userAtom)
   const [isLoading, setIsLoading] = useState(true)
