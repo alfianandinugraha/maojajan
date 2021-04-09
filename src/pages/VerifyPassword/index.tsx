@@ -10,7 +10,7 @@ import AuthLayout, {
 import initialInputState from '@/initials/initialInputState'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { isValidPassword, EMPTY_VALUE_MESSAGE } from '@/validation/form'
-import { verifyResetCode, confirmResetPassword } from '@/http/Auth'
+import { verifyResetCode, confirmResetPassword } from '@/http/auth'
 import usePushAlert from '@/hooks/usePushAlert'
 import { useLocation } from 'react-router-dom'
 

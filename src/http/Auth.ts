@@ -1,5 +1,5 @@
 import firebase from '@/utils/Firebase'
-import { storeUser, getUser } from '@/http/User'
+import { storeUser, getUser } from '@/http/user'
 import { User, UserRegisterRequire } from 'Types'
 import { generateFirebaseTimestampNow } from '@/utils/Date'
 

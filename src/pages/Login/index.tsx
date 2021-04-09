@@ -10,7 +10,7 @@ import AuthLayout, {
 } from '@/layout/AuthLayout'
 import initialInputState from '@/initials/initialInputState'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
-import { loginUser } from '@/http/Auth'
+import { loginUser } from '@/http/auth'
 import { useAtom } from 'jotai'
 import { authAtom } from '@/store/authAtom'
 import usePushAlert from '@/hooks/usePushAlert'

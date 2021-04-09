@@ -15,7 +15,7 @@ import {
   isValidPassword,
   EMPTY_VALUE_MESSAGE,
 } from '@/validation/form'
-import { registerUser } from '@/http/Auth'
+import { registerUser } from '@/http/auth'
 import { useAtom } from 'jotai'
 import { authAtom } from '@/store/authAtom'
 import usePushAlert from '@/hooks/usePushAlert'

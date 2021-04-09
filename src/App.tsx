@@ -20,7 +20,7 @@ import { authAtom } from './store/authAtom'
 import './theme/reset.css'
 import './style/animation.css'
 import { userAtom } from './store/userAtom'
-import { getUser } from './http/User'
+import { getUser } from './http/user'
 import AlertGroup from './components/alert/AlertGroup'
 
 const RootStyles = styled.div`

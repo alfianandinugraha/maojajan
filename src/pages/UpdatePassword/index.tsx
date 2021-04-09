@@ -6,7 +6,7 @@ import MainLayout, {
   ProfileInputGroup,
 } from '@/layout/MainLayout'
 import React, { ReactElement, useState } from 'react'
-import { validateLoginUser } from '@/http/Auth'
+import { validateLoginUser } from '@/http/auth'
 import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
 import usePushAlert from '@/hooks/usePushAlert'

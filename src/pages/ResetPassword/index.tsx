@@ -10,7 +10,7 @@ import AuthLayout, {
 import initialInputState from '@/initials/initialInputState'
 import useHistoryPusher from '@/hooks/useHistoryPusher'
 import { isValidEmail, EMPTY_VALUE_MESSAGE } from '@/validation/form'
-import { resetPassword } from '@/http/Auth'
+import { resetPassword } from '@/http/auth'
 import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {

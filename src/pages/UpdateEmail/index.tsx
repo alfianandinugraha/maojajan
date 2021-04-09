@@ -9,8 +9,8 @@ import { userAtom } from '@/store/userAtom'
 import { useAtom } from 'jotai'
 import React, { ReactElement, useState } from 'react'
 import { User } from 'Types'
-import { editUser } from '@/http/User'
-import { validateLoginUser } from '@/http/Auth'
+import { editUser } from '@/http/user'
+import { validateLoginUser } from '@/http/auth'
 import usePushAlert from '@/hooks/usePushAlert'
 
 export default function index(): ReactElement {
