@@ -107,7 +107,7 @@ const routes: Route[] = [
     component: VerifyPasswordPage,
     id: generateRandomString(),
     title: 'Verifikasi password',
-    path: '/verify-email',
+    path: '/verify-password',
     isProtected: true,
   },
 ]
