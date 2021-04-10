@@ -108,7 +108,6 @@ const routes: Route[] = [
     id: generateRandomString(),
     title: 'Verifikasi password',
     path: '/verify-password',
-    isProtected: true,
   },
 ]
 
