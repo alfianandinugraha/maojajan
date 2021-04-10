@@ -40,6 +40,7 @@ export default function DashboardLayout(props: Props): ReactElement {
       </Background>
       <Logo src="/MaoJajan-logo--white.svg" alt="MaoJajan logo" />
       {props.children}
+      <div style={{ marginBottom: '154px' }} />
       <MenuBar />
     </DashboardContainer>
   )
