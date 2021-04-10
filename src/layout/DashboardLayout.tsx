@@ -24,7 +24,7 @@ const Background = styled.section`
   top: 0;
   z-index: -1;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 300px;
   img {
     height: 100%;
