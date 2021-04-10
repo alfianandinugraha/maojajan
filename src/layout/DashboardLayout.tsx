@@ -9,7 +9,6 @@ const DashboardContainer = styled(Container)`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
 `
 
 const Logo = styled.img`

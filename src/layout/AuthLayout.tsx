@@ -7,6 +7,14 @@ import { useHistory } from 'react-router-dom'
 
 type Props = React.HTMLAttributes<HTMLElement>
 
+const Background = styled.div`
+  background-color: ${(props) => props.theme.color.primary};
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+`
+
 const AuthContainer = styled(Container)`
   background-color: ${(props) => props.theme.color.primary};
   min-height: 100vh;
@@ -64,16 +72,19 @@ export default function AuthLayout(props: Props): ReactElement {
   const history = useHistory()
   const toStartPage = () => historyPusher.toStartPage()
   return (
-    <AuthContainer {...props}>
-      {history.location.pathname !== '/' && (
-        <Logo
-          src="/MaoJajan-logo--white.svg"
-          alt="MaoJajan logo"
-          onClick={toStartPage}
-        />
-      )}
-      {props.children}
-    </AuthContainer>
+    <>
+      <Background />
+      <AuthContainer {...props}>
+        {history.location.pathname !== '/' && (
+          <Logo
+            src="/MaoJajan-logo--white.svg"
+            alt="MaoJajan logo"
+            onClick={toStartPage}
+          />
+        )}
+        {props.children}
+      </AuthContainer>
+    </>
   )
 }
 

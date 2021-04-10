@@ -13,6 +13,8 @@ const MenuBarContainer = styled(Container)`
   width: 100%;
   left: 0;
   z-index: 5;
+  left: 50%;
+  transform: translateX(-50%);
 `
 
 const MenuBarWrapper = styled.section`
