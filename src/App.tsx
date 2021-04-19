@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAtom } from 'jotai'
-import firebase from 'firebase'
+import firebase from '@/utils/Firebase'
 import routes from '@/routes'
 import {
   ProtectedMainRoute,

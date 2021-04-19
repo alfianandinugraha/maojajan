@@ -1,5 +1,5 @@
 import React from 'react'
-import Firebase from 'firebase'
+import Firebase from 'firebase/app'
 import {} from 'styled-components'
 
 interface FirebaseTimestamp {
